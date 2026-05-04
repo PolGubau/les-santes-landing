@@ -49,6 +49,15 @@ export const metadata: Metadata = {
     creator: "@polgubau",
     images: ["/opengraph-image"],
   },
+  icons: {
+    icon: [
+      { url: "/icon/32.png",  sizes: "32x32",   type: "image/png" },
+      { url: "/icon/64.png",  sizes: "64x64",   type: "image/png" },
+      { url: "/icon/128.png", sizes: "128x128", type: "image/png" },
+      { url: "/icon/512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: { url: "/icon/480.png", sizes: "480x480", type: "image/png" },
+  },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
 }
 

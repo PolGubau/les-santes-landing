@@ -13,11 +13,12 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "ca",
     scope: SITE_URL,
     icons: [
-      { src: "/favicon_32x32.png",   sizes: "32x32",   type: "image/png" },
-      { src: "/favicon_48x48.png",   sizes: "48x48",   type: "image/png" },
-      { src: "/favicon_64x64.png",   sizes: "64x64",   type: "image/png" },
-      { src: "/favicon_128x128.png", sizes: "128x128", type: "image/png" },
-      { src: "/favicon_256x256.png", sizes: "256x256", type: "image/png" },
+      { src: "/icon/32.png",  sizes: "32x32",   type: "image/png" },
+      { src: "/icon/48.png",  sizes: "48x48",   type: "image/png" },
+      { src: "/icon/64.png",  sizes: "64x64",   type: "image/png" },
+      { src: "/icon/128.png", sizes: "128x128", type: "image/png" },
+      { src: "/icon/240.png", sizes: "240x240", type: "image/png" },
+      { src: "/icon/512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   }
 }

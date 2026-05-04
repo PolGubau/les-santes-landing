@@ -19,7 +19,7 @@ export function Logo({ size = 32, className, asLink = false, subtitle }: LogoPro
       )}
     >
       <Image
-        src="/icon.png"
+        src="/icon/512.png"
         alt="Les Santes"
         width={size}
         height={size}
