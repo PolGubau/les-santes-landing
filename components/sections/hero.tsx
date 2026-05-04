@@ -89,7 +89,7 @@ export function Hero() {
             rounded-3xl overflow-hidden border-4 border-foreground/80 shadow-2xl shadow-foreground/20">
               <div className="absolute top-1 left-1/2 -translate-x-1/2 h-2 w-8 rounded-full bg-foreground z-10" />
               <Image
-                src="/screenshots/ara.jpg"
+                src="/screenshots/ara.avif"
                 alt="App Les Santes - pantalla Ara"
                 fill
                 className="object-cover object-top"
