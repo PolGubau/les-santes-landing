@@ -5,7 +5,7 @@ import Image from "next/image"
 
 export function Footer() {
   return (
-    <div className="">
+    <div className="pt-20">
       <div aria-hidden="true" className="relative h-64 sm:h-80 lg:h-96 overflow-hidden">
         <Image
           src="/banner.webp"

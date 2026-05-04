@@ -12,8 +12,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: `${APP_NAME} ${APP_YEAR} - ${APP_SUBTITLE}`,
-    description: `Programa complet de Les Santes ${APP_YEAR} de ${APP_CITY}. ${APP_DATES}. Descarrega l'app gratuïta.`,
+    description: `Tota l'agenda, el mapa i els actes en temps real de ${APP_NAME}. App gratuïta de Les Santes, la Festa Major de Mataró. ${APP_DATES}. Per a iOS i Android.`,
     url: SITE_URL,
+    siteName: APP_NAME,
     type: "website",
   },
 }

@@ -7,143 +7,137 @@ import {
   Wheelchair,
   Gift,
   Database,
+  ArrowRight,
+  type Icon,
 } from "@phosphor-icons/react/dist/ssr"
 
 const stats = [
-  { value: "Gratuïta", label: "Sense cost" },
-  { value: "Sense publicitat", label: "100% net" },
-  { value: "iOS & Android", label: "Universal" },
-  { value: "Català · English", label: "2 idiomes" },
+  { value: "Gratu\u00efta", label: "Sense cap cost" },
+  { value: "0 anuncis", label: "Sense publicitat" },
+  { value: "iOS & Android", label: "Tots els dispositius" },
+  { value: "ca \u00b7 en", label: "2 idiomes" },
 ]
 
-const credentials = [
-  {
-    icon: Wheelchair,
-    color: "bg-blue-50 text-blue-700 border-blue-200",
-    title: "Accessible WCAG 2.1 AA",
-    description:
-      "Dissenyada perquè tothom pugui usar-la: lectors de pantalla, navegació per teclat i contrast suficient en tota la interfície.",
-    badge: "Compliment legal",
-    badgeColor: "bg-blue-100 text-blue-700",
-    link: "/accessibility",
-    linkLabel: "Veure declaració",
-  },
+type Credential = {
+  icon: Icon
+  iconColor: string
+  title: string
+  description: string
+  link?: string
+  linkLabel?: string
+}
+
+const credentials: Credential[] = [
   {
     icon: ShieldCheck,
-    color: "bg-green-50 text-green-700 border-green-200",
+    iconColor: "text-green-600",
     title: "Privacitat total",
     description:
-      "Cap seguiment, cap publicitat, cap venda de dades. L'app funciona sense compte d'usuari ni recopilació d'informació personal.",
-    badge: "RGPD compliant",
-    badgeColor: "bg-green-100 text-green-700",
+      "Cap seguiment, cap publicitat, cap venda de dades. Funciona sense compte d'usuari ni informaci\u00f3 personal.",
     link: "/privacy",
-    linkLabel: "Política de privacitat",
+    linkLabel: "Pol\u00edtica de privacitat",
   },
   {
-    icon: Globe,
-    color: "bg-violet-50 text-violet-700 border-violet-200",
-    title: "Multilingüe",
+    icon: Wheelchair,
+    iconColor: "text-blue-600",
+    title: "Accessible WCAG 2.1 AA",
     description:
-      "Disponible en català i anglès, amb detecció automàtica de l'idioma del dispositiu. Preparat per acollir visitants d'arreu.",
-    badge: "ca · en",
-    badgeColor: "bg-violet-100 text-violet-700",
-  },
-  {
-    icon: Database,
-    color: "bg-amber-50 text-amber-700 border-amber-200",
-    title: "Open data ready",
-    description:
-      "Arquitectura preparada per connectar-se a dades oficials de l'Ajuntament via API. El programa pot actualitzar-se en temps real sense reimplantar l'app.",
-    badge: "API first",
-    badgeColor: "bg-amber-100 text-amber-700",
+      "Lectors de pantalla, navegaci\u00f3 per teclat i contrast suficient. Dissenyada perqu\u00e8 tothom pugui usar-la.",
+    link: "/accessibility",
+    linkLabel: "Veure declaraci\u00f3",
   },
   {
     icon: Gift,
-    color: "bg-rose-50 text-rose-700 border-rose-200",
-    title: "100% gratuïta",
+    iconColor: "text-primary",
+    title: "100% gratu\u00efta, sempre",
     description:
-      "Sense subscripcions, sense compres dins l'app, sense anuncis. Un servei públic per a la comunitat de Mataró i els seus visitants.",
-    badge: "Servei públic",
-    badgeColor: "bg-rose-100 text-rose-700",
+      "Sense subscripcions, sense compres dins l'app. Un servei p\u00fablic per a la comunitat de Matar\u00f3.",
+  },
+  {
+    icon: Globe,
+    iconColor: "text-violet-600",
+    title: "Multiling\u00fce",
+    description:
+      "Catal\u00e0 i angl\u00e8s amb detecci\u00f3 autom\u00e0tica de l'idioma del dispositiu. Per als mataroners i els visitants.",
+  },
+  {
+    icon: Database,
+    iconColor: "text-amber-600",
+    title: "Open data ready",
+    description:
+      "Arquitectura preparada per connectar-se a l'API oficial de l'Ajuntament. El programa s'actualitza en temps real.",
   },
   {
     icon: DeviceMobile,
-    color: "bg-slate-100 text-slate-700 border-slate-200",
+    iconColor: "text-slate-500",
     title: "iOS i Android",
     description:
-      "Una sola app per a tots els dispositius. Disseny nadiu que respecta les guies d'Apple i Google per a la millor experiència possible.",
-    badge: "Cross-platform",
-    badgeColor: "bg-slate-100 text-slate-600",
+      "Una sola app. Disseny nadiu que respecta les guies d'Apple i Google per a la millor experi\u00e8ncia.",
   },
 ]
 
 export function Trust() {
   return (
-    <section className="py-24 px-6 bg-muted/30 border-y border-border" aria-labelledby="trust-heading">
+    <section className="py-24 px-6" aria-labelledby="trust-heading">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="scroll-reveal text-center mb-14">
-          <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
-            Per tothom
-          </p>
-          <h2 id="trust-heading" className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-4">
-            Feta per la comunitat,
-            <br />
-            <span className="text-primary">a l'alçada institucional</span>
-          </h2>
-          <p className="text-muted-foreground text-balance text-base max-w-xl mx-auto leading-relaxed">
-            Gratuïta i sense publicitat per als ciutadans. Accessible, multilingüe i fet per i per a Mataronins.
-          </p>
-        </div>
 
-        {/* Stats strip */}
-        <div className="scroll-reveal-group grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
-          {stats.map((s) => (
-            <div key={s.value} className="bg-background border border-border rounded-2xl px-4 py-4 text-center">
-              <div className="font-bold text-foreground text-sm mb-0.5">{s.value}</div>
-              <div className="text-[11px] text-muted-foreground">{s.label}</div>
-            </div>
-          ))}
-        </div>
+        {/* Header + stats side by side */}
+        <div className="scroll-reveal flex flex-col lg:flex-row lg:items-end gap-10 lg:gap-16 mb-20">
+          <div className="lg:flex-1">
+            <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">Per tothom</p>
+            <h2 id="trust-heading" className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+              Feta per la comunitat,
+              <br />
+              <span className="text-primary">a l&apos;al&ccedil;ada institucional</span>
+            </h2>
+          </div>
 
-        {/* Credential cards */}
-        <div className="scroll-reveal grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {credentials.map((c) => (
-            <div key={c.title} className="bg-background border border-border rounded-2xl p-5 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-              <div className="flex items-center gap-3">
-                <div className={`${c.color} border p-2.5 rounded-xl shrink-0`}>
-                  <c.icon weight="fill" className="size-4" />
-                </div>
-                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${c.badgeColor}`}>
-                  {c.badge}
-                </span>
+          {/* Stats - large text, no boxes */}
+          <div className="grid grid-cols-2 gap-x-8 gap-y-5 lg:shrink-0 lg:border-l lg:border-border lg:pl-12">
+            {stats.map((s, i) => (
+              <div key={i}>
+                <div className="font-bold text-foreground text-base">{s.value}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
               </div>
-              <div>
+            ))}
+          </div>
+        </div>
+
+        {/* Credentials - clean list with dividers */}
+        <div className="scroll-reveal divide-y divide-border">
+          {credentials.map((c) => (
+            <div key={c.title} className="flex items-start gap-5 py-5 first:pt-0 last:pb-0">
+              <c.icon weight="duotone" className={`size-5 shrink-0 mt-0.5 ${c.iconColor}`} />
+              <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-foreground text-sm mb-1">{c.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{c.description}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{c.description}</p>
               </div>
               {c.link && (
-                <Link href={c.link} className="text-xs text-primary font-medium hover:underline mt-auto">
-                  {c.linkLabel} →
+                <Link
+                  href={c.link}
+                  className="shrink-0 flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors mt-0.5 whitespace-nowrap"
+                >
+                  {c.linkLabel}
+                  <ArrowRight className="size-3" />
                 </Link>
               )}
             </div>
           ))}
         </div>
 
-        {/* Institutional CTA */}
-        <div className="mt-12 bg-primary/5 border border-primary/20 rounded-2xl px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Institutional CTA - minimal */}
+        <div className="mt-14 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-foreground text-sm mb-1">Ets de l'Ajuntament de Mataró?</p>
-            <p className="text-xs text-muted-foreground max-w-md">
-              Estem oberts a col·laborar per fer d'aquesta app el canal oficial de Les Santes. Contacta'ns.
+            <p className="font-semibold text-foreground text-sm mb-1">Ets de l&apos;Ajuntament de Matar&oacute;?</p>
+            <p className="text-sm text-muted-foreground">
+              Estem oberts a col&middot;laborar per fer d&apos;aquesta app el canal oficial de Les Santes.
             </p>
           </div>
           <a
-            href={`mailto:${CONTACT_EMAIL.collab_official}?subject=Col·laboració Les Santes - Ajuntament de Mataró`}
-            className="shrink-0 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
+            href={`mailto:${CONTACT_EMAIL.collab_official}?subject=Col%C2%B7laboraci%C3%B3 Les Santes - Ajuntament de Matar%C3%B3`}
+            className="shrink-0 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
           >
-            Contactar
+            Contactar <ArrowRight className="size-3.5" />
           </a>
         </div>
       </div>
