@@ -1,27 +1,20 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import Image from "next/image"
+import { PageNav } from "@/components/page-nav"
+import { APP_CITY, APP_NAME, AUTHOR_NAME, CONTACT_EMAIL } from "@/lib/constants"
 
 export const metadata: Metadata = {
-  title: "Política de Privacitat · Les Santes",
-  description: "Política de privacitat de l'app Les Santes de Mataró.",
+  title: "Política de Privacitat",
+  description: `Política de privacitat de l'app ${APP_NAME} de ${APP_CITY}. Com tractem les teves dades i els teus drets.`,
+  alternates: { canonical: "https://lessantes.polgubau.com/privacy" },
+  robots: { index: false },
 }
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border px-6 py-4">
-        <div className="max-w-3xl mx-auto flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/icon.png" alt="Les Santes" width={28} height={28} className="rounded-lg" />
-            <span className="font-semibold text-sm">Les Santes</span>
-          </Link>
-          <span className="text-muted-foreground text-sm">/</span>
-          <span className="text-sm text-muted-foreground">Privacitat</span>
-        </div>
-      </nav>
+      <PageNav breadcrumb="Privacitat" />
 
-      <main className="max-w-3xl mx-auto px-6 py-16 space-y-10">
+      <main id="main-content" className="max-w-3xl mx-auto px-6 py-6 space-y-14">
         <header>
           <h1 className="text-4xl font-bold tracking-tight mb-3">Política de Privacitat</h1>
           <p className="text-muted-foreground">Darrera actualització: maig de 2026</p>
@@ -30,12 +23,12 @@ export default function PrivacyPage() {
         <div className="prose prose-neutral max-w-none space-y-8 text-foreground">
           <Section title="1. Qui som">
             <p>
-              <strong>Les Santes</strong> és una aplicació mòbil independent creada per{" "}
-              <strong>Pol Gubau Amores</strong> per facilitar la consulta del programa de la
+              <strong>{APP_NAME}</strong> és una aplicació mòbil independent creada per{" "}
+              <strong>{AUTHOR_NAME}</strong> per facilitar la consulta del programa de la
               Festa Major de Mataró. No estem afiliats a l&apos;Ajuntament de Mataró ni a cap
               organisme oficial.
             </p>
-            <p>Contacte: <a href="mailto:lessantes@polgubau.com" className="text-primary hover:underline">lessantes@polgubau.com</a></p>
+            <p>Contacte: <a href={`mailto:${CONTACT_EMAIL.support}`} className="text-primary hover:underline">{CONTACT_EMAIL.support}</a></p>
           </Section>
 
           <Section title="2. Dades que recopilem">
@@ -87,8 +80,8 @@ export default function PrivacyPage() {
           <Section title="8. Contacte">
             <p>
               Per a qualsevol dubte sobre privacitat, posa&apos;t en contacte amb nosaltres:{" "}
-              <a href="mailto:lessantes@polgubau.com" className="text-primary hover:underline">
-                lessantes@polgubau.com
+              <a href={`mailto:${CONTACT_EMAIL.support}`} className="text-primary hover:underline">
+                {CONTACT_EMAIL.support}
               </a>
             </p>
           </Section>

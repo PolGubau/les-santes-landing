@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import Image from "next/image"
+import { PageNav } from "@/components/page-nav"
+import { APP_NAME, APP_YEAR, CONTACT_EMAIL } from "@/lib/constants"
 
 export const metadata: Metadata = {
-  title: "Suport · Les Santes",
-  description: "Centre de suport i ajuda de l'app Les Santes.",
+  title: "Suport",
+  description: `Centre d'ajuda de l'app ${APP_NAME}. Preguntes freqüents, reportar errors i contacte.`,
+  alternates: { canonical: "https://lessantes.polgubau.com/support" },
 }
 
 const faqs = [
@@ -14,7 +15,7 @@ const faqs = [
   },
   {
     q: "En quines plataformes estarà disponible?",
-    a: "iOS (iPhone i iPad) i Android. Estarà disponible a l'App Store i Google Play abans de Les Santes 2026.",
+    a: `iOS (iPhone i iPad) i Android. Estarà disponible a l'App Store i Google Play abans de ${APP_NAME} ${APP_YEAR}.`,
   },
   {
     q: "El programa s'actualitza en temps real?",
@@ -37,18 +38,9 @@ const faqs = [
 export default function SupportPage() {
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border px-6 py-4">
-        <div className="max-w-3xl mx-auto flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/icon.png" alt="Les Santes" width={28} height={28} className="rounded-lg" />
-            <span className="font-semibold text-sm">Les Santes</span>
-          </Link>
-          <span className="text-muted-foreground text-sm">/</span>
-          <span className="text-sm text-muted-foreground">Suport</span>
-        </div>
-      </nav>
+      <PageNav breadcrumb="Suport" />
 
-      <main className="max-w-3xl mx-auto px-6 py-16 space-y-14">
+      <main id="main-content" className="max-w-3xl mx-auto px-6 py-6 space-y-14">
         <header>
           <h1 className="text-4xl font-bold tracking-tight mb-3">Centre de Suport</h1>
           <p className="text-muted-foreground text-lg">
@@ -63,7 +55,7 @@ export default function SupportPage() {
             <p className="text-muted-foreground text-sm">Responem en menys de 48 hores.</p>
           </div>
           <a
-            href="mailto:lessantes@polgubau.com"
+            href={`mailto:${CONTACT_EMAIL.support}`}
             className="shrink-0 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
           >
             Escriu-nos
@@ -97,25 +89,13 @@ export default function SupportPage() {
             <li>Si és possible, una captura de pantalla</li>
           </ul>
           <a
-            href="mailto:lessantes@polgubau.com?subject=Bug report - Les Santes app"
+            href={`mailto:${CONTACT_EMAIL.bug}?subject=Bug report - ${APP_NAME} app`}
             className="inline-block mt-2 text-primary text-sm font-medium hover:underline"
           >
             Reportar un error →
           </a>
         </section>
 
-        <footer className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>
-            Les Santes · Fet per{" "}
-            <a href="https://polgubau.com" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline">
-              Pol Gubau Amores
-            </a>{" "}
-            ·{" "}
-            <Link href="/privacy" className="hover:underline">
-              Privacitat
-            </Link>
-          </p>
-        </footer>
       </main>
     </div>
   )

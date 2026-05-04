@@ -1,21 +1,23 @@
-# Next.js template
+# Les Santes — Landing
 
-This is a Next.js template with shadcn/ui.
+Next.js 16 marketing site for the Les Santes app.
+Live at **[lessantes.polgubau.com](https://lessantes.polgubau.com)**
 
-## Adding components
-
-To add components to your app, run the following command:
+## Dev
 
 ```bash
-npx shadcn@latest add button
+pnpm install
+pnpm dev        # Turbopack, http://localhost:3000
+pnpm build
+pnpm typecheck
+pnpm lint
 ```
 
-This will place the ui components in the `components` directory.
+## Stack
 
-## Using components
+- **Next.js 16** App Router
+- **Tailwind CSS v4**
+- **shadcn/ui** + Phosphor Icons
+- **Geist** font (next/font)
 
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button";
-```
+See the [root README](../README.md) for full project context.
