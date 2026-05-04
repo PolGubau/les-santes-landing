@@ -3,19 +3,20 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
-import { APP_NAME, APP_SUBTITLE, APP_YEAR, APP_CITY, APP_START_DATE, APP_END_DATE, AUTHOR_NAME, AUTHOR_URL, SITE_URL, OFFICIAL_MATARO_URL } from "@/lib/constants"
+import { APP_NAME, APP_YEAR, APP_CITY, APP_START_DATE, APP_END_DATE, AUTHOR_NAME, AUTHOR_URL, SITE_URL, OFFICIAL_MATARO_URL } from "@/lib/constants"
 import { SiteHeader } from "@/components/site-header"
 import { Footer } from "@/components/sections/footer"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
-const defaultDescription = `App gratuïta de Les Santes ${APP_YEAR}, la Festa Major de Mataró. Agenda completa, mapa interactiu, actes en temps real, cartells des de 1892. Disponible per a iOS i Android.`
+const defaultTitle = `${APP_NAME} ${APP_YEAR} · App de la Festa Major de Mataró`
+const defaultDescription = `App gratuïta de Les Santes ${APP_YEAR}. Agenda, mapa interactiu i actes en temps real de la Festa Major de Mataró. iOS i Android.`
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${APP_NAME} - ${APP_SUBTITLE}`,
+    default: defaultTitle,
     template: `%s · ${APP_NAME}`,
   },
   description: defaultDescription,
@@ -33,17 +34,17 @@ export const metadata: Metadata = {
     languages: { "ca-ES": SITE_URL },
   },
   openGraph: {
-    title: `${APP_NAME} - ${APP_SUBTITLE}`,
+    title: defaultTitle,
     description: defaultDescription,
     url: SITE_URL,
     siteName: APP_NAME,
     locale: "ca_ES",
     type: "website",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${APP_NAME} - ${APP_SUBTITLE}` }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: defaultTitle }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${APP_NAME} - ${APP_SUBTITLE}`,
+    title: defaultTitle,
     description: defaultDescription,
     creator: "@polgubau",
     images: ["/opengraph-image"],
