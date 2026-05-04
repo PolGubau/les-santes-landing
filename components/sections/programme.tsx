@@ -1,10 +1,11 @@
 import Image from "next/image"
-import { Clock, MapPin, Star } from "@phosphor-icons/react/dist/ssr"
+import { ClockIcon, MapPinIcon, StarIcon, FireIcon, WavesIcon, CrownIcon, SparkleIcon, BuildingsIcon } from "@phosphor-icons/react/dist/ssr"
+import { Icon } from "@/src/shared/types/common"
 
 type Highlight = {
   title: string
   type: string
-  emoji: string
+  icon: Icon
   day: string
   time: string
   place: string
@@ -16,31 +17,31 @@ type Highlight = {
 
 const highlights: Highlight[] = [
   {
-    title: "Correfoc",
+    title: "Nit Boja",
     type: "Foc",
-    emoji: "🔥",
-    day: "Dis 26",
-    time: "22:30",
-    place: "Rambla i carrers del centre",
-    description: "Dimonis, dracs i bestiari ignivom surten a cremar la nit de Mataró. L'espectacle de foc més esperat de l'any: música, espurnes i adrenalina en estat pur.",
+    icon: FireIcon,
+    day: "Dis 25",
+    time: "23:30",
+    place: "La Riera i carrers del centre",
+    description: "Dimonis, dracs i bestiari surten a cremar la nit de Mataró. L'espectacle de foc més esperat de l'any: música, espurnes i adrenalina.",
     image: "https://uploads.lessantes.cat/uploads/medium/bbef407c8987d205751b00506f5b8d24.jpeg",
     featured: true,
-    badge: "⭐ Imprescindible",
+    badge: "Imprescindible",
   },
   {
     title: "Havaneres al port",
     type: "Música",
-    emoji: "⛵",
+    icon: WavesIcon,
     day: "Div 25",
     time: "22:00",
     place: "Port de Mataró",
     description: "Cremat, brisa marina i les veus d'Havaneres Sirena entonen les cançons de marineria que han acompanyat Mataró des del segle XIX.",
-    image: "https://uploads.lessantes.cat/uploads/big/d51cb1d7276befa35d6efe62c17b9d2a.jpeg?p=992",
+    image: "https://cdn.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_2146,h_1191%7Cc_fit,w_768,h_426%7Cp_1920/c22c63569648f5d08561ef4ecfc55e8f.jpeg",
   },
   {
     title: "Gegantada",
     type: "Cercavila",
-    emoji: "👑",
+    icon: CrownIcon,
     day: "Dij 24",
     time: "18:00",
     place: "Des de la ronda O'Donnell",
@@ -50,17 +51,17 @@ const highlights: Highlight[] = [
   {
     title: "Castell de focs",
     type: "Focs artificials",
-    emoji: "✨",
+    icon: SparkleIcon,
     day: "Diu 27",
     time: "23:00",
     place: "Platja del Varador",
     description: "El cel de Mataró s'il·lumina sobre el mar en un dels castells de focs artificials més bonics de la costa catalana.",
-    image: "https://uploads.lessantes.cat/uploads/medium/d4482e719acddb6243435e2fc6743087.jpeg",
+    image: "https://cdn.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_69,w_768,h_426%7Cc_fit,w_768,h_426%7Cp_1920/b839be03d4c49c226a3dfac1073c4672.jpeg",
   },
   {
     title: "Castellers",
     type: "Castellers",
-    emoji: "🏛",
+    icon: BuildingsIcon,
     day: "Dis 26",
     time: "12:00",
     place: "Plaça de Santa Maria",
@@ -91,12 +92,13 @@ function HighlightCard({ h, className = "" }: { h: Highlight; className?: string
         <div className="flex items-center gap-2 flex-wrap">
           {h.badge && (
             <span className="flex items-center gap-1 text-[10px] font-bold bg-primary text-white px-2.5 py-1 rounded-full uppercase tracking-wide">
-              <Star weight="fill" className="size-2.5" />
-              {h.badge.replace("⭐ ", "")}
+              <StarIcon weight="fill" className="size-2.5" />
+              {h.badge}
             </span>
           )}
-          <span className="text-[10px] font-medium bg-white/15 text-white/90 border border-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm">
-            {h.emoji} {h.type}
+          <span className="flex items-center gap-1 text-[10px] font-medium bg-white/15 text-white/90 border border-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <h.icon weight="fill" className="size-3 shrink-0" />
+            {h.type}
           </span>
         </div>
 
@@ -108,11 +110,11 @@ function HighlightCard({ h, className = "" }: { h: Highlight; className?: string
 
         <div className="flex items-center gap-3 text-xs text-white/60 pt-1">
           <span className="flex items-center gap-1">
-            <Clock className="size-3" weight="bold" />
+            <ClockIcon className="size-3" weight="bold" />
             {h.day} · {h.time}
           </span>
           <span className="flex items-center gap-1 min-w-0">
-            <MapPin className="size-3 shrink-0" weight="bold" />
+            <MapPinIcon className="size-3 shrink-0" weight="bold" />
             <span className="truncate">{h.place}</span>
           </span>
         </div>
@@ -129,7 +131,7 @@ export function Programme() {
     <section className="py-24 px-6" aria-labelledby="programme-heading">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
+        <div className="scroll-reveal mb-12">
           <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
             Programa destacat
           </p>
@@ -142,9 +144,9 @@ export function Programme() {
         </div>
 
         {/* Bento grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[220px]">
-          {/* Featured hero — spans 2 cols and 2 rows */}
-          <HighlightCard h={featured} className="sm:col-span-2 sm:row-span-2" />
+        <div className="scroll-reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 auto-rows-[180px] sm:auto-rows-[220px]">
+          {/* Featured hero - spans 2 rows on mobile, 2 cols + 2 rows on sm+ */}
+          <HighlightCard h={featured} className="row-span-2 sm:col-span-2 sm:row-span-2" />
 
           {/* Rest: 4 cards filling the right column + bottom row */}
           {rest.map((h) => (
@@ -152,14 +154,7 @@ export function Programme() {
           ))}
         </div>
 
-        {/* Description strip for featured on mobile / desktop tooltip */}
-        <div className="mt-6 bg-muted/50 border border-border rounded-2xl px-5 py-4 flex items-start gap-3">
-          <span className="text-2xl shrink-0" aria-hidden="true">🔥</span>
-          <div>
-            <p className="font-semibold text-foreground text-sm mb-0.5">Correfoc — l&apos;acte estrella</p>
-            <p className="text-xs text-muted-foreground leading-relaxed">{highlights[0].description}</p>
-          </div>
-        </div>
+
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           I molts més actes cada dia · Descarrega l&apos;app per veure&apos;l tot

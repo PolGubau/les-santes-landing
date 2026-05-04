@@ -14,7 +14,7 @@ export default function NotFound() {
   return (
     <main className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center overflow-hidden px-6 py-24">
 
-      {/* Blurred poster collage — purely decorative */}
+      {/* Blurred poster collage - purely decorative */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         {/* Ambient blobs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/6 rounded-full blur-3xl" />

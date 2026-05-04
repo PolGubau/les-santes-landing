@@ -8,6 +8,10 @@ const nextConfig = {
         hostname: "uploads.lessantes.cat",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.appculturamataro.cat",
+      },
     ],
   },
 }

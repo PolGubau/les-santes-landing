@@ -82,7 +82,7 @@ export function Trust() {
     <section className="py-24 px-6 bg-muted/30 border-y border-border" aria-labelledby="trust-heading">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="scroll-reveal text-center mb-14">
           <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
             Per tothom
           </p>
@@ -97,7 +97,7 @@ export function Trust() {
         </div>
 
         {/* Stats strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
+        <div className="scroll-reveal-group grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           {stats.map((s) => (
             <div key={s.value} className="bg-background border border-border rounded-2xl px-4 py-4 text-center">
               <div className="font-bold text-foreground text-sm mb-0.5">{s.value}</div>
@@ -107,7 +107,7 @@ export function Trust() {
         </div>
 
         {/* Credential cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="scroll-reveal grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {credentials.map((c) => (
             <div key={c.title} className="bg-background border border-border rounded-2xl p-5 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
               <div className="flex items-center gap-3">
@@ -140,7 +140,7 @@ export function Trust() {
             </p>
           </div>
           <a
-            href={`mailto:${CONTACT_EMAIL.collab_official}?subject=Col·laboració Les Santes — Ajuntament de Mataró`}
+            href={`mailto:${CONTACT_EMAIL.collab_official}?subject=Col·laboració Les Santes - Ajuntament de Mataró`}
             className="shrink-0 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
           >
             Contactar

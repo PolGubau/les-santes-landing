@@ -21,9 +21,9 @@ export const CONTACT_EMAIL = {
   general: "gubaupol+lessantes@gmail.com",
   /** Footer notify-me CTA */
   notify: "gubaupol+lessantes-notify@gmail.com",
-  /** About page — town-hall collaboration */
+  /** About page - town-hall collaboration */
   collab_official: "gubaupol+lessantes-oficial@gmail.com",
-  /** About page — alternative / unofficial collaboration */
+  /** About page - alternative / unofficial collaboration */
   collab_alt: "gubaupol+lessantes-alt@gmail.com",
   /** Privacy & support pages */
   support: "gubaupol+lessantes-support@gmail.com",

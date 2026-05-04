@@ -162,3 +162,38 @@
 .animate-fade-up-delay-1 { animation: fade-up 0.6s ease-out 0.15s forwards; opacity: 0; }
 .animate-fade-up-delay-2 { animation: fade-up 0.6s ease-out 0.3s forwards; opacity: 0; }
 .animate-fade-up-delay-3 { animation: fade-up 0.6s ease-out 0.45s forwards; opacity: 0; }
+
+/* ── Nav mobile menu ─────────────────────────────────────── */
+@keyframes menu-slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-menu-in { animation: menu-slide-down 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* Item stagger inside the menu */
+.animate-menu-in a:nth-child(1) { animation-delay: 0.04s; opacity: 0; animation: fade-up 0.2s ease-out 0.04s forwards; }
+.animate-menu-in a:nth-child(2) { animation-delay: 0.08s; opacity: 0; animation: fade-up 0.2s ease-out 0.08s forwards; }
+.animate-menu-in a:nth-child(3) { animation-delay: 0.12s; opacity: 0; animation: fade-up 0.2s ease-out 0.12s forwards; }
+
+/* ── Scroll-driven reveal (progressive enhancement) ─────── */
+@keyframes scroll-reveal {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .scroll-reveal {
+    animation: scroll-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 22%;
+  }
+  /* Stagger children when parent has scroll-reveal-group */
+  .scroll-reveal-group > *:nth-child(1) { animation-delay: 0s; }
+  .scroll-reveal-group > *:nth-child(2) { animation-delay: 0.08s; }
+  .scroll-reveal-group > *:nth-child(3) { animation-delay: 0.16s; }
+  .scroll-reveal-group > *:nth-child(4) { animation-delay: 0.24s; }
+  .scroll-reveal-group > * {
+    animation: scroll-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 28%;
+  }
+}

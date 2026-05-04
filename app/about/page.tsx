@@ -66,7 +66,7 @@ export default function AboutPage() {
         </section>
 
         {/* Collaboration cards */}
-        <section className="space-y-5">
+        <section id="collabora" className="space-y-5 scroll-mt-24">
           <h2 className="text-2xl font-bold">Col·labora amb nosaltres</h2>
           <p className="text-muted-foreground">
             Tant si ets de l&apos;ajuntament com si fas coses al voltant de Les Santes, m&apos;encantaria parlar amb tu. L&apos;app és més útil quan té dades oficials, col·laboracions i contingut fresc. Parlem?

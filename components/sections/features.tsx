@@ -6,28 +6,28 @@ const features = [
     color: "bg-amber-100 text-amber-700",
     title: "Ara mateix",
     description: "Descobreix en 2 segons quins actes estan passant en aquest moment. Sense buscar, sense perdre temps.",
-    badge: "⚡ Temps real",
+    badge: "Temps real",
   },
   {
     icon: MapPin,
     color: "bg-red-100 text-red-700",
     title: "Mapa interactiu",
     description: "Visualitza tots els actes al mapa de Mataró. Segueix les cercaviles i comparses en temps real.",
-    badge: "🗺 GPS",
+    badge: "GPS",
   },
   {
     icon: CalendarBlank,
     color: "bg-blue-100 text-blue-700",
     title: "Agenda completa",
     description: "Tots els actes dia a dia. Filtra per tipus d'activitat i afegeix els teus favorits.",
-    badge: "📅 Tots els dies",
+    badge: "Tots els dies",
   },
   {
     icon: Heart,
     color: "bg-rose-100 text-rose-700",
     title: "Favorits",
     description: "Guarda els actes que no vols perdre't. La teva llista personal de Les Santes.",
-    badge: "❤️ La teva llista",
+    badge: "La teva llista",
   },
 ]
 
@@ -35,7 +35,7 @@ export function Features() {
   return (
     <section className="py-24 px-6 bg-foreground text-background">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-14">
+        <div className="scroll-reveal mb-14">
           <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
             Tot el que necessites
           </p>
@@ -46,7 +46,7 @@ export function Features() {
           </h2>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-5">
+        <div className="scroll-reveal-group grid sm:grid-cols-2 gap-5">
           {features.map((f) => (
             <div
               key={f.title}
@@ -59,7 +59,8 @@ export function Features() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold text-background">{f.title}</h3>
-                    <span className="text-[10px] bg-white/10 text-background/70 px-2 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-[10px] bg-white/10 text-background/70 px-2 py-0.5 rounded-full">
+                      <f.icon weight="fill" className="size-2.5" />
                       {f.badge}
                     </span>
                   </div>

@@ -15,7 +15,7 @@ const defaultDescription = `App gratuïta de Les Santes ${APP_YEAR}, la Festa Ma
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${APP_NAME} — ${APP_SUBTITLE}`,
+    default: `${APP_NAME} - ${APP_SUBTITLE}`,
     template: `%s · ${APP_NAME}`,
   },
   description: defaultDescription,
@@ -33,17 +33,17 @@ export const metadata: Metadata = {
     languages: { "ca-ES": SITE_URL },
   },
   openGraph: {
-    title: `${APP_NAME} — ${APP_SUBTITLE}`,
+    title: `${APP_NAME} - ${APP_SUBTITLE}`,
     description: defaultDescription,
     url: SITE_URL,
     siteName: APP_NAME,
     locale: "ca_ES",
     type: "website",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${APP_NAME} — ${APP_SUBTITLE}` }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${APP_NAME} - ${APP_SUBTITLE}` }],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${APP_NAME} — ${APP_SUBTITLE}`,
+    title: `${APP_NAME} - ${APP_SUBTITLE}`,
     description: defaultDescription,
     creator: "@polgubau",
     images: ["/opengraph-image"],
@@ -109,7 +109,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
-        {/* Skip-to-content — WCAG 2.4.1 Bypass Blocks */}
+        {/* Skip-to-content - WCAG 2.4.1 Bypass Blocks */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-background focus:text-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium focus:ring-2 focus:ring-primary"

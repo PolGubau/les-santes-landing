@@ -1,4 +1,4 @@
-# Les Santes — Landing
+# Les Santes - Landing
 
 Next.js 16 marketing site for the Les Santes app.
 Live at **[lessantes.polgubau.com](https://lessantes.polgubau.com)**

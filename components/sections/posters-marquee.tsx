@@ -44,7 +44,7 @@ const resources = [
 ]
 
 function PosterStrip({ years, reverse }: { years: string[]; reverse?: boolean }) {
-  // Triple the array — the seam is 1 full set away, never visible during animation
+  // Triple the array - the seam is 1 full set away, never visible during animation
   const tripled = [...years, ...years, ...years]
   return (
     <div
@@ -80,7 +80,7 @@ export function PostersMarquee() {
   return (
     <section className="py-24 overflow-hidden">
       {/* Header */}
-      <div className="max-w-5xl mx-auto px-6 mb-12">
+      <div className="scroll-reveal max-w-5xl mx-auto px-6 mb-12">
         <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
           Dins de l&apos;app
         </p>

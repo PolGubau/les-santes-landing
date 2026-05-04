@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og"
 import { APP_CITY, APP_DATES, APP_NAME, APP_SUBTITLE, APP_YEAR, SITE_URL } from "@/lib/constants"
 
 export const runtime = "edge"
-export const alt = `${APP_NAME} — ${APP_SUBTITLE}`
+export const alt = `${APP_NAME} - ${APP_SUBTITLE}`
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 

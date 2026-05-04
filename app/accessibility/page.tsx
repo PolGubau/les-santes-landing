@@ -31,7 +31,7 @@ export default function AccessibilityPage() {
             <svg aria-hidden="true" focusable="false" className="size-3.5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
             </svg>
-            WCAG 2.1 AA — Declaració de Conformitat
+            WCAG 2.1 AA - Declaració de Conformitat
           </div>
           <h1 className="text-4xl font-bold tracking-tight">Declaració d&apos;Accessibilitat</h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
@@ -49,10 +49,10 @@ export default function AccessibilityPage() {
           </p>
           <div className="flex flex-wrap gap-3">
             <span className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-800 text-sm font-medium px-3 py-1.5 rounded-lg">
-              ✅ Nivell A — Complert
+              ✅ Nivell A - Complert
             </span>
             <span className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-800 text-sm font-medium px-3 py-1.5 rounded-lg">
-              ✅ Nivell AA — Complert en les àrees clau
+              ✅ Nivell AA - Complert en les àrees clau
             </span>
           </div>
         </section>

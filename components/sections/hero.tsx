@@ -1,26 +1,45 @@
-import { ArrowDown, Sparkle } from "@phosphor-icons/react/dist/ssr"
-import { APP_CITY, APP_NAME, APP_YEAR } from "@/lib/constants"
+import { APP_CITY, APP_NAME } from "@/lib/constants"
+import { ArrowDownIcon } from "@phosphor-icons/react/dist/ssr"
+import Image from "next/image"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center px-6 pt-12 pb-16">
-      {/* Background texture — purely decorative */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10">
+    <section className="relative overflow-hidden min-h-screen flex flex-col items-center center px-6 pt-[20vh] pb-16">
+      {/* Background - blurred poster collage + ambient blobs */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        {/* Scattered blurred posters */}
+        {[
+          { year: "2024", pos: "top-6 left-2 rotate-[-7deg] " },
+          { year: "2019", pos: "top-20 right-4 rotate-[5deg]" },
+          { year: "2015", pos: "bottom-10 left-6 rotate-[9deg]" },
+          { year: "2026", pos: "bottom-12 right-8 rotate-[-6deg] " },
+          { year: "2021", pos: "top-1/2 left-0 rotate-[-11deg] -translate-y-1/2" },
+          { year: "2022", pos: "top-1/2 right-0 rotate-[8deg] -translate-y-1/2" },
+          { year: "2023", pos: "top-2 left-1/3 rotate-[3deg]" },
+          { year: "2025", pos: "bottom-2 right-1/3 rotate-[-5deg]" },
+        ].map(({ year, pos }) => (
+          <div key={year} className={`absolute w-20 sm:w-28 opacity-15 blur-[3px] ${pos}`}>
+            <Image
+              src={`/posters/${year}.avif`}
+              alt=""
+              width={112}
+              height={160}
+              className="rounded-lg object-cover shadow-lg"
+            />
+          </div>
+        ))}
+        {/* Ambient colour blobs on top */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/15 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 right-0 w-64 h-64 bg-primary/5 rounded-full blur-2xl" />
       </div>
 
       <div id="main-content" className="max-w-4xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
         {/* Text */}
         <div className="space-y-6 animate-fade-up text-center lg:text-left">
-          <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full border border-primary/20">
-            <Sparkle weight="fill" className="size-3" />
-            Festa Major {APP_YEAR} · {APP_CITY}
-          </div>
+
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
-            La Festa Major
+            Les Santes
             <br />
             <span className="text-primary">a la teva</span>
             <br />
@@ -37,7 +56,7 @@ export function Hero() {
             <button
               disabled
               aria-disabled="true"
-              aria-label="App Store — Aviat disponible"
+              aria-label="App Store - Aviat disponible"
               className="flex items-center justify-center gap-2 bg-foreground text-background px-6 py-3.5 rounded-xl font-medium text-sm opacity-50 cursor-not-allowed"
             >
               <svg aria-hidden="true" focusable="false" className="size-5" viewBox="0 0 24 24" fill="currentColor">
@@ -48,7 +67,7 @@ export function Hero() {
             <button
               disabled
               aria-disabled="true"
-              aria-label="Google Play — Aviat disponible"
+              aria-label="Google Play - Aviat disponible"
               className="flex items-center justify-center gap-2 border border-border bg-card px-6 py-3.5 rounded-xl font-medium text-sm opacity-50 cursor-not-allowed"
             >
               <svg aria-hidden="true" focusable="false" className="size-5" viewBox="0 0 24 24" fill="currentColor">
@@ -63,57 +82,25 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Phone mockup — decorative illustration */}
+        {/* Phone mockup - decorative illustration */}
         <div aria-hidden="true" className="flex justify-center animate-fade-up-delay-1">
           <div className="relative animate-float">
-            <div className="w-64 h-[520px] bg-foreground rounded-[3rem] shadow-2xl shadow-foreground/20 flex flex-col overflow-hidden border-4 border-foreground">
-              {/* Status bar */}
-              <div className="flex items-center justify-between px-6 pt-4 pb-2 shrink-0">
-                <span className="text-background text-xs font-medium">9:41</span>
-                <div className="flex gap-1 items-center">
-                  <div className="w-4 h-1.5 bg-background/70 rounded-sm" />
-                  <div className="w-1 h-1.5 bg-background/50 rounded-sm" />
-                </div>
-              </div>
-              {/* App content mockup */}
-              <div className="flex-1 bg-[oklch(0.985_0.006_85)] flex flex-col">
-                <div className="px-4 pt-4 pb-2">
-                  <div className="text-xs text-muted-foreground mb-1">Ara mateix</div>
-                  <div className="font-bold text-foreground text-sm">{APP_NAME} {APP_YEAR}</div>
-                </div>
-                <div className="px-4 space-y-2 flex-1">
-                  {[
-                    { name: "La Crida", time: "20:00", place: "Ajuntament", active: true },
-                    { name: "Diada Castellera", time: "18:00", place: "Pl. Santa Anna", active: false },
-                    { name: "Nit Boja", time: "23:30", place: "La Riera", active: false },
-                    { name: "Havaneres", time: "22:00", place: "Pg. Callao", active: false },
-                  ].map((ev) => (
-                    <div
-                      key={ev.name}
-                      className={`rounded-xl p-3 flex items-start gap-2 ${ev.active ? "bg-primary/15 border border-primary/30" : "bg-card border border-border"}`}
-                    >
-                      <div className={`size-2 rounded-full mt-1 shrink-0 ${ev.active ? "bg-primary" : "bg-muted-foreground/40"}`} />
-                      <div className="min-w-0">
-                        <div className="text-xs font-semibold text-foreground truncate">{ev.name}</div>
-                        <div className="text-[10px] text-muted-foreground">{ev.time} · {ev.place}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {/* Tab bar */}
-                <div className="border-t border-border bg-card px-4 py-3 flex justify-around">
-                  {["Ara", "Agenda", "Mapa", "Més"].map((tab, i) => (
-                    <div key={tab} className={`text-[10px] font-medium ${i === 0 ? "text-primary" : "text-muted-foreground"}`}>{tab}</div>
-                  ))}
-                </div>
-              </div>
+            <div className="w-64 h-130 rounded-[3rem] shadow-2xl shadow-foreground/20 overflow-hidden border-4 border-foreground relative bg-foreground">
+              <Image
+                src="/screenshots/ara.jpg"
+                alt="App Les Santes - pantalla Ara"
+                fill
+                className="object-cover object-top"
+                sizes="256px"
+                priority
+              />
             </div>
-            {/* Decorative badge */}
-            <div className="absolute -right-8 top-16 bg-card border border-border rounded-2xl px-3 py-2 shadow-lg shadow-foreground/10 animate-float-slow">
+            {/* Decorative badges - hidden on mobile to avoid overflow */}
+            <div className="hidden sm:block absolute -right-8 top-16 bg-card border border-border rounded-2xl px-3 py-2 shadow-lg shadow-foreground/10 animate-float-slow">
               <div className="text-xs font-semibold text-foreground">⚡ Ara</div>
               <div className="text-[10px] text-muted-foreground">La Crida</div>
             </div>
-            <div className="absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-2xl px-3 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>
+            <div className="hidden sm:block absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-2xl px-3 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>
               <div className="text-xs font-semibold">🗺 Mapa</div>
               <div className="text-[10px] opacity-80">12 actes avui</div>
             </div>
@@ -121,9 +108,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll hint — decorative */}
+      {/* Scroll hint - decorative */}
       <div aria-hidden="true" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground animate-bounce">
-        <ArrowDown className="size-4" />
+        <ArrowDownIcon className="size-4" />
       </div>
     </section>
   )
