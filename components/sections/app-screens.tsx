@@ -32,7 +32,7 @@ const screens: Screen[] = [
     title: "Ara mateix",
     description:
       "Obre l'app i en 2 segons saps quins actes estan passant en aquest moment. Sense navegar, sense buscar: la festa al moment.",
-    src: "/screenshots/ara.jpg",
+    src: "/screenshots/ara.avif",
     accent: "bg-amber-100 text-amber-800 border-amber-200",
     dot: "bg-amber-500",
   },
@@ -43,7 +43,7 @@ const screens: Screen[] = [
     title: "Agenda completa",
     description:
       "Tot el programa, dia a dia i filtrat per categories. Navega per tots els actes i troba el que més t'agradi.",
-    src: "/screenshots/agenda.jpg",
+    src: "/screenshots/agenda.avif",
     accent: "bg-green-100 text-green-800 border-green-200",
     dot: "bg-green-500",
   },
@@ -54,7 +54,7 @@ const screens: Screen[] = [
     title: "Els teus favorits",
     description:
       "Marca els actes que no vols perdre't i consulta la teva agenda personalitzada en qualsevol moment.",
-    src: "/screenshots/agenda-favs.jpg",
+    src: "/screenshots/agenda-favs.avif",
     accent: "bg-pink-100 text-pink-800 border-pink-200",
     dot: "bg-pink-500",
   },
@@ -65,7 +65,7 @@ const screens: Screen[] = [
     title: "Mapa interactiu",
     description:
       "Tots els actes pinats al mapa de Mataró. Veu d'un cop d'ull on és cada cosa i quant trigaràs a arribar-hi.",
-    src: "/screenshots/mapa.jpg",
+    src: "/screenshots/mapa.avif",
     accent: "bg-blue-100 text-blue-800 border-blue-200",
     dot: "bg-blue-500",
   },
@@ -76,7 +76,7 @@ const screens: Screen[] = [
     title: "Arxiu de recursos",
     description:
       "Cartells oficials, postals de les germanes i molt més per descobrir la història de Les Santes des de 1892.",
-    src: "/screenshots/recursos.jpg",
+    src: "/screenshots/recursos.avif",
     accent: "bg-orange-100 text-orange-800 border-orange-200",
     dot: "bg-orange-500",
   },
@@ -87,7 +87,7 @@ const screens: Screen[] = [
     title: "Cartells històrics",
     description:
       "Tots els cartells oficials des de fa més d'un segle. Un arxiu visual únic de la història de la festa.",
-    src: "/screenshots/cartells.jpg",
+    src: "/screenshots/cartells.avif",
     accent: "bg-rose-100 text-rose-800 border-rose-200",
     dot: "bg-rose-500",
   },
@@ -98,7 +98,7 @@ const screens: Screen[] = [
     title: "Postals de les Santes",
     description:
       "Envia postals digitals de les Santes a amics i familiars. Una manera diferent de viure la festa des de qualsevol lloc.",
-    src: "/screenshots/postals.jpg",
+    src: "/screenshots/postals.avif",
     accent: "bg-purple-100 text-purple-800 border-purple-200",
     dot: "bg-purple-500",
   },
@@ -128,14 +128,17 @@ export function AppScreens() {
             rounded-3xl overflow-hidden border-2 border-foreground shadow-2xl shadow-foreground/20">
               <div className="absolute top-1 left-1/2 -translate-x-1/2 h-2 w-8 rounded-full bg-foreground z-10" />
 
-              <Image
-                key={current.id}
-                src={current.src}
-                alt={`App Les Santes - ${current.title}`}
-                fill
-                className="object-contain object-top transition-opacity duration-300"
-                sizes="224px"
-              />
+              {screens.map((s, i) => (
+                <Image
+                  key={s.id}
+                  src={s.src}
+                  alt={`App Les Santes - ${s.title}`}
+                  fill
+                  className={`object-contain object-top transition-opacity duration-400 ${i === activeIdx ? "opacity-100" : "opacity-0"}`}
+                  sizes="224px"
+                  priority={i === 0}
+                />
+              ))}
             </div>
           </div>
 

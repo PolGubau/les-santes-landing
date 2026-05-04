@@ -80,7 +80,7 @@ function HighlightCard({ h, className = "" }: { h: Highlight; className?: string
           alt={h.title}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-500"
         />
         {/* gradient overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />

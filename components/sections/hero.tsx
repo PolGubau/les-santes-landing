@@ -1,5 +1,5 @@
 import { APP_CITY, APP_NAME } from "@/lib/constants"
-import { ArrowDownIcon, LightningIcon } from "@phosphor-icons/react/dist/ssr"
+import { ArrowDownIcon, LightningIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import Image from "next/image"
 
 export function Hero() {
@@ -104,8 +104,10 @@ export function Hero() {
                 Ara</div>
               <div className="text-[10px] text-muted-foreground">La Crida</div>
             </div>
-            <div className="hidden sm:block absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-2xl px-3 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>
-              <div className="text-xs font-semibold">🗺 Mapa</div>
+            <div className="hidden sm:block absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-xl px-3 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>
+              <div className="text-xs font-semibold">
+                <MapPinIcon weight="fill" className="size-3 mr-1 inline" />
+                Mapa</div>
               <div className="text-[10px] opacity-80">12 actes avui</div>
             </div>
           </div>
