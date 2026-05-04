@@ -98,13 +98,13 @@ export function Hero() {
               />
             </div>
             {/* Decorative badges - hidden on mobile to avoid overflow */}
-            <div className="hidden sm:block absolute -right-8 top-16 bg-card border border-border rounded-lg px-3 py-2 shadow-lg shadow-foreground/10 animate-float-slow">
+            <div className="hidden sm:block absolute -right-8 top-16 bg-card border border-border rounded-lg px-4 py-2 shadow-lg shadow-foreground/10 animate-float-slow">
               <div className="text-xs font-semibold text-foreground">
                 <LightningIcon weight="fill" className="size-3 mr-1 inline" />
                 Ara</div>
               <div className="text-[10px] text-muted-foreground">La Crida</div>
             </div>
-            <div className="hidden sm:block absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-xl px-3 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>
+            <div className="hidden sm:block absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-xl px-4 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>
               <div className="text-xs font-semibold">
                 <MapPinIcon weight="fill" className="size-3 mr-1 inline" />
                 Mapa</div>
