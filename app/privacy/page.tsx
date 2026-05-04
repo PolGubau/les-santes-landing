@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Política de Privacitat",
   description: `Política de privacitat de l'app ${APP_NAME} de ${APP_CITY}. Com tractem les teves dades i els teus drets.`,
   alternates: { canonical: "https://lessantes.polgubau.com/privacy" },
-  robots: { index: false },
+  robots: { index: true },
 }
 
 export default function PrivacyPage() {
@@ -42,10 +42,19 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="3. Permisos de l'app">
-            <p>L&apos;app pot demanar els permisos següents:</p>
-            <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-              <li><strong>Localització (opcional):</strong> Per mostrar la teva posició al mapa. Mai s&apos;envia als nostres servidors.</li>
-              <li><strong>Internet:</strong> Per carregar el programa actualitzat i les imatges del mapa.</li>
+            <p>L&apos;app pot demanar els permisos següents. Tots són opcionals i es demanen en el moment d&apos;ús:</p>
+            <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+              <li>
+                <strong>Localització (opcional):</strong> Per mostrar la teva posició al mapa del festival
+                i calcular distàncies als actes. La ubicació mai s&apos;envia als nostres servidors ni es comparteix.
+              </li>
+              <li>
+                <strong>Calendari (opcional):</strong> Per afegir actes del festival al calendari del dispositiu.
+                Només s&apos;escriu l&apos;acte que tu selecciones explícitament. No llegim ni modifiquem cap event existent.
+              </li>
+              <li>
+                <strong>Internet:</strong> Per carregar el programa actualitzat, les imatges del mapa i els recursos del festival.
+              </li>
             </ul>
           </Section>
 
