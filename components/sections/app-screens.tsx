@@ -109,13 +109,11 @@ export function AppScreens() {
   const current = screens[activeIdx]
 
   return (
-    <section className="py-24 px-6 bg-linear-to-b from-background to-muted overflow-hidden">
+    <section className="py-24 lg:py-36 px-6 bg-linear-to-b from-background to-muted overflow-hidden">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-14 text-center lg:text-left">
-          <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
-            L&apos;app
-          </p>
+
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
             La festa,
             <br />
@@ -123,10 +121,11 @@ export function AppScreens() {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-[auto_1fr] gap-12 items-center">
           {/* Single phone */}
           <div className="flex justify-center order-2 lg:order-1">
-            <div className="relative w-56 h-112.5 rounded-[2.8rem] overflow-hidden border-4 border-foreground shadow-2xl shadow-foreground/20 bg-foreground">
+            <div className="relative w-64 bg-background aspect-135/300
+            rounded-3xl overflow-hidden border-2 border-foreground shadow-2xl shadow-foreground/20">
               <div className="absolute top-1 left-1/2 -translate-x-1/2 h-2 w-8 rounded-full bg-foreground z-10" />
 
               <Image
@@ -134,7 +133,7 @@ export function AppScreens() {
                 src={current.src}
                 alt={`App Les Santes - ${current.title}`}
                 fill
-                className="object-cover object-top transition-opacity duration-300"
+                className="object-contain object-top transition-opacity duration-300"
                 sizes="224px"
               />
             </div>
@@ -159,7 +158,7 @@ export function AppScreens() {
                   key={s.id}
                   onClick={() => setActiveIdx(i)}
                   aria-label={s.label}
-                  className={`relative w-10 h-18 rounded-md overflow-hidden border-2 transition-all duration-200 ${i === activeIdx ? "border-foreground scale-110 shadow-md" : "border-border opacity-50 hover:opacity-80"}`}
+                  className={`relative w-10 aspect-135/300 rounded-md overflow-hidden border-2 transition-all duration-200 ${i === activeIdx ? "border-foreground scale-110 shadow-md" : "border-border opacity-50 hover:opacity-80"}`}
                 >
                   <div className="absolute top-px left-1/2 -translate-x-1/2 h-0.75 w-2 rounded-full bg-foreground/80 z-10" />
                   <Image src={s.src} alt={s.label} fill className="object-cover object-top" sizes="40px" />

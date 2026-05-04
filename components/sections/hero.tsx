@@ -1,5 +1,5 @@
 import { APP_CITY, APP_NAME } from "@/lib/constants"
-import { ArrowDownIcon } from "@phosphor-icons/react/dist/ssr"
+import { ArrowDownIcon, LightningIcon } from "@phosphor-icons/react/dist/ssr"
 import Image from "next/image"
 
 export function Hero() {
@@ -10,15 +10,15 @@ export function Hero() {
         {/* Scattered blurred posters */}
         {[
           { year: "2024", pos: "top-6 left-2 rotate-[-7deg] " },
-          { year: "2019", pos: "top-20 right-4 rotate-[5deg]" },
+          { year: "2020", pos: "top-20 right-4 rotate-[5deg]" },
           { year: "2015", pos: "bottom-10 left-6 rotate-[9deg]" },
           { year: "2026", pos: "bottom-12 right-8 rotate-[-6deg] " },
-          { year: "2021", pos: "top-1/2 left-0 rotate-[-11deg] -translate-y-1/2" },
+          { year: "2018", pos: "top-1/2 left-0 rotate-[-11deg] -translate-y-1/2" },
           { year: "2022", pos: "top-1/2 right-0 rotate-[8deg] -translate-y-1/2" },
           { year: "2023", pos: "top-2 left-1/3 rotate-[3deg]" },
           { year: "2025", pos: "bottom-2 right-1/3 rotate-[-5deg]" },
         ].map(({ year, pos }) => (
-          <div key={year} className={`absolute w-20 sm:w-28 opacity-15 blur-[3px] ${pos}`}>
+          <div key={year} className={`absolute w-20 sm:w-28 opacity-15 blur-[2px] ${pos}`}>
             <Image
               src={`/posters/${year}.avif`}
               alt=""
@@ -46,7 +46,7 @@ export function Hero() {
             butxaca
           </h1>
 
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-md mx-auto lg:mx-0">
+          <p className="text-muted-foreground text-lg text-balance leading-relaxed max-w-md mx-auto lg:mx-0">
             Tota l&apos;agenda, el mapa interactiu i els actes en temps real de{" "}
             <strong className="text-foreground">{APP_NAME} de {APP_CITY}</strong>. Decideix en
             segons on anar.
@@ -85,7 +85,9 @@ export function Hero() {
         {/* Phone mockup - decorative illustration */}
         <div aria-hidden="true" className="flex justify-center animate-fade-up-delay-1">
           <div className="relative animate-float">
-            <div className="w-64 h-130 rounded-[3rem] shadow-2xl shadow-foreground/20 overflow-hidden border-4 border-foreground relative bg-foreground">
+            <div className="relative w-64 bg-background aspect-135/300
+            rounded-3xl overflow-hidden border-4 border-foreground/80 shadow-2xl shadow-foreground/20">
+              <div className="absolute top-1 left-1/2 -translate-x-1/2 h-2 w-8 rounded-full bg-foreground z-10" />
               <Image
                 src="/screenshots/ara.jpg"
                 alt="App Les Santes - pantalla Ara"
@@ -96,8 +98,10 @@ export function Hero() {
               />
             </div>
             {/* Decorative badges - hidden on mobile to avoid overflow */}
-            <div className="hidden sm:block absolute -right-8 top-16 bg-card border border-border rounded-2xl px-3 py-2 shadow-lg shadow-foreground/10 animate-float-slow">
-              <div className="text-xs font-semibold text-foreground">⚡ Ara</div>
+            <div className="hidden sm:block absolute -right-8 top-16 bg-card border border-border rounded-lg px-3 py-2 shadow-lg shadow-foreground/10 animate-float-slow">
+              <div className="text-xs font-semibold text-foreground">
+                <LightningIcon weight="fill" className="size-3 mr-1 inline" />
+                Ara</div>
               <div className="text-[10px] text-muted-foreground">La Crida</div>
             </div>
             <div className="hidden sm:block absolute -left-10 bottom-24 bg-primary text-primary-foreground rounded-2xl px-3 py-2 shadow-lg animate-float-slow" style={{ animationDelay: "1s" }}>

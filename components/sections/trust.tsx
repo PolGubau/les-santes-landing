@@ -91,8 +91,8 @@ export function Trust() {
             <br />
             <span className="text-primary">a l'alçada institucional</span>
           </h2>
-          <p className="text-muted-foreground text-base max-w-xl mx-auto leading-relaxed">
-            Gratuïta i sense publicitat per als ciutadans. Accessible, multilingüe i transparent per a l'Ajuntament.
+          <p className="text-muted-foreground text-balance text-base max-w-xl mx-auto leading-relaxed">
+            Gratuïta i sense publicitat per als ciutadans. Accessible, multilingüe i fet per i per a Mataronins.
           </p>
         </div>
 
