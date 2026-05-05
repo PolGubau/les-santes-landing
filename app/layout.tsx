@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
@@ -7,11 +7,11 @@ import { APP_NAME, APP_YEAR, APP_CITY, APP_START_DATE, APP_END_DATE, AUTHOR_NAME
 import { SiteHeader } from "@/components/site-header"
 import { Footer } from "@/components/sections/footer"
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
-const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
+const geist = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans" })
+const fontMono = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-mono" })
 
-const defaultTitle = `${APP_NAME} ${APP_YEAR} · App de la Festa Major de Mataró`
-const defaultDescription = `App gratuïta de Les Santes ${APP_YEAR}. Agenda, mapa interactiu i actes en temps real de la Festa Major de Mataró. iOS i Android.`
+const defaultTitle = `${APP_NAME} ${APP_YEAR} · App de la Festa Major de ${APP_CITY}`
+const defaultDescription = `App gratuïta de Les Santes ${APP_YEAR}. Agenda, mapa interactiu i actes en temps real de la Festa Major de ${APP_CITY}. iOS i Android.`
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
