@@ -1,0 +1,105 @@
+'use server'
+
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+
+// ─── Auth ────────────────────────────────────────────────────────────────────
+
+export async function login(
+  _prevState: { error?: string } | null,
+  formData: FormData,
+): Promise<{ error: string }> {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  })
+
+  if (error) return { error: error.message }
+
+  redirect('/admin/events')
+}
+
+export async function logout() {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+  redirect('/admin')
+}
+
+// ─── Events ──────────────────────────────────────────────────────────────────
+
+export async function cancelEvent(id: string, reason: string) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('events')
+    .update({ is_cancelled: true, cancelled_reason: reason })
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/admin/events')
+}
+
+export async function restoreEvent(id: string) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('events')
+    .update({ is_cancelled: false, cancelled_reason: null })
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/admin/events')
+}
+
+export async function updateEventTime(
+  id: string,
+  startTime: string,
+  endTime: string,
+) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('events')
+    .update({ start_time: startTime, end_time: endTime })
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/admin/events')
+}
+
+// ─── Announcements ───────────────────────────────────────────────────────────
+
+export async function createAnnouncement(formData: FormData): Promise<void> {
+  const supabase = await createClient()
+
+  const { error } = await supabase.from('announcements').insert({
+    festival_id: formData.get('festival_id') as string,
+    title: formData.get('title') as string,
+    message: formData.get('message') as string,
+    severity: formData.get('severity') as string,
+    event_id: (formData.get('event_id') as string) || null,
+  })
+
+  if (error) throw new Error(error.message)
+
+  revalidatePath('/admin/announcements')
+}
+
+export async function deactivateAnnouncement(id: string) {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('announcements')
+    .update({ is_active: false })
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/admin/announcements')
+}
