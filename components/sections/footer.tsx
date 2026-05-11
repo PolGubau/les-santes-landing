@@ -23,7 +23,7 @@ export function Footer() {
           <div className="border border-white/10 rounded-3xl p-5 sm:p-8 mb-12 flex flex-col sm:flex-row items-center max-sm:text-center justify-between gap-5 bg-white/5">
             <div>
               <h3 className="text-xl font-bold mb-1">Prepara&apos;t per la festa</h3>
-              <p className="text-background/60 text-sm">L&apos;app estarà disponible abans de {APP_NAME} {APP_YEAR}.</p>
+              <p className="text-background/60 text-sm text-pretty">L&apos;app estarà disponible abans de {APP_NAME} {APP_YEAR}.</p>
             </div>
             <a
               href={`mailto:${CONTACT_EMAIL.notify}?subject=Avisa'm quan surti l'app de ${APP_NAME}`}

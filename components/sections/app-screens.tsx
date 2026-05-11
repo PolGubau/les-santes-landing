@@ -15,8 +15,7 @@ import { Icon } from "@phosphor-icons/react"
 
 type Screen = {
   id: string
-  icon: Icon
-  label: string
+   label: string
   title: string
   description: string
   src: string
@@ -27,18 +26,16 @@ type Screen = {
 const screens: Screen[] = [
   {
     id: "ara",
-    icon: LightningIcon,
     label: "Ara",
     title: "Ara mateix",
     description:
-      "Obre l'app i en 2 segons saps quins actes estan passant en aquest moment. Sense navegar, sense buscar: la festa al moment.",
+      "Obre l'app i en un instant saps quins actes estan passant en aquest moment. Sense navegar ni buscar.",
     src: "/screenshots/ara.avif",
     accent: "bg-amber-100 text-amber-800 border-amber-200",
     dot: "bg-amber-500",
   },
   {
     id: "agenda",
-    icon: CalendarBlankIcon,
     label: "Agenda",
     title: "Agenda completa",
     description:
@@ -49,7 +46,6 @@ const screens: Screen[] = [
   },
   {
     id: "agenda-favs",
-    icon: HeartIcon,
     label: "Favorits",
     title: "Els teus favorits",
     description:
@@ -60,7 +56,6 @@ const screens: Screen[] = [
   },
   {
     id: "mapa",
-    icon: MapTrifoldIcon,
     label: "Mapa",
     title: "Mapa interactiu",
     description:
@@ -71,18 +66,16 @@ const screens: Screen[] = [
   },
   {
     id: "recursos",
-    icon: FolderIcon,
     label: "Recursos",
     title: "Arxiu de recursos",
     description:
-      "Cartells oficials, postals de les germanes i molt més per descobrir la història de Les Santes des de 1892.",
+      "Cartells oficials, postals dels gegans i molt més per descobrir la història de Les Santes des de 1892.",
     src: "/screenshots/recursos.avif",
     accent: "bg-orange-100 text-orange-800 border-orange-200",
     dot: "bg-orange-500",
   },
   {
     id: "cartells",
-    icon: FrameCornersIcon,
     label: "Cartells",
     title: "Cartells històrics",
     description:
@@ -93,11 +86,10 @@ const screens: Screen[] = [
   },
   {
     id: "postals",
-    icon: EnvelopeIcon,
     label: "Postals",
     title: "Postals de les Santes",
     description:
-      "Envia postals digitals de les Santes a amics i familiars. Una manera diferent de viure la festa des de qualsevol lloc.",
+      "Totes les postals d'altres gegans de Les Santes digitalitzades.",
     src: "/screenshots/postals.avif",
     accent: "bg-purple-100 text-purple-800 border-purple-200",
     dot: "bg-purple-500",
@@ -147,8 +139,7 @@ export function AppScreens() {
             {/* Top block: badge + title + description - min-h on <p> prevents layout shift */}
             <div className="space-y-4">
               <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${current.accent}`}>
-                <current.icon weight="fill" className="size-3.5" />
-                {current.label}
+                 {current.label}
               </div>
               <h3 className="text-3xl font-bold tracking-tight">{current.title}</h3>
               <p className="min-h-28 text-muted-foreground text-lg leading-relaxed">{current.description}</p>
@@ -173,14 +164,14 @@ export function AppScreens() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={() => setActiveIdx((activeIdx - 1 + screens.length) % screens.length)}
-                className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors"
+                className="size-10 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors"
                 aria-label="Anterior"
               >
                 ←
               </button>
               <button
                 onClick={() => setActiveIdx((activeIdx + 1) % screens.length)}
-                className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors"
+                className="size-10 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors"
                 aria-label="Següent"
               >
                 →

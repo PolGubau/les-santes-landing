@@ -1,6 +1,7 @@
 import { PageNav } from "@/components/page-nav"
 import { ArrowRightIcon, BuildingsIcon, HandHeartIcon, MusicNoteIcon, TShirtIcon } from "@phosphor-icons/react/dist/ssr"
 import type { Metadata } from "next"
+import Image from "next/image"
 import { APP_NAME, AUTHOR_NAME, AUTHOR_URL, CONTACT_EMAIL, OFFICIAL_MATARO_URL, SITE_URL } from "@/lib/constants"
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export default function AboutPage() {
       <main id="main-content" className="max-w-3xl mx-auto px-6 py-16 space-y-16">
         {/* Header */}
         <header className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">
             Les Santes a la butxaca
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
@@ -112,13 +113,20 @@ export default function AboutPage() {
 
         {/* Author */}
         <section className="bg-muted/40 rounded-2xl p-6 flex items-start gap-5" aria-label="Autor">
-          <img className="size-14 rounded-full bg-primary/20 flex items-center justify-center text-2xl shrink-0" aria-label="Perfil de l'autor" alt="Perfil de l'autor" src="https://media.licdn.com/dms/image/v2/D4E03AQEyqMF2Z2TdLg/profile-displayphoto-scale_200_200/B4EZ23Gy64IwAY-/0/1776893509671?e=1779321600&v=beta&t=b2jxv8rqatM1rBafGcuvTCTg8qChxliHnFHxwFT5EG0" />
+          <Image
+            className="size-14 rounded-full bg-primary/20 shrink-0"
+            alt="Perfil de l'autor"
+            src="https://media.licdn.com/dms/image/v2/D4E03AQEyqMF2Z2TdLg/profile-displayphoto-scale_200_200/B4EZ23Gy64IwAY-/0/1776893509671?e=1779321600&v=beta&t=b2jxv8rqatM1rBafGcuvTCTg8qChxliHnFHxwFT5EG0"
+            width={56}
+            height={56}
+            unoptimized
+          />
 
           <div className="space-y-1.5">
             <h3 className="font-semibold">{AUTHOR_NAME}</h3>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Enginyer de software mataroní. Aquesta app és un projecte personal fet fora de l&apos;horari
-              laboral, per a millorar Mataró amb tecnologia.
+              laboral per a millorar Mataró amb tecnologia.
             </p>
             <a
               href={AUTHOR_URL}

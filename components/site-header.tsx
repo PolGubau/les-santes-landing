@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Logo } from "@/components/logo"
 
 const NAV_LINKS = [
@@ -21,30 +22,30 @@ export function SiteHeader() {
           {/* Desktop nav */}
           <nav aria-label="Navegació principal" className="hidden sm:flex items-center gap-4">
             {NAV_LINKS.map((l) => (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
-            <a
+            <Link
               href="/about#collabora"
               className="text-sm bg-foreground text-background px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
             >
               Contacte
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile: CTA + hamburger */}
           <div className="flex sm:hidden items-center gap-2">
-            <a
+            <Link
               href="/about#collabora"
               className="text-sm bg-foreground text-background px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
             >
               Contacte
-            </a>
+            </Link>
             <button
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Tanca el menú" : "Obre el menú"}
@@ -52,7 +53,7 @@ export function SiteHeader() {
               className="p-2 rounded-lg hover:bg-muted transition-colors"
             >
               {/* CSS animated hamburger → X */}
-              <span className="flex flex-col justify-center gap-1.25 w-5 h-5">
+              <span className="flex flex-col justify-center gap-1.25 size-5">
                 <span className={`block h-0.5 bg-foreground rounded-full transition-all duration-300 origin-center ${open ? "rotate-45 translate-y-1.75" : ""}`} />
                 <span className={`block h-0.5 bg-foreground rounded-full transition-all duration-300 ${open ? "opacity-0 scale-x-0" : ""}`} />
                 <span className={`block h-0.5 bg-foreground rounded-full transition-all duration-300 origin-center ${open ? "-rotate-45 -translate-y-1.75" : ""}`} />
@@ -68,14 +69,14 @@ export function SiteHeader() {
             className="animate-menu-in sm:hidden border-t border-border bg-background/95 backdrop-blur-md"
           >
             {NAV_LINKS.map((l) => (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className="flex items-center px-6 py-4 text-sm font-medium text-foreground hover:bg-muted active:bg-muted/80 transition-colors border-b border-border/50 last:border-0"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
         )}

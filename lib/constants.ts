@@ -31,7 +31,3 @@ export const CONTACT_EMAIL = {
   bug: "gubaupol+lessantes-bug@gmail.com",
 } as const
 
-export const SOCIAL = {
-  author: AUTHOR_URL,
-  mataro: OFFICIAL_MATARO_URL,
-} as const

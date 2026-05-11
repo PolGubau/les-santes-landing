@@ -28,10 +28,19 @@ export async function logout() {
   redirect('/admin')
 }
 
+// ─── Auth guard helper ───────────────────────────────────────────────────────
+
+async function requireAuth() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/admin')
+  return supabase
+}
+
 // ─── Events ──────────────────────────────────────────────────────────────────
 
 export async function cancelEvent(id: string, reason: string) {
-  const supabase = await createClient()
+  const supabase = await requireAuth()
 
   const { error } = await supabase
     .from('events')
@@ -44,7 +53,7 @@ export async function cancelEvent(id: string, reason: string) {
 }
 
 export async function restoreEvent(id: string) {
-  const supabase = await createClient()
+  const supabase = await requireAuth()
 
   const { error } = await supabase
     .from('events')
@@ -61,7 +70,7 @@ export async function updateEventTime(
   startTime: string,
   endTime: string,
 ) {
-  const supabase = await createClient()
+  const supabase = await requireAuth()
 
   const { error } = await supabase
     .from('events')
@@ -73,10 +82,54 @@ export async function updateEventTime(
   revalidatePath('/admin/events')
 }
 
+interface RoutePoint { lat: number; lng: number }
+
+interface EventPayload {
+  title: string
+  type: string
+  category: string
+  kind: string
+  icon_name: string
+  short_description: string
+  start_time: string
+  end_time: string
+  location_name?: string
+  location_lat?: number
+  location_lng?: number
+  route?: RoutePoint[] | null
+}
+
+export async function createEvent(data: EventPayload) {
+  const supabase = await requireAuth()
+  const festival_id = process.env.FESTIVAL_ID ?? 'les-santes-2026'
+
+  const { error } = await supabase.from('events').insert({
+    id: crypto.randomUUID(),
+    festival_id,
+    is_cancelled: false,
+    ...data,
+  })
+
+  if (error) return { error: error.message }
+  revalidatePath('/admin/events')
+}
+
+export async function updateEvent(id: string, data: EventPayload) {
+  const supabase = await requireAuth()
+
+  const { error } = await supabase
+    .from('events')
+    .update(data)
+    .eq('id', id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/admin/events')
+}
+
 // ─── Announcements ───────────────────────────────────────────────────────────
 
 export async function createAnnouncement(formData: FormData): Promise<void> {
-  const supabase = await createClient()
+  const supabase = await requireAuth()
 
   const { error } = await supabase.from('announcements').insert({
     festival_id: formData.get('festival_id') as string,
@@ -92,7 +145,7 @@ export async function createAnnouncement(formData: FormData): Promise<void> {
 }
 
 export async function deactivateAnnouncement(id: string) {
-  const supabase = await createClient()
+  const supabase = await requireAuth()
 
   const { error } = await supabase
     .from('announcements')

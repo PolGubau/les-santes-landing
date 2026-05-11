@@ -17,8 +17,8 @@ export default function NotFound() {
       {/* Blurred poster collage - purely decorative */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         {/* Ambient blobs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/6 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 size-96 bg-primary/6 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 size-80 bg-accent/10 rounded-full blur-3xl" />
 
         {/* Scattered, blurred posters */}
         {POSTERS.map((year, i) => {

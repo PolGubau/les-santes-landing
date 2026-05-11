@@ -40,9 +40,9 @@ export default function SupportPage() {
     <div className="min-h-screen bg-background">
       <PageNav breadcrumb="Suport" />
 
-      <main id="main-content" className="max-w-3xl mx-auto px-6 py-6 space-y-14">
+      <main id="main-content" className="max-w-3xl mx-auto p-6 space-y-14">
         <header>
-          <h1 className="text-4xl font-bold tracking-tight mb-3">Centre de Suport</h1>
+          <h1 className="text-4xl font-semibold tracking-tight mb-3">Centre de Suport</h1>
           <p className="text-muted-foreground text-lg">
             Estem aquí per ajudar-te. Si no trobes el que busques, escriu-nos.
           </p>
@@ -64,7 +64,7 @@ export default function SupportPage() {
 
         {/* FAQ */}
         <section>
-          <h2 className="text-2xl font-bold mb-8">Preguntes freqüents</h2>
+          <h2 className="text-2xl font-semibold mb-8">Preguntes freqüents</h2>
           <div className="space-y-4">
             {faqs.map((faq) => (
               <div key={faq.q} className="border border-border rounded-xl p-5 space-y-2">
