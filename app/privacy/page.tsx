@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
 import { PageNav } from "@/components/page-nav"
 import { APP_CITY, APP_NAME, AUTHOR_NAME, CONTACT_EMAIL } from "@/lib/constants"
+import { SITE_URL } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Política de Privacitat",
   description: `Política de privacitat de l'app ${APP_NAME} de ${APP_CITY}. Com tractem les teves dades i els teus drets.`,
-  alternates: { canonical: "https://lessantes.polgubau.com/privacy" },
+  alternates: { canonical: `${SITE_URL}/privacy` },
   robots: { index: true },
 }
 
