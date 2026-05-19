@@ -207,7 +207,7 @@ Marketing website. Converts visitors into app downloads. Also hosts the admin pa
 - **Geist** font (sans + mono)
 - **Phosphor Icons** (`@phosphor-icons/react`)
 - **next/og** — dynamic OpenGraph image at `/opengraph-image`
-- **Supabase SSR** client (`@supabase/ssr`) — server-side auth for admin
+- **Supabase SSR** client (`@supabase/ssr`) — server-side auth for admin (via `proxy.ts`)
 
 ### Pages
 
