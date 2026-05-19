@@ -144,7 +144,7 @@ app/src/
 ```typescript
 type EventType =
   "cercavila" | "correfoc" | "concert" | "sardanes" | "castellera" |
-  "gegants"   | "havaneres"| "exposicio"| "espectacle"| "missa"     |
+  "gegants"   | "exposicio"| "espectacle"| "missa"     |
   "focsartificials" | "cursa" | "jocs" | "contes" | "barram" | "altres"
 
 type EventKind     = "static" | "mobile"

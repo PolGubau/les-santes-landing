@@ -89,8 +89,8 @@ interface EventPayload {
   type: string
   category: string
   kind: string
-  icon_name: string
   short_description: string
+  image_url?: string
   start_time: string
   end_time: string
   location_name?: string

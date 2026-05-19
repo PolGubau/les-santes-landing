@@ -8,7 +8,7 @@ export default async function EventsPage() {
 
   const { data: events, error } = await supabase
     .from('events')
-    .select('id, title, type, category, kind, icon_name, short_description, start_time, end_time, location_name, location_lat, location_lng, route, is_cancelled, cancelled_reason')
+    .select('id, title, type, category, kind, short_description, image_url, start_time, end_time, location_name, location_lat, location_lng, route, is_cancelled, cancelled_reason')
     .eq('festival_id', FESTIVAL_ID)
     .order('start_time', { ascending: true })
 

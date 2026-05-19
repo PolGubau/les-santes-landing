@@ -1,6 +1,25 @@
 'use client'
 
-import { useState, useTransition, useMemo, useEffect, useDeferredValue } from 'react'
+import {
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from 'react'
+import {
+  ArrowCounterClockwiseIcon,
+  CheckIcon,
+  type Icon as PhosphorIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  PencilSimpleIcon,
+  PersonSimpleWalkIcon,
+  PlusIcon,
+  ProhibitIcon,
+  WarningIcon,
+  XIcon,
+} from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -8,6 +27,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { cancelEvent, restoreEvent, createEvent, updateEvent } from '../actions'
+import { EventPreviewMap } from './EventPreviewMap'
 
 export interface RoutePoint { lat: number; lng: number }
 
@@ -17,10 +37,10 @@ export interface EventRow {
   type: string
   category: string
   kind: string
-  icon_name: string
   short_description: string
   start_time: string
   end_time: string
+  image_url: string | null
   location_name: string | null
   location_lat: number | null
   location_lng: number | null
@@ -47,7 +67,7 @@ export const PRESET_LOCATIONS: { key: string; name: string; lat: number; lng: nu
   { key: 'varador', name: 'Platja del Varador', lat: 41.535934, lng: 2.453779 },
   { key: 'preso', name: 'M|A|C Presó', lat: 41.541775, lng: 2.443381 },
   { key: 'monumental', name: 'Teatre Monumental', lat: 41.543811, lng: 2.442289 },
-  { key: 'biblioteca', name: 'Biblioteca Pompeu Fabra', lat: 41.538524, lng: 2.446017 },
+  { key: 'biblioteca', name: 'Biblioteca Pompeu Fabra', lat: 41.53826088038736, lng: 2.4336906150875595 },  
   { key: 'residencia', name: 'Pati de la Residència Sant Josep', lat: 41.535542, lng: 2.441028 },
   { key: 'esmandies', name: 'Pati de les Esmandies', lat: 41.538021, lng: 2.439495 },
   { key: 'cafeNou', name: 'Pati del Cafè Nou', lat: 41.539245, lng: 2.443169 },
@@ -103,7 +123,6 @@ const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
   sardanes: { label: 'Sardanes', color: 'bg-blue-100 text-blue-700 border-blue-200' },
   castellera: { label: 'Castellera', color: 'bg-amber-100 text-amber-700 border-amber-200' },
   gegants: { label: 'Gegants', color: 'bg-teal-100 text-teal-700 border-teal-200' },
-  havaneres: { label: 'Havaneres', color: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
   exposicio: { label: 'Exposició', color: 'bg-slate-100 text-slate-600 border-slate-200' },
   espectacle: { label: 'Espectacle', color: 'bg-pink-100 text-pink-700 border-pink-200' },
   missa: { label: 'Missa', color: 'bg-stone-100 text-stone-600 border-stone-200' },
@@ -134,6 +153,15 @@ function formatTime(iso: string) {
   })
 }
 
+/** Format minutes as "Xh Ymin" / "Xh" / "Ymin" */
+function formatDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60)
+  const m = minutes % 60
+  if (h && m) return `${h}h ${m}min`
+  if (h) return `${h}h`
+  return `${m}min`
+}
+
 function getDayKey(iso: string) {
   return new Date(iso).toLocaleDateString('ca-ES', {
     timeZone: 'Europe/Madrid',
@@ -142,30 +170,14 @@ function getDayKey(iso: string) {
   })
 }
 
-// ── Icon catalogue (Lucide icon names) ─────────────────────────────────────
-const ICON_OPTIONS = [
-  { value: 'music', label: '🎵 Música' },
-  { value: 'users', label: '👥 Gent' },
-  { value: 'zap', label: '⚡ Espectacle' },
-  { value: 'map-pin', label: '📍 Lloc' },
-  { value: 'flag', label: '🚩 Cursa' },
-  { value: 'heart', label: '❤️ Tradicional' },
-  { value: 'star', label: '⭐ Destacat' },
-  { value: 'flame', label: '🔥 Foc' },
-  { value: 'person-standing', label: '🚶 Cercavila' },
-  { value: 'book-open', label: '📖 Cultural' },
-  { value: 'gamepad-2', label: '🎮 Jocs' },
-  { value: 'church', label: '⛪ Missa' },
-]
-
 // ── Form types & helpers ────────────────────────────────────────────────────
 interface EventFormData {
   title: string
   type: string
   category: string
   kind: string
-  icon_name: string
   short_description: string
+  image_url: string
   start_time: string
   end_time: string
   location_name: string
@@ -207,7 +219,7 @@ function madridLocalToISO(local: string): string {
 function emptyForm(): EventFormData {
   return {
     title: '', type: 'concert', category: 'cultural', kind: 'static',
-    icon_name: 'music', short_description: '', start_time: '', end_time: '',
+    short_description: '', image_url: '', start_time: '', end_time: '',
     location_name: '', location_lat: '', location_lng: '', route_json: '',
   }
 }
@@ -215,7 +227,8 @@ function emptyForm(): EventFormData {
 function rowToForm(row: EventRow): EventFormData {
   return {
     title: row.title, type: row.type, category: row.category, kind: row.kind,
-    icon_name: row.icon_name, short_description: row.short_description,
+    short_description: row.short_description,
+    image_url: row.image_url ?? '',
     start_time: toDateTimeLocal(row.start_time),
     end_time: toDateTimeLocal(row.end_time),
     location_name: row.location_name ?? '',
@@ -306,8 +319,8 @@ export function EventsClient({ events }: { events: EventRow[] }) {
         type: data.type,
         category: data.category,
         kind: data.kind,
-        icon_name: data.icon_name,
         short_description: data.short_description,
+        image_url: data.image_url || undefined,
         start_time: madridLocalToISO(data.start_time),
         end_time: madridLocalToISO(data.end_time),
         location_name: data.location_name || undefined,
@@ -336,34 +349,37 @@ export function EventsClient({ events }: { events: EventRow[] }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Header: stats + new-event button */}
-      <div className="grid flex-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         <StatCard label="Total" value={events.length} />
         <StatCard label="Actius" value={active.length} color="text-green-600" />
         <StatCard label="Cancel·lats" value={cancelled.length} color={cancelled.length > 0 ? 'text-destructive' : undefined} />
       </div>
 
-      <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-
+      <header className="flex w-full flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
         {/* Search */}
-        <Input
-          type="search"
-          placeholder="Cercar per títol..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="max-w-sm"
-        />
-        <div className="flex gap-2">
-          <Button onClick={() => setPanelEvent('new')} className="shrink-0">
-            + Nou event
-          </Button>
+        <div className="relative w-full sm:max-w-sm">
+          <MagnifyingGlassIcon
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden
+          />
+          <Input
+            type="search"
+            placeholder="Cercar per títol..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
         </div>
-
+        <Button onClick={() => setPanelEvent('new')} className="shrink-0 gap-2 w-full sm:w-auto">
+          <PlusIcon className="size-4" weight="bold" aria-hidden />
+          Nou event
+        </Button>
       </header>
 
       {/* Day filter chips */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:px-0">
         <DayChip
           label="Tots"
           count={filterEvents(active).length}
@@ -399,10 +415,10 @@ export function EventsClient({ events }: { events: EventRow[] }) {
           return matchSearch && matchDay
         })
         return (
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <DayChip label="Tots els tipus" count={base.length} active={selectedKind === 'all'} onClick={() => setSelectedKind('all')} />
-            <DayChip label="📍 Estàtics" count={base.filter(e => e.kind === 'static').length} active={selectedKind === 'static'} onClick={() => setSelectedKind('static')} />
-            <DayChip label="🚶 Mòbils" count={base.filter(e => e.kind === 'mobile').length} active={selectedKind === 'mobile'} onClick={() => setSelectedKind('mobile')} />
+            <DayChip label="Estàtics" icon={MapPinIcon} count={base.filter(e => e.kind === 'static').length} active={selectedKind === 'static'} onClick={() => setSelectedKind('static')} />
+            <DayChip label="Mòbils" icon={PersonSimpleWalkIcon} count={base.filter(e => e.kind === 'mobile').length} active={selectedKind === 'mobile'} onClick={() => setSelectedKind('mobile')} />
           </div>
         )
       })()}
@@ -487,6 +503,65 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
+  // ── Derived state: duration, validation, map preview ────────────────────
+
+  /** Returns the next-calendar-day for a YYYY-MM-DD string. */
+  function nextCalendarDay(day: string): string {
+    const d = new Date(`${day}T12:00:00`)
+    d.setDate(d.getDate() + 1)
+    return d.toISOString().slice(0, 10)
+  }
+
+  /**
+   * Resolves the correct end_time datetime string.
+   * If end HH:MM < start HH:MM AND end hour < 6 → rolls date to next calendar day.
+   */
+  function resolveEndTime(startDt: string, endTime: string): string {
+    const startDay = startDt.slice(0, 10)
+    const [endH] = endTime.split(':').map(Number)
+    const startHHMM = startDt.slice(11, 16)
+    if (endTime < startHHMM && endH < 6) {
+      return `${nextCalendarDay(startDay)}T${endTime}`
+    }
+    return `${startDay}T${endTime}`
+  }
+
+  const isNextDay = form.start_time && form.end_time
+    ? form.end_time.slice(0, 10) > form.start_time.slice(0, 10)
+    : false
+
+  const duration = useMemo(() => {
+    if (!form.start_time || !form.end_time) return null
+    const s = new Date(form.start_time).getTime()
+    const e = new Date(form.end_time).getTime()
+    if (Number.isNaN(s) || Number.isNaN(e)) return null
+    return Math.round((e - s) / 60000)
+  }, [form.start_time, form.end_time])
+
+  const timeError = duration !== null && duration <= 0
+
+  const previewProps = useMemo(() => {
+    if (form.kind === 'static') {
+      const lat = parseFloat(form.location_lat)
+      const lng = parseFloat(form.location_lng)
+      if (Number.isFinite(lat) && Number.isFinite(lng)) {
+        return { kind: 'static' as const, point: { lat, lng } }
+      }
+      return null
+    }
+    if (!form.route_json.trim()) return null
+    try {
+      const route = parseGeoJSON(form.route_json)
+      if (route.length < 1) return null
+      return { kind: 'mobile' as const, route }
+    } catch {
+      return null
+    }
+  }, [form.kind, form.location_lat, form.location_lng, form.route_json])
+
+  const canSubmit = !!form.title.trim() && !!form.short_description.trim() &&
+    !!form.start_time && !!form.end_time && !timeError && !isPending
+
   return (
     <>
       {/* Backdrop */}
@@ -494,23 +569,23 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
         className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${open ? 'opacity-100' : 'opacity-0'}`}
         onClick={handleClose}
       />
-      {/* Panel */}
-      <div className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-lg flex-col bg-background shadow-2xl transition-transform duration-300 ease-out ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* Panel — full-screen on mobile, side-sheet on sm+ */}
+      <div className={`fixed right-0 top-0 z-50 flex h-dvh w-full max-w-lg flex-col bg-background shadow-2xl transition-transform duration-300 ease-out ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b px-6 py-4">
-          <div>
+        <div className="flex shrink-0 items-center justify-between border-b px-4 py-3 sm:px-6 sm:py-4">
+          <div className="min-w-0">
             <h2 className="text-lg font-semibold">{event ? 'Editar event' : 'Nou event'}</h2>
-            {event && <p className="mt-0.5 font-mono text-xs text-muted-foreground">{event.id}</p>}
+            {event && <p className="mt-0.5 truncate font-mono text-xs text-muted-foreground">{event.id}</p>}
           </div>
           <button type="button" onClick={handleClose} aria-label="Tancar"
-            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-            ✕
+            className="shrink-0 rounded-lg p-2 text-muted-foreground transition-all duration-150 hover:bg-muted hover:text-foreground active:scale-95">
+            <XIcon className="size-4" weight="bold" aria-hidden />
           </button>
         </div>
 
         {/* Scrollable form */}
         <form onSubmit={(e) => { e.preventDefault(); onSubmit(form) }} className="flex flex-1 flex-col overflow-hidden">
-          <div className="flex-1 space-y-8 overflow-y-auto p-6">
+          <div className="flex-1 space-y-6 overflow-y-auto p-4 sm:space-y-8 sm:p-6">
 
             {/* Basic info */}
             <section className="space-y-4">
@@ -545,28 +620,19 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                   </Select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label>Moviment</Label>
-                  <Select value={form.kind} onValueChange={(v) => v && set('kind', v)}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="static">📍 Lloc fix</SelectItem>
-                      <SelectItem value="mobile">🚶 Mòbil</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Icona</Label>
-                  <Select value={form.icon_name} onValueChange={(v) => v && set('icon_name', v)}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {ICON_OPTIONS.map((o) => (
-                        <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="space-y-2">
+                <Label>Moviment</Label>
+                <Select value={form.kind} onValueChange={(v) => v && set('kind', v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="static">
+                      <MapPinIcon className="size-4" aria-hidden /> Lloc fix
+                    </SelectItem>
+                    <SelectItem value="mobile">
+                      <PersonSimpleWalkIcon className="size-4" aria-hidden /> Mòbil
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </section>
 
@@ -579,6 +645,17 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                   onChange={(e) => set('short_description', e.target.value)}
                   placeholder="Una frase que descriu l'event..." />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="f-image">URL de la imatge</Label>
+                <Input id="f-image" type="url" value={form.image_url}
+                  onChange={(e) => set('image_url', e.target.value)}
+                  placeholder="https://…/imatge.jpg" />
+                {form.image_url && (
+                  <img src={form.image_url} alt="Previsualització"
+                    className="mt-2 h-28 w-full rounded-lg object-cover ring-1 ring-border"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }} />
+                )}
+              </div>
             </section>
 
             {/* Schedule */}
@@ -590,11 +667,16 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                 <Label>Dia *</Label>
                 <Select
                   value={form.start_time.slice(0, 10)}
-                  onValueChange={(day) => setForm((prev) => ({
-                    ...prev,
-                    start_time: `${day}T${prev.start_time.slice(11, 16) || '00:00'}`,
-                    end_time: `${day}T${prev.end_time.slice(11, 16) || '00:00'}`,
-                  }))}
+                  onValueChange={(day) => setForm((prev) => {
+                    const startTime = prev.start_time.slice(11, 16) || '00:00'
+                    const endTime = prev.end_time.slice(11, 16) || '00:00'
+                    const newStart = `${day}T${startTime}`
+                    return {
+                      ...prev,
+                      start_time: newStart,
+                      end_time: resolveEndTime(newStart, endTime),
+                    }
+                  })}
                 >
                   <SelectTrigger><SelectValue placeholder="Selecciona el dia…" /></SelectTrigger>
                   <SelectContent>
@@ -611,20 +693,52 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                   <Label htmlFor="f-start">Hora inici *</Label>
                   <Input id="f-start" type="time" required
                     value={form.start_time.slice(11, 16)}
-                    onChange={(e) => set('start_time', `${form.start_time.slice(0, 10)}T${e.target.value}`)} />
+                    onChange={(e) => set('start_time', `${form.start_time.slice(0, 10)}T${e.target.value}`)}
+                    aria-invalid={timeError || undefined} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="f-end">Hora final *</Label>
                   <Input id="f-end" type="time" required
                     value={form.end_time.slice(11, 16)}
-                    onChange={(e) => set('end_time', `${form.end_time.slice(0, 10)}T${e.target.value}`)} />
+                    onChange={(e) => set('end_time', resolveEndTime(form.start_time, e.target.value))}
+                    aria-invalid={timeError || undefined} />
                 </div>
               </div>
+
+              {/* Live duration / validation feedback */}
+              {duration !== null && (
+                timeError ? (
+                  <p role="alert" className="inline-flex items-center gap-1.5 rounded-md bg-destructive/10 px-2.5 py-1.5 text-xs font-medium text-destructive animate-in fade-in slide-in-from-top-1 duration-150">
+                    <WarningIcon className="size-3.5" weight="fill" aria-hidden />
+                    L&apos;hora final ha de ser després de la d&apos;inici.
+                  </p>
+                ) : duration > 0 && (
+                  <div className="flex flex-wrap items-center gap-2 animate-in fade-in duration-150">
+                    <p className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1.5 text-xs font-medium text-muted-foreground">
+                      <CheckIcon className="size-3.5" weight="bold" aria-hidden />
+                      Durada: <span className="tabular-nums text-foreground">{formatDuration(duration)}</span>
+                    </p>
+                    {isNextDay && (
+                      <p className="inline-flex items-center gap-1.5 rounded-md bg-amber-500/10 px-2.5 py-1.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+                        🌙 Acaba l&apos;endemà a les{' '}
+                        <span className="tabular-nums font-semibold">{form.end_time.slice(11, 16)}</span>
+                      </p>
+                    )}
+                  </div>
+                )
+              )}
             </section>
 
             {/* Location */}
             <section className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Localització</h3>
+
+              {/* Live mini-map preview */}
+              {previewProps && (
+                <div className="animate-in fade-in duration-200">
+                  <EventPreviewMap {...previewProps} landmarks={PRESET_LOCATIONS} />
+                </div>
+              )}
 
               {form.kind === 'static' ? (
                 <>
@@ -659,15 +773,15 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                     <Input id="f-loc" value={form.location_name} onChange={(e) => set('location_name', e.target.value)}
                       placeholder="Ex: Plaça de la Vila" />
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="f-lat">Latitud</Label>
-                      <Input id="f-lat" type="number" step="any" value={form.location_lat}
+                      <Input id="f-lat" type="number" step="any" inputMode="decimal" value={form.location_lat}
                         onChange={(e) => set('location_lat', e.target.value)} placeholder="41.5678" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="f-lng">Longitud</Label>
-                      <Input id="f-lng" type="number" step="any" value={form.location_lng}
+                      <Input id="f-lng" type="number" step="any" inputMode="decimal" value={form.location_lng}
                         onChange={(e) => set('location_lng', e.target.value)} placeholder="2.4321" />
                     </div>
                   </div>
@@ -685,8 +799,20 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                       {form.route_json.trim() && (() => {
                         try {
                           const pts = parseGeoJSON(form.route_json)
-                          return <span className="ml-2 font-normal text-green-600">✓ {pts.length} punts</span>
-                        } catch { return <span className="ml-2 font-normal text-destructive">Format invàlid</span> }
+                          return (
+                            <span className="ml-2 inline-flex items-center gap-1 font-normal text-green-600">
+                              <CheckIcon className="size-3.5" weight="bold" aria-hidden />
+                              {pts.length} punts
+                            </span>
+                          )
+                        } catch {
+                          return (
+                            <span className="ml-2 inline-flex items-center gap-1 font-normal text-destructive">
+                              <WarningIcon className="size-3.5" weight="fill" aria-hidden />
+                              Format invàlid
+                            </span>
+                          )
+                        }
                       })()}
                     </Label>
                     <Textarea
@@ -710,13 +836,18 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
 
           </div>
 
-          {/* Sticky footer */}
-          <div className="shrink-0 border-t bg-background px-6 py-4 space-y-3">
+          {/* Sticky footer (respects iOS safe-area) */}
+          <div
+            className="shrink-0 space-y-3 border-t bg-background px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6"
+          >
             {error && (
-              <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>
+              <p role="alert" className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive animate-in fade-in slide-in-from-bottom-1 duration-150">
+                <WarningIcon className="mr-1 inline size-3.5 -translate-y-px" weight="fill" aria-hidden />
+                {error}
+              </p>
             )}
             <div className="flex gap-3">
-              <Button type="submit" disabled={isPending} className="flex-1">
+              <Button type="submit" disabled={!canSubmit} className="flex-1">
                 {isPending ? 'Desant…' : event ? 'Desar canvis' : 'Crear event'}
               </Button>
               <Button type="button" variant="outline" onClick={handleClose} disabled={isPending}>
@@ -731,30 +862,33 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
 }
 
 // ── DayChip ─────────────────────────────────────────────────────────────────
-function DayChip({ label, count, active, onClick, destructive }: {
+function DayChip({ label, count, active, onClick, destructive, icon: Icon }: {
   label: string
   count: number
   active: boolean
   onClick: () => void
   destructive?: boolean
+  icon?: PhosphorIcon
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={active}
       className={[
-        'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
-        active && !destructive && 'border-primary bg-primary text-primary-foreground',
-        active && destructive && 'border-destructive bg-destructive text-destructive-foreground',
-        !active && !destructive && 'border-border bg-background text-foreground hover:bg-muted',
+        'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-all duration-200 ease-out active:scale-[0.97]',
+        active && !destructive && 'border-primary bg-primary text-primary-foreground shadow-sm',
+        active && destructive && 'border-destructive bg-destructive text-destructive-foreground shadow-sm',
+        !active && !destructive && 'border-border bg-background text-foreground hover:bg-muted hover:border-foreground/20',
         !active && destructive && 'border-destructive/40 bg-destructive/5 text-destructive hover:bg-destructive/10',
       ].filter(Boolean).join(' ')}
     >
+      {Icon && <Icon className="size-4" weight={active ? 'fill' : 'regular'} aria-hidden />}
       {label}
       <span className={[
-        'rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums',
+        'rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums transition-colors',
         active && !destructive && 'bg-primary-foreground/20 text-primary-foreground',
-        active && destructive && 'bg-white/20 text-white',
+        active && destructive && 'bg-destructive-foreground/20 text-destructive-foreground',
         !active && 'bg-muted text-muted-foreground',
       ].filter(Boolean).join(' ')}>
         {count}
@@ -766,9 +900,9 @@ function DayChip({ label, count, active, onClick, destructive }: {
 // ── StatCard ────────────────────────────────────────────────────────────────
 function StatCard({ label, value, color }: { label: string; value: number; color?: string }) {
   return (
-    <div className="rounded-2xl border bg-card px-5 py-4 shadow-sm">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-      <p className={`mt-1 text-3xl font-bold tabular-nums ${color ?? 'text-foreground'}`}>{value}</p>
+    <div className="rounded-xl border bg-card px-3 py-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-foreground/15 sm:rounded-2xl sm:px-5 sm:py-4">
+      <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground sm:text-xs">{label}</p>
+      <p className={`mt-0.5 text-2xl font-bold tabular-nums sm:mt-1 sm:text-3xl ${color ?? 'text-foreground'}`}>{value}</p>
     </div>
   )
 }
@@ -796,102 +930,106 @@ function EventList({ events, cancelingId, reason, isPending, showRestore,
     return <p className="py-12 text-center text-sm text-muted-foreground">Cap event trobat.</p>
 
   return (
-    <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b bg-muted/40 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <th className="px-4 py-3 w-36">Hora</th>
-            <th className="px-4 py-3">Títol</th>
-            <th className="px-4 py-3 w-32 hidden md:table-cell">Lloc</th>
-            <th className="px-4 py-3 w-40">Accions</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {events.map((event) => {
-            const type = TYPE_CONFIG[event.type] ?? { label: event.type, color: 'bg-gray-100 text-gray-600 border-gray-200' }
-            const isCanceling = cancelingId === event.id
+    <ul role="list" className="divide-y rounded-2xl border bg-card shadow-sm overflow-hidden">
+      {events.map((event) => {
+        const type = TYPE_CONFIG[event.type] ?? { label: event.type, color: 'bg-gray-100 text-gray-600 border-gray-200' }
+        const isCanceling = cancelingId === event.id
 
-            return (
-              <>
-                <tr key={event.id} className={`transition-colors hover:bg-muted/30 ${isCanceling ? 'bg-destructive/5' : ''}`}>
-                  <td className="px-4 py-3">
-                    <div className="font-medium tabular-nums">{formatTime(event.start_time)}</div>
-                    <div className="text-xs text-muted-foreground">{formatDay(event.start_time)}</div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${type.color}`}>
-                        {type.label}
-                      </span>
-                      <span className={`font-medium ${event.is_cancelled ? 'line-through text-muted-foreground' : ''}`}>
-                        {event.title}
-                      </span>
-                    </div>
-                    {event.cancelled_reason && (
-                      <p className="mt-0.5 text-xs text-destructive">{event.cancelled_reason}</p>
-                    )}
-                  </td>
-                  <td className="hidden px-4 py-3 text-xs text-muted-foreground md:table-cell">
-                    {event.location_name ?? '—'}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <Button size="xs" variant="outline" disabled={isPending}
-                        onClick={() => onEdit(event)}>
-                        Editar
-                      </Button>
-                      {showRestore ? (
-                        <Button size="xs" variant="outline" disabled={isPending}
-                          onClick={() => onRestore(event.id)}>
-                          Restaurar
-                        </Button>
-                      ) : (
-                        <Button size="xs" variant="destructive" disabled={isPending}
-                          onClick={() => onStartCancel(event.id)}>
-                          Cancel·lar
-                        </Button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-                {isCanceling && (
-                  <tr key={`${event.id}-cancel`} className="bg-destructive/5">
-                    <td colSpan={4} className="px-4 pb-4 pt-2">
-                      <p className="mb-2 text-xs font-semibold text-destructive">
-                        Motiu de la cancel·lació — <span className="font-normal">{event.title}</span>
-                      </p>
-                      <div className="mb-2 flex flex-wrap gap-1">
-                        {QUICK_REASONS.map((r) => (
-                          <button key={r} type="button"
-                            onClick={() => onQuickReason(r)}
-                            className={`rounded-full border px-3 py-1 text-xs transition-colors hover:bg-muted ${reason === r ? 'border-destructive bg-destructive/10 text-destructive' : 'border-border text-muted-foreground'}`}>
-                            {r}
-                          </button>
-                        ))}
-                      </div>
-                      <Textarea
-                        value={reason}
-                        onChange={(e) => onReasonChange(e.target.value)}
-                        placeholder="O escriu un motiu personalitzat..."
-                        className="mb-3 min-h-15 text-sm"
-                      />
-                      <div className="flex gap-2">
-                        <Button size="sm" variant="destructive" disabled={!reason.trim() || isPending}
-                          onClick={() => onConfirmCancel(event.id)}>
-                          Confirmar cancel·lació
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={onCancelAbort}>
-                          Enrere
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
+        return (
+          <li key={event.id} className={`transition-colors duration-150 ${isCanceling ? 'bg-destructive/5' : 'hover:bg-muted/40'}`}>
+            <div className="grid gap-3 p-3 sm:grid-cols-[110px_1fr_auto] sm:items-center sm:gap-4 sm:p-4">
+              {/* Time */}
+              <div className="flex items-center gap-2 sm:block">
+                <div className="font-semibold tabular-nums">{formatTime(event.start_time)}</div>
+                <div className="text-xs text-muted-foreground">{formatDay(event.start_time)}</div>
+              </div>
+
+              {/* Title + meta */}
+              <div className="min-w-0 space-y-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${type.color}`}>
+                    {type.label}
+                  </span>
+                  <span className={`font-medium wrap-break-word ${event.is_cancelled ? 'line-through text-muted-foreground' : ''}`}>
+                    {event.title}
+                  </span>
+                </div>
+                {event.location_name && (
+                  <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPinIcon className="size-3" aria-hidden />
+                    {event.location_name}
+                  </p>
                 )}
-              </>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
+                {event.cancelled_reason && (
+                  <p className="inline-flex items-center gap-1 text-xs text-destructive">
+                    <WarningIcon className="size-3" weight="fill" aria-hidden />
+                    {event.cancelled_reason}
+                  </p>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-2">
+                <Button size="xs" variant="outline" disabled={isPending}
+                  onClick={() => onEdit(event)} className="gap-1.5"
+                  aria-label="Editar event">
+                  <PencilSimpleIcon className="size-3.5" aria-hidden />
+                  <span className="hidden sm:inline">Editar</span>
+                </Button>
+                {showRestore ? (
+                  <Button size="xs" variant="outline" disabled={isPending}
+                    onClick={() => onRestore(event.id)} className="gap-1.5"
+                    aria-label="Restaurar event">
+                    <ArrowCounterClockwiseIcon className="size-3.5" aria-hidden />
+                    <span className="hidden sm:inline">Restaurar</span>
+                  </Button>
+                ) : (
+                  <Button size="xs" variant="destructive" disabled={isPending}
+                    onClick={() => onStartCancel(event.id)} className="gap-1.5"
+                    aria-label="Cancel·lar event">
+                    <ProhibitIcon className="size-3.5" aria-hidden />
+                    <span className="hidden sm:inline">Cancel·lar</span>
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {isCanceling && (
+              <div className="border-t bg-destructive/5 p-3 sm:p-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold text-destructive">
+                  <WarningIcon className="size-3.5" weight="fill" aria-hidden />
+                  Motiu de la cancel·lació — <span className="font-normal">{event.title}</span>
+                </p>
+                <div className="mb-2 flex flex-wrap gap-1">
+                  {QUICK_REASONS.map((r) => (
+                    <button key={r} type="button"
+                      onClick={() => onQuickReason(r)}
+                      className={`rounded-full border px-3 py-1 text-xs transition-all duration-150 hover:bg-muted active:scale-95 ${reason === r ? 'border-destructive bg-destructive/10 text-destructive' : 'border-border text-muted-foreground'}`}>
+                      {r}
+                    </button>
+                  ))}
+                </div>
+                <Textarea
+                  value={reason}
+                  onChange={(e) => onReasonChange(e.target.value)}
+                  placeholder="O escriu un motiu personalitzat..."
+                  className="mb-3 min-h-15 text-sm"
+                />
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Button size="sm" variant="destructive" disabled={!reason.trim() || isPending}
+                    onClick={() => onConfirmCancel(event.id)} className="gap-1.5">
+                    <ProhibitIcon className="size-4" aria-hidden />
+                    Confirmar cancel·lació
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={onCancelAbort}>
+                    Enrere
+                  </Button>
+                </div>
+              </div>
+            )}
+          </li>
+        )
+      })}
+    </ul>
   )
 }

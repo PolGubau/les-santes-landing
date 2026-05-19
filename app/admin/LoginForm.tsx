@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState } from 'react'
+import { SignInIcon, WarningIcon } from '@phosphor-icons/react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,7 +18,7 @@ export function LoginForm() {
     <div className="flex min-h-[80vh] items-center justify-center">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <Logo />
           </div>
           <h1 className="text-xl font-semibold">Panel d&apos;administració</h1>
@@ -55,15 +56,30 @@ export function LoginForm() {
               </div>
 
               {state?.error && (
-                <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                  {state.error === 'Invalid login credentials'
-                    ? 'Credencials incorrectes'
-                    : state.error}
+                <p
+                  role="alert"
+                  className="flex items-start gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive animate-in fade-in slide-in-from-top-1 duration-200"
+                >
+                  <WarningIcon className="mt-0.5 size-4 shrink-0" weight="fill" aria-hidden />
+                  <span>
+                    {state.error === 'Invalid login credentials'
+                      ? 'Credencials incorrectes'
+                      : state.error}
+                  </span>
                 </p>
               )}
 
-              <Button type="submit" className="mt-2 w-full" disabled={isPending}>
-                {isPending ? 'Accedint...' : 'Accedir'}
+              <Button
+                type="submit"
+                className="mt-2 w-full gap-2"
+                disabled={isPending}
+              >
+                <SignInIcon
+                  className={`size-4 transition-transform duration-200 ${isPending ? 'animate-pulse' : ''}`}
+                  weight="bold"
+                  aria-hidden
+                />
+                {isPending ? 'Accedint…' : 'Accedir'}
               </Button>
             </form>
           </CardContent>
