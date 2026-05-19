@@ -54,7 +54,7 @@ export function Footer() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-background/40">
-            <p>Fem millor {APP_NAME}, fet per <Link href={AUTHOR_URL} target="_blank" className="hover:underline">{AUTHOR_NAME}</Link></p>
+            <p>Fem millor {APP_NAME}, fet per <Link href={AUTHOR_URL} target="_blank" className="hover:underline">{AUTHOR_NAME}</Link> · <Link href="/admin" className="hover:text-background/60 transition-colors">Admin</Link></p>
             <div className="flex items-center gap-4">
               <p>Aquest projecte no és oficial</p>
               <Link
