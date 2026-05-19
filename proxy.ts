@@ -4,10 +4,19 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+
+  // Fail-soft: without env vars the proxy must not throw (would surface as
+  // MIDDLEWARE_INVOCATION_FAILED on Vercel). Let the route render and the
+  // server-side layout enforce auth.
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('[proxy] Missing Supabase env vars; skipping auth check')
+    return supabaseResponse
+  }
+
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll()
@@ -22,32 +31,33 @@ export async function proxy(request: NextRequest) {
           )
         },
       },
-    },
-  )
+    })
 
-  // Refresh session without blocking — required by @supabase/ssr
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    // Refresh session without blocking — required by @supabase/ssr
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
-  const isLoginPage = request.nextUrl.pathname === '/admin'
+    const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+    const isLoginPage = request.nextUrl.pathname === '/admin'
 
-  // Redirect unauthenticated users to /admin (login)
-  if (isAdminRoute && !isLoginPage && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin'
-    return NextResponse.redirect(url)
+    if (isAdminRoute && !isLoginPage && !user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin'
+      return NextResponse.redirect(url)
+    }
+
+    if (isLoginPage && user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/events'
+      return NextResponse.redirect(url)
+    }
+
+    return supabaseResponse
+  } catch (error) {
+    console.error('[proxy] Auth check failed:', error)
+    return supabaseResponse
   }
-
-  // Redirect authenticated users away from login page
-  if (isLoginPage && user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin/events'
-    return NextResponse.redirect(url)
-  }
-
-  return supabaseResponse
 }
 
 export const config = {
