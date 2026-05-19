@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { login } from './actions'
+import { Logo } from '@/components/logo'
 
 type State = { error?: string } | null
 
@@ -16,8 +17,8 @@ export function LoginForm() {
     <div className="flex min-h-[80vh] items-center justify-center">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mb-3 inline-flex size-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground text-xl font-bold shadow-lg">
-            LS
+          <div className="flex justify-center mb-4">
+            <Logo />
           </div>
           <h1 className="text-xl font-semibold">Panel d&apos;administració</h1>
           <p className="mt-1 text-sm text-muted-foreground">Les Santes · Mataró</p>
@@ -38,7 +39,7 @@ export function LoginForm() {
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder="admin@lessantes.app"
+                  placeholder="Correu electrònic"
                 />
               </div>
 

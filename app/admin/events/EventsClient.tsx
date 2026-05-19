@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useMemo, useEffect } from 'react'
+import { useState, useTransition, useMemo, useEffect, useDeferredValue } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -64,8 +64,21 @@ export const PRESET_LOCATIONS: { key: string; name: string; lat: number; lng: nu
 /** Parse GeoJSON (geojson.io) or raw RoutePoint[] into RoutePoint[] */
 function parseGeoJSON(raw: string): RoutePoint[] {
   const parsed = JSON.parse(raw)
-  // Raw array: [{lat, lng}, ...]
-  if (Array.isArray(parsed)) return parsed as RoutePoint[]
+
+  if (Array.isArray(parsed)) {
+    if (parsed.length === 0) throw new Error('La ruta és buida.')
+    const first = parsed[0]
+    // [[lng, lat], ...] — coordinate pairs (GeoJSON order)
+    if (Array.isArray(first)) {
+      return (parsed as [number, number][]).map(([lng, lat]) => ({ lat, lng }))
+    }
+    // [{lat, lng}, ...] — already our format
+    if (typeof first === 'object' && first !== null && 'lat' in first && 'lng' in first) {
+      return parsed as RoutePoint[]
+    }
+    throw new Error('Array no reconegut. Espera [[lng,lat],...] o [{lat,lng},...].')
+  }
+
   // GeoJSON FeatureCollection
   if (parsed.type === 'FeatureCollection') {
     const feature = parsed.features?.find((f: { geometry?: { type: string } }) => f.geometry?.type === 'LineString')
@@ -79,7 +92,8 @@ function parseGeoJSON(raw: string): RoutePoint[] {
   if (parsed.type === 'LineString') {
     return parsed.coordinates.map(([lng, lat]: [number, number]) => ({ lat, lng }))
   }
-  throw new Error('Format no reconegut. Enganxa un LineString de geojson.io o un array [{lat,lng}].')
+
+  throw new Error('Format no reconegut. Accepta: [[lng,lat]], [{lat,lng}], LineString, Feature o FeatureCollection.')
 }
 
 const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
@@ -169,17 +183,25 @@ function toDateTimeLocal(iso: string): string {
   }).format(new Date(iso)).replace(' ', 'T').slice(0, 16)
 }
 
-/** Treat a datetime-local string as Europe/Madrid and return UTC ISO */
+/** Treat a datetime-local string ("YYYY-MM-DDTHH:mm") as Europe/Madrid wall-clock
+ *  time and return the corresponding UTC ISO instant. */
 function madridLocalToISO(local: string): string {
-  // Parse as UTC, then find the Madrid offset at that moment, then adjust
-  const asUTC = new Date(local + 'Z')
+  // Step 1: parse the wall-clock value as if it were UTC. This gives us a
+  // reference instant whose UTC representation matches the typed digits.
+  const asIfUTC = new Date(local + 'Z').getTime()
+
+  // Step 2: ask what Madrid's clock would show at that instant. The delta
+  // between "Madrid clock" and "UTC clock" at this moment IS Madrid's offset
+  // (positive in summer: UTC+2, otherwise UTC+1).
   const madridStr = new Intl.DateTimeFormat('sv', {
     timeZone: 'Europe/Madrid',
     year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', hour12: false,
-  }).format(asUTC).replace(' ', 'T').slice(0, 16)
-  const diff = asUTC.getTime() - new Date(madridStr + 'Z').getTime()
-  return new Date(asUTC.getTime() - diff).toISOString()
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  }).format(new Date(asIfUTC)).replace(' ', 'T')
+  const madridOffsetMs = new Date(madridStr + 'Z').getTime() - asIfUTC
+
+  // Step 3: Madrid wall-clock → UTC instant is just "subtract the offset".
+  return new Date(asIfUTC - madridOffsetMs).toISOString()
 }
 
 function emptyForm(): EventFormData {
@@ -204,14 +226,13 @@ function rowToForm(row: EventRow): EventFormData {
 }
 
 export function EventsClient({ events }: { events: EventRow[] }) {
-  const [inputValue, setInputValue] = useState('')
   const [search, setSearch] = useState('')
-
-  useEffect(() => {
-    const id = setTimeout(() => setSearch(inputValue), 250)
-    return () => clearTimeout(id)
-  }, [inputValue])
+  // Defer the search-driven filtering so typing stays responsive while large
+  // lists re-render at lower priority.
+  const deferredSearch = useDeferredValue(search)
+  const normalizedSearch = useMemo(() => deferredSearch.trim().toLowerCase(), [deferredSearch])
   const [selectedDay, setSelectedDay] = useState<string>('all')
+  const [selectedKind, setSelectedKind] = useState<'all' | 'static' | 'mobile'>('all')
   const [cancelingId, setCancelingId] = useState<string | null>(null)
   const [reason, setReason] = useState('')
   const [isPending, startTransition] = useTransition()
@@ -234,11 +255,23 @@ export function EventsClient({ events }: { events: EventRow[] }) {
     return result
   }, [active])
 
+  // YYYY-MM-DD strings for every festival day (used to constrain the form date picker)
+  const availableDays = useMemo(() => {
+    const seen = new Set<string>()
+    const result: string[] = []
+    for (const e of events) {
+      const day = toDateTimeLocal(e.start_time).slice(0, 10)
+      if (!seen.has(day)) { seen.add(day); result.push(day) }
+    }
+    return result.sort()
+  }, [events])
+
   function filterEvents(list: EventRow[], day?: string) {
     return list.filter((e) => {
-      const matchSearch = e.title.toLowerCase().includes(search.toLowerCase())
+      const matchSearch = !normalizedSearch || e.title.toLowerCase().includes(normalizedSearch)
       const matchDay = !day || getDayKey(e.start_time) === day
-      return matchSearch && matchDay
+      const matchKind = selectedKind === 'all' || e.kind === selectedKind
+      return matchSearch && matchDay && matchKind
     })
   }
 
@@ -315,9 +348,10 @@ export function EventsClient({ events }: { events: EventRow[] }) {
 
         {/* Search */}
         <Input
+          type="search"
           placeholder="Cercar per títol..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
         />
         <div className="flex gap-2">
@@ -356,6 +390,23 @@ export function EventsClient({ events }: { events: EventRow[] }) {
         )}
       </div>
 
+      {/* Kind filter chips — counts ignore the kind filter to always show real totals */}
+      {(() => {
+        const dayFilter = selectedDay !== 'all' && selectedDay !== 'cancelled' ? selectedDay : undefined
+        const base = active.filter((e) => {
+          const matchSearch = !normalizedSearch || e.title.toLowerCase().includes(normalizedSearch)
+          const matchDay = !dayFilter || getDayKey(e.start_time) === dayFilter
+          return matchSearch && matchDay
+        })
+        return (
+          <div className="flex gap-2">
+            <DayChip label="Tots els tipus" count={base.length} active={selectedKind === 'all'} onClick={() => setSelectedKind('all')} />
+            <DayChip label="📍 Estàtics" count={base.filter(e => e.kind === 'static').length} active={selectedKind === 'static'} onClick={() => setSelectedKind('static')} />
+            <DayChip label="🚶 Mòbils" count={base.filter(e => e.kind === 'mobile').length} active={selectedKind === 'mobile'} onClick={() => setSelectedKind('mobile')} />
+          </div>
+        )
+      })()}
+
       {/* Content panel */}
       <Tabs value={selectedDay} onValueChange={setSelectedDay}>
         <TabsContent value="all">
@@ -384,6 +435,7 @@ export function EventsClient({ events }: { events: EventRow[] }) {
       {panelEvent !== null && (
         <EventFormPanel
           event={panelEvent === 'new' ? null : panelEvent}
+          availableDays={availableDays}
           isPending={isPending}
           error={panelError}
           onClose={() => { setPanelEvent(null); setPanelError(null) }}
@@ -397,14 +449,28 @@ export function EventsClient({ events }: { events: EventRow[] }) {
 // ── EventFormPanel (slide-over) ─────────────────────────────────────────────
 interface EventFormPanelProps {
   event: EventRow | null
+  availableDays: string[]   // YYYY-MM-DD
   isPending: boolean
   error: string | null
   onClose: () => void
   onSubmit: (data: EventFormData) => void
 }
 
-function EventFormPanel({ event, isPending, error, onClose, onSubmit }: EventFormPanelProps) {
-  const [form, setForm] = useState<EventFormData>(event ? rowToForm(event) : emptyForm())
+function formatFestivalDay(yyyymmdd: string): string {
+  const [y, m, d] = yyyymmdd.split('-').map(Number)
+  return new Date(y, m - 1, d).toLocaleDateString('ca-ES', {
+    weekday: 'long', day: 'numeric', month: 'long',
+  })
+}
+
+
+function EventFormPanel({ event, availableDays, isPending, error, onClose, onSubmit }: EventFormPanelProps) {
+  const [form, setForm] = useState<EventFormData>(() => {
+    if (event) return rowToForm(event)
+    const base = emptyForm()
+    const defaultDay = availableDays[0] ?? ''
+    return { ...base, start_time: defaultDay ? `${defaultDay}T00:00` : '', end_time: defaultDay ? `${defaultDay}T00:00` : '' }
+  })
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -518,16 +584,40 @@ function EventFormPanel({ event, isPending, error, onClose, onSubmit }: EventFor
             {/* Schedule */}
             <section className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Horari</h3>
+
+              {/* Day selector — restricted to festival days */}
+              <div className="space-y-2">
+                <Label>Dia *</Label>
+                <Select
+                  value={form.start_time.slice(0, 10)}
+                  onValueChange={(day) => setForm((prev) => ({
+                    ...prev,
+                    start_time: `${day}T${prev.start_time.slice(11, 16) || '00:00'}`,
+                    end_time: `${day}T${prev.end_time.slice(11, 16) || '00:00'}`,
+                  }))}
+                >
+                  <SelectTrigger><SelectValue placeholder="Selecciona el dia…" /></SelectTrigger>
+                  <SelectContent>
+                    {availableDays.map((day) => (
+                      <SelectItem key={day} value={day}>{formatFestivalDay(day)}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Time pickers */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label htmlFor="f-start">Inici *</Label>
-                  <Input id="f-start" type="datetime-local" value={form.start_time} required
-                    onChange={(e) => set('start_time', e.target.value)} />
+                  <Label htmlFor="f-start">Hora inici *</Label>
+                  <Input id="f-start" type="time" required
+                    value={form.start_time.slice(11, 16)}
+                    onChange={(e) => set('start_time', `${form.start_time.slice(0, 10)}T${e.target.value}`)} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="f-end">Final *</Label>
-                  <Input id="f-end" type="datetime-local" value={form.end_time} required
-                    onChange={(e) => set('end_time', e.target.value)} />
+                  <Label htmlFor="f-end">Hora final *</Label>
+                  <Input id="f-end" type="time" required
+                    value={form.end_time.slice(11, 16)}
+                    onChange={(e) => set('end_time', `${form.end_time.slice(0, 10)}T${e.target.value}`)} />
                 </div>
               </div>
             </section>
@@ -783,7 +873,7 @@ function EventList({ events, cancelingId, reason, isPending, showRestore,
                         value={reason}
                         onChange={(e) => onReasonChange(e.target.value)}
                         placeholder="O escriu un motiu personalitzat..."
-                        className="mb-3 min-h-[60px] text-sm"
+                        className="mb-3 min-h-15 text-sm"
                       />
                       <div className="flex gap-2">
                         <Button size="sm" variant="destructive" disabled={!reason.trim() || isPending}
