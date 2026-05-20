@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { ClockIcon, MapPinIcon, StarIcon, FireIcon, WavesIcon, CrownIcon, SparkleIcon, BuildingsIcon } from "@phosphor-icons/react/dist/ssr"
 import { Icon } from "@/src/shared/types/common"
+import { APP_CITY, APP_NAME, APP_YEAR } from "@/lib/constants"
 
 type Highlight = {
   title: string
@@ -77,7 +78,7 @@ function HighlightCard({ h, className = "" }: { h: Highlight; className?: string
       <div className="absolute inset-0">
         <Image
           src={h.image}
-          alt={h.title}
+          alt={`${h.title} · ${h.type} a ${h.place} durant ${APP_NAME} ${APP_YEAR}, Festa Major de ${APP_CITY}`}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover transition-transform duration-500"

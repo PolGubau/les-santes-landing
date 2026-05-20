@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { ImageSquare, Envelope, MusicNote, GameController, Lock } from "@phosphor-icons/react/dist/ssr"
+import { APP_CITY } from "@/lib/constants"
 
 const ALL_POSTERS = [
   "1892", "1920", "1934", "1950", "1960", "1970", "1980", "1985", "1990", "2000",
@@ -62,7 +63,7 @@ function PosterStrip({ years, reverse }: { years: string[]; reverse?: boolean })
           >
             <Image
               src={`/posters/${year}.avif`}
-              alt={`Cartell Les Santes ${year}`}
+              alt={`Cartell oficial de Les Santes ${year} · Festa Major de ${APP_CITY}`}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
               sizes="144px"
