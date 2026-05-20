@@ -98,6 +98,7 @@ export function Hero() {
                 className="object-cover object-top"
                 sizes="256px"
                 priority
+                fetchPriority="high"
               />
             </div>
             {/* Decorative badges - hidden on mobile to avoid overflow */}
