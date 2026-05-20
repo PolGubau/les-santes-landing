@@ -74,6 +74,24 @@ export function TopFavoritesList({ data }: { data: TopFavorite[] }) {
   )
 }
 
+/**
+ * Pick the most relevant property to display alongside an event so the recent
+ * list reads as a useful timeline ("event_view · ls26-001") instead of opaque
+ * event names. Falls back to a compact JSON preview when no key matches.
+ */
+function describeProperties(properties: Record<string, unknown> | null): string | null {
+  if (!properties) return null
+  const known = ['event_id', 'screen', 'nudge_id', 'last_step', 'step'] as const
+  for (const key of known) {
+    const value = properties[key]
+    if (typeof value === 'string' && value.length > 0) return value
+  }
+  const entries = Object.entries(properties).filter(([, v]) => v != null)
+  if (entries.length === 0) return null
+  const [k, v] = entries[0]
+  return `${k}=${String(v)}`
+}
+
 export function RecentEventsList({ data }: { data: RecentEvent[] }) {
   return (
     <Card>
@@ -86,22 +104,32 @@ export function RecentEventsList({ data }: { data: RecentEvent[] }) {
           <p className="text-sm text-muted-foreground">Sense dades.</p>
         ) : (
           <ul className="flex max-h-[420px] flex-col gap-1.5 overflow-y-auto pr-1">
-            {data.map((r) => (
-              <li key={r.id} className="flex items-baseline gap-2 text-xs">
-                <span className="w-16 shrink-0 font-mono text-muted-foreground">
-                  {new Date(r.created_at).toLocaleTimeString('ca-ES', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </span>
-                <Badge variant="secondary" className="font-mono text-[10px]">
-                  {r.event_name}
-                </Badge>
-                {r.platform ? (
-                  <span className="font-mono text-[10px] text-muted-foreground">{r.platform}</span>
-                ) : null}
-              </li>
-            ))}
+            {data.map((r) => {
+              const detail = describeProperties(r.properties)
+              return (
+                <li key={r.id} className="flex items-baseline gap-2 text-xs">
+                  <span className="w-16 shrink-0 font-mono text-muted-foreground">
+                    {new Date(r.created_at).toLocaleTimeString('ca-ES', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
+                  <Badge variant="secondary" className="font-mono text-[10px]">
+                    {r.event_name}
+                  </Badge>
+                  {detail ? (
+                    <span className="truncate font-mono text-[10px]" title={detail}>
+                      {detail}
+                    </span>
+                  ) : null}
+                  {r.platform ? (
+                    <span className="ml-auto font-mono text-[10px] text-muted-foreground">
+                      {r.platform}
+                    </span>
+                  ) : null}
+                </li>
+              )
+            })}
           </ul>
         )}
       </CardContent>
