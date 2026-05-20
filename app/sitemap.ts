@@ -43,6 +43,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: { "ca-ES": `${SITE_URL}/about` } },
     },
     {
+      url: `${SITE_URL}/developers`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: { "ca-ES": `${SITE_URL}/developers` } },
+    },
+    {
       url: `${SITE_URL}/support`,
       lastModified,
       changeFrequency: "monthly",

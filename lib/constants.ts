@@ -9,6 +9,7 @@ export const APP_START_DATE = "2026-07-24"
 export const APP_END_DATE = "2026-07-29"
 
 export const SITE_URL = "https://lessantes.polgubau.com"
+export const API_URL = "https://api.lessantes.polgubau.com"
 export const OFFICIAL_MATARO_URL = "https://www.mataro.cat"
 
 export const AUTHOR_NAME = "Pol Gubau Amores"

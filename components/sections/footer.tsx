@@ -56,6 +56,9 @@ export function Footer() {
               <Link href="/accessibility" className="hover:text-background transition-colors">
                 Accessibilitat
               </Link>
+              <Link href="/developers" className="hover:text-background transition-colors">
+                Developers
+              </Link>
             </nav>
           </div>
 

@@ -1,8 +1,9 @@
 import { PageNav } from "@/components/page-nav"
-import { ArrowRightIcon, BuildingsIcon, HandHeartIcon, MusicNoteIcon, TShirtIcon } from "@phosphor-icons/react/dist/ssr"
+import { ArrowRightIcon, BuildingsIcon, CodeIcon, HandHeartIcon, MusicNoteIcon, TShirtIcon } from "@phosphor-icons/react/dist/ssr"
 import type { Metadata } from "next"
 import Image from "next/image"
-import { APP_NAME, AUTHOR_NAME, AUTHOR_URL, CONTACT_EMAIL, OFFICIAL_MATARO_URL, SITE_URL } from "@/lib/constants"
+import Link from "next/link"
+import { API_URL, APP_NAME, AUTHOR_NAME, AUTHOR_URL, CONTACT_EMAIL, OFFICIAL_MATARO_URL, SITE_URL } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Sobre el projecte",
@@ -109,6 +110,27 @@ export default function AboutPage() {
               </a>
             </div>
           </div>
+        </section>
+
+        {/* Open Data */}
+        <section className="space-y-4">
+          <CodeIcon weight="fill" className="size-8 text-primary" />
+          <h2 className="text-2xl font-bold">Dades obertes i API pública</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Totes les dades del programa, espais i avisos de Les Santes estan disponibles
+            públicament a través d&apos;una API REST gratuïta. Qualsevol developer pot
+            construir la seva pròpia app, mapa o visualització amb les mateixes dades que alimenten aquesta web.
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            Les dades es publiquen sota llicència <strong>CC BY 4.0</strong> — lliures per a qualsevol ús,
+            inclòs el comercial, sempre que es mencioni l&apos;autoria.
+          </p>
+          <Link
+            href="/developers"
+            className="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:underline"
+          >
+            Descobreix l&apos;API i la documentació <ArrowRightIcon className="size-3" />
+          </Link>
         </section>
 
         {/* Author */}

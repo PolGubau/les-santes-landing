@@ -14,6 +14,14 @@ Edició actual: Les Santes 2026 · Del 24 al 29 de juliol de 2026 · Mataró, Ca
 - [Privacitat](https://lessantes.polgubau.com/privacy): Política de privacitat (no recopilem dades personals).
 - [Accessibilitat](https://lessantes.polgubau.com/accessibility): Compromís d'accessibilitat (WCAG 2.2 AA).
 
+## API i Open Data
+
+- [API REST pública](https://api.lessantes.polgubau.com): API gratuïta amb les dades del programa, espais i avisos. Sense autenticació.
+- [Documentació interactiva (Swagger)](https://api.lessantes.polgubau.com/docs): Prova tots els endpoints en viu.
+- [Pàgina de developers](https://lessantes.polgubau.com/developers): Guia d'ús, exemples curl i llicències.
+- Endpoints principals: `/v1/events`, `/v1/festival`, `/v1/days`, `/v1/locations`, `/v1/announcements`
+- Llicència de les dades: CC BY 4.0 — lliure per a qualsevol ús amb atribució a Pol Gubau Amores.
+
 ## Optional
 
 - [llms.md (versió extensa)](https://lessantes.polgubau.com/llms.md): Versió ampliada amb context d'app, dades i tons de veu.
