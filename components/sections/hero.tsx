@@ -1,4 +1,4 @@
-import { APP_CITY, APP_NAME } from "@/lib/constants"
+import { APP_CITY, APP_DATES, APP_NAME, APP_YEAR } from "@/lib/constants"
 import { ArrowDownIcon, LightningIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import Image from "next/image"
 
@@ -37,6 +37,9 @@ export function Hero() {
         {/* Text */}
         <div className="space-y-6 animate-fade-up text-center lg:text-left">
 
+          <p className="text-primary text-xs sm:text-sm font-semibold uppercase tracking-widest">
+            {APP_NAME} {APP_YEAR} · Festa Major de {APP_CITY} · {APP_DATES}
+          </p>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
             Les Santes
