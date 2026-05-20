@@ -19,6 +19,7 @@ import {
   OFFICIAL_MATARO_URL,
   FESTIVAL_SUBEVENTS,
   FAQS,
+  CONTACT_EMAIL,
 } from "@/lib/constants"
 import { SiteHeader } from "@/components/site-header"
 import { Footer } from "@/components/sections/footer"
@@ -133,6 +134,22 @@ const jsonLd = {
       logo: `${SITE_URL}/icon/512.png`,
       founder: { "@id": `${SITE_URL}/#person` },
       sameAs: AUTHOR_SAMEAS,
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: CONTACT_EMAIL.support,
+          areaServed: APP_COUNTRY,
+          availableLanguage: ["ca", "es", "en"],
+        },
+        {
+          "@type": "ContactPoint",
+          contactType: "general inquiries",
+          email: CONTACT_EMAIL.general,
+          areaServed: APP_COUNTRY,
+          availableLanguage: ["ca", "es", "en"],
+        },
+      ],
     },
     {
       "@type": "MobileApplication",
