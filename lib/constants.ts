@@ -124,6 +124,37 @@ export const FAQS: ReadonlyArray<{ q: string; a: string }> = [
 ] as const
 
 /**
+ * App-specific FAQs for the /support page.
+ * Focused on practical questions about the app, not the festival itself.
+ */
+export const SUPPORT_FAQS: ReadonlyArray<{ q: string; a: string }> = [
+  {
+    q: "L'app és gratuïta i sense publicitat?",
+    a: "Sí, completament gratuïta. Sense publicitat, sense compres dins l'app i sense registre obligatori.",
+  },
+  {
+    q: "En quines plataformes estarà disponible?",
+    a: `iOS (iPhone i iPad) i Android. Estarà disponible a l'App Store i Google Play abans de Les Santes ${APP_YEAR}.`,
+  },
+  {
+    q: "El programa s'actualitza en temps real?",
+    a: "El programa base es carrega des dels nostres servidors i s'actualitza quan publiquem canvis. La posició estimada de les cercaviles és en temps real basada en la ruta i l'hora.",
+  },
+  {
+    q: "Puc usar l'app sense internet?",
+    a: "Parcialment. Els actes guardats i els favorits estan disponibles offline. El mapa i les actualitzacions del programa necessiten connexió.",
+  },
+  {
+    q: "Recopileu les meves dades personals?",
+    a: "No. L'app no requereix registre i no emmagatzemem cap dada personal. Els favorits es guarden localment al teu dispositiu.",
+  },
+  {
+    q: "L'app és oficial de l'Ajuntament de Mataró?",
+    a: "No. És un projecte independent fet per Pol Gubau Amores. El programa prové de fonts públiques de l'Ajuntament, però l'app no té afiliació oficial. Per a informació oficial, consulta mataro.cat.",
+  },
+] as const
+
+/**
  * Plus-addressed emails: all land in gubaupol@gmail.com
  * but the suffix lets us know which part of the site originated the contact.
  */

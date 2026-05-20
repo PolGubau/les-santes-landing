@@ -1,39 +1,13 @@
 import type { Metadata } from "next"
 import { PageNav } from "@/components/page-nav"
-import { APP_NAME, APP_YEAR, CONTACT_EMAIL } from "@/lib/constants"
+import { APP_NAME, CONTACT_EMAIL, SUPPORT_FAQS } from "@/lib/constants"
+import { FaqList } from "@/components/sections/faq"
 
 export const metadata: Metadata = {
   title: "Suport",
   description: `Centre d'ajuda de l'app ${APP_NAME}. Preguntes freqüents, reportar errors i contacte.`,
   alternates: { canonical: "https://lessantes.polgubau.com/support" },
 }
-
-const faqs = [
-  {
-    q: "L'app és gratuïta?",
-    a: "Sí, completament gratuïta. Sense publicitat i sense compres dins l'app.",
-  },
-  {
-    q: "En quines plataformes estarà disponible?",
-    a: `iOS (iPhone i iPad) i Android. Estarà disponible a l'App Store i Google Play abans de ${APP_NAME} ${APP_YEAR}.`,
-  },
-  {
-    q: "El programa s'actualitza en temps real?",
-    a: "El programa base es carrega des dels nostres servidors i s'actualitza quan publiquem canvis. La posició estimada de les cercaviles és en temps real basada en la ruta i l'hora.",
-  },
-  {
-    q: "Puc usar l'app sense internet?",
-    a: "Parcialment. Els actes guardats i els favorits estan disponibles offline. El mapa i les actualitzacions del programa necessiten connexió.",
-  },
-  {
-    q: "Recopileu les meves dades?",
-    a: "No. L'app no requereix registre i no emmagatzemem cap dada personal. Els favorits es guarden al teu dispositiu.",
-  },
-  {
-    q: "El programa és oficial de l'Ajuntament de Mataró?",
-    a: "El programa prové de fonts públiques de l'Ajuntament, però l'app és independent i no té afiliació oficial.",
-  },
-]
 
 export default function SupportPage() {
   return (
@@ -63,16 +37,11 @@ export default function SupportPage() {
         </div>
 
         {/* FAQ */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-8">Preguntes freqüents</h2>
-          <div className="space-y-4">
-            {faqs.map((faq) => (
-              <div key={faq.q} className="border border-border rounded-xl p-5 space-y-2">
-                <h3 className="font-semibold text-foreground">{faq.q}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
+        <section aria-labelledby="support-faq-heading">
+          <h2 id="support-faq-heading" className="text-2xl font-semibold mb-8">
+            Preguntes freqüents
+          </h2>
+          <FaqList items={SUPPORT_FAQS} />
         </section>
 
         {/* Bug report */}
@@ -95,7 +64,6 @@ export default function SupportPage() {
             Reportar un error →
           </a>
         </section>
-
       </main>
     </div>
   )
