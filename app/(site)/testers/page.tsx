@@ -57,11 +57,11 @@ export default function TestersPage() {
             Test tancat · {TESTER_PROGRAM.durationDays} dies
           </div>
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">
-            Ajuda'ns a provar l'app
+            Ajuda&apos;ns a provar l&apos;app
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Estàs a punt de provar una versió beta de l'app de <strong>{APP_NAME} 2026</strong>.
-            Apunta't amb el teu Gmail, instal·la-la i fes-la servir uns dies. En menys de 2 minuts.
+            Estàs a punt de provar una versió beta de l&apos;app de <strong>{APP_NAME} 2026</strong>.
+            Apunta&apos;t amb el teu Gmail, instal·la-la i fes-la servir uns dies. En menys de 2 minuts.
           </p>
         </header>
 
@@ -72,7 +72,7 @@ export default function TestersPage() {
           </div>
           <h2 className="text-2xl font-semibold">Comença aquí</h2>
           <p className="text-sm opacity-80 leading-relaxed">
-            Google Play necessita saber qui prova l'app. Unir-te al grup amb el teu
+            Google Play necessita saber qui prova l&apos;app. Unir-te al grup amb el teu
             Gmail és el que ens permet donar-te accés. No rebràs cap correu del grup.
           </p>
 
@@ -106,14 +106,14 @@ export default function TestersPage() {
               </span>
               <span className="flex-1 min-w-0">
                 <span className="block font-semibold text-sm">Instal·la des de Google Play</span>
-                <span className="block text-xs opacity-70">Després d'unir-te al grup</span>
+                <span className="block text-xs opacity-70">Després d&apos;unir-te al grup</span>
               </span>
               <ArrowRightIcon className="size-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
             </a>
           </div>
 
           <p className="text-xs opacity-60 pt-2 leading-relaxed">
-            Si l'enllaç de Play Store et diu que l'app no està disponible, espera 5–10
+            Si l&apos;enllaç de Play Store et diu que l&apos;app no està disponible, espera 5–10
             minuts: Google triga una mica a propagar el teu accés.
           </p>
         </section>
@@ -159,10 +159,10 @@ export default function TestersPage() {
         <section className="space-y-4">
           <h2 className="text-xl font-bold flex items-center gap-2">
             <ChatCircleTextIcon weight="fill" className="size-5 text-primary" />
-            Deixa'ns feedback
+            Deixa&apos;ns feedback
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Opcional, però molt útil. Tarda menys d'un minut i ens ajuda a polir l'app abans del llançament a Les Santes 2026.
+            Opcional, però molt útil. Tarda menys d&apos;un minut i ens ajuda a polir l&apos;app abans del llançament a Les Santes 2026.
           </p>
           <div className="flex flex-wrap gap-3">
             <a

@@ -3,7 +3,7 @@ import { ArrowRightIcon, BuildingsIcon, CodeIcon, HandHeartIcon, MusicNoteIcon, 
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
-import { API_URL, APP_NAME, AUTHOR_NAME, AUTHOR_URL, CONTACT_EMAIL, OFFICIAL_MATARO_URL, SITE_URL } from "@/lib/constants"
+import { APP_NAME, AUTHOR_NAME, AUTHOR_URL, CONTACT_EMAIL, OFFICIAL_MATARO_URL, SITE_URL } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Sobre el projecte",

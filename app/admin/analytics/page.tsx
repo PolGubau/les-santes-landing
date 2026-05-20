@@ -13,10 +13,15 @@ function resolveRange(raw: string | undefined): RangeKey {
   return (found?.key ?? '7d') as RangeKey
 }
 
+function getSince(range: RangeKey): Date {
+  const ms = RANGES.find((r) => r.key === range)!.ms
+  return new Date(Date.now() - ms)
+}
+
 export default async function AnalyticsPage({ searchParams }: PageProps) {
   const { range: rangeParam } = await searchParams
   const range = resolveRange(rangeParam)
-  const since = new Date(Date.now() - RANGES.find((r) => r.key === range)!.ms)
+  const since = getSince(range)
 
   const admin = await createAdminClient()
   const { data, error } = await admin.rpc('get_analytics_summary', {

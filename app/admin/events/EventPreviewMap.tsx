@@ -141,6 +141,8 @@ export function EventPreviewMap({ kind, point, route, landmarks = [], height = 2
 
     if (map.isStyleLoaded()) applyContent()
     else map.once('load', applyContent)
+    // We intentionally depend on the coordinate primitives, not the point object identity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kind, point?.lat, point?.lng, route, landmarks])
 
   const isMobile = kind === 'mobile'

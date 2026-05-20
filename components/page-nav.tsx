@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { House, HouseIcon } from "@phosphor-icons/react/dist/ssr"
+import { HouseIcon } from "@phosphor-icons/react/dist/ssr"
 
 interface PageNavProps {
   breadcrumb: string

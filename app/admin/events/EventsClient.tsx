@@ -672,6 +672,7 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                   onChange={(e) => set('image_url', e.target.value)}
                   placeholder="https://…/imatge.jpg" />
                 {form.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img src={form.image_url} alt="Previsualització"
                     className="mt-2 h-28 w-full rounded-lg object-cover ring-1 ring-border"
                     onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }} />

@@ -1,11 +1,11 @@
 import { createAdminClient } from '@/lib/supabase/server'
-import { FeedbackClient } from './FeedbackClient'
+import { FeedbackClient, type Feedback } from './FeedbackClient'
 
 const FESTIVAL_ID = process.env.FESTIVAL_ID ?? 'les-santes-2026'
 
 export default async function FeedbackPage() {
   const admin = await createAdminClient()
-  
+
   const { data: feedback, error } = await admin
     .from('feedback')
     .select('*')
@@ -28,7 +28,7 @@ export default async function FeedbackPage() {
           Opinions i errors reportats pels usuaris de {FESTIVAL_ID}
         </p>
       </div>
-      <FeedbackClient feedback={(feedback as any) ?? []} />
+      <FeedbackClient feedback={(feedback as unknown as Feedback[]) ?? []} />
     </div>
   )
 }

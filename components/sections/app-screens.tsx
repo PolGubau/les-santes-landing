@@ -2,20 +2,10 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import {
-  LightningIcon,
-  CalendarBlankIcon,
-  HeartIcon,
-  MapTrifoldIcon,
-  FolderIcon,
-  FrameCornersIcon,
-  EnvelopeIcon,
-} from "@phosphor-icons/react/dist/ssr"
-import { Icon } from "@phosphor-icons/react"
 
 type Screen = {
   id: string
-   label: string
+  label: string
   title: string
   description: string
   src: string
@@ -139,7 +129,7 @@ export function AppScreens() {
             {/* Top block: badge + title + description - min-h on <p> prevents layout shift */}
             <div className="space-y-4">
               <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${current.accent}`}>
-                 {current.label}
+                {current.label}
               </div>
               <h3 className="text-3xl font-bold tracking-tight">{current.title}</h3>
               <p className="min-h-28 text-muted-foreground text-lg leading-relaxed">{current.description}</p>

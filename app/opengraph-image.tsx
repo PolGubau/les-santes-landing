@@ -14,6 +14,8 @@ export default async function Image() {
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex" }}>
+        {/* next/image is not supported inside ImageResponse (Satori). */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt="" role="presentation" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
     ),

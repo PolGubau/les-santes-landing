@@ -4,13 +4,18 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { StarIcon } from '@phosphor-icons/react'
 
-interface Feedback {
+export interface FeedbackContext {
+  route?: string
+  [key: string]: unknown
+}
+
+export interface Feedback {
   id: string
   rating: number
   type: 'bug' | 'suggestion' | 'general'
   message: string | null
   tags: string[]
-  context: any
+  context: FeedbackContext | null
   app_version: string | null
   platform: string | null
   locale: string | null
