@@ -12,7 +12,7 @@ export function Faq() {
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="relative w-full px-6 py-24 md:py-32"
+      className="relative w-full px-6 py-24 md:py-32 scroll-mt-20"
     >
       <div className="mx-auto max-w-3xl">
         <header className="mb-12 text-center">

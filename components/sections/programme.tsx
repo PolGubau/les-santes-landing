@@ -139,7 +139,7 @@ export function Programme() {
   const rest = highlights.filter((h) => !h.featured)
 
   return (
-    <section className="py-24 px-6" aria-labelledby="programme-heading">
+    <section id="programa" className="py-24 px-6 scroll-mt-20" aria-labelledby="programme-heading">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="scroll-reveal mb-12">

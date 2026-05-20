@@ -38,6 +38,12 @@ export function Footer() {
             <Logo size={36} subtitle={APP_SUBTITLE} className="opacity-90" />
 
             <nav aria-label="Peu de pàgina" className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-background/60">
+              <Link href="/#programa" className="hover:text-background transition-colors">
+                Programa
+              </Link>
+              <Link href="/#faq" className="hover:text-background transition-colors">
+                FAQ
+              </Link>
               <Link href="/about" className="hover:text-background transition-colors">
                 Sobre el projecte
               </Link>

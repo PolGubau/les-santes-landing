@@ -5,8 +5,9 @@ import Link from "next/link"
 import { Logo } from "@/components/logo"
 
 const NAV_LINKS = [
+  { href: "/#programa", label: "Programa" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/about", label: "Sobre el projecte" },
-  { href: "/privacy", label: "Privacitat" },
   { href: "/support", label: "Suport" },
 ]
 
