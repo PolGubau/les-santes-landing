@@ -40,7 +40,7 @@ const credentials: Credential[] = [
   {
     icon: WheelchairIcon,
     iconColor: "text-blue-600",
-    title: "Accessible WCAG 2.1 AA",
+    title: "Accessible WCAG 2.2 AA",
     description:
       "Lectors de pantalla, navegaci\u00f3 per teclat i contrast suficient. Dissenyada perqu\u00e8 tothom pugui usar-la.",
     link: "/accessibility",

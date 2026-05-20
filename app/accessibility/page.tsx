@@ -3,7 +3,7 @@ import { PageNav } from "@/components/page-nav"
 
 export const metadata: Metadata = {
   title: "Accessibilitat",
-  description: "Declaració d'accessibilitat de l'app i la web de Les Santes. Conformitat WCAG 2.1 AA.",
+  description: "Declaració d'accessibilitat de l'app i la web de Les Santes. Conformitat WCAG 2.2 AA.",
   alternates: { canonical: "https://lessantes.polgubau.com/accessibility" },
 }
 
@@ -31,12 +31,12 @@ export default function AccessibilityPage() {
             <svg aria-hidden="true" focusable="false" className="size-3.5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
             </svg>
-            WCAG 2.1 AA - Declaració de Conformitat
+            WCAG 2.2 AA - Declaració de Conformitat
           </div>
           <h1 className="text-4xl font-bold tracking-tight">Declaració d&apos;Accessibilitat</h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
             El projecte <strong>Les Santes</strong> s&apos;ha dissenyat amb l&apos;objectiu de complir les{" "}
-            <strong>Pautes d&apos;Accessibilitat per al Contingut Web (WCAG) 2.1 al nivell AA</strong>, seguint
+            <strong>Pautes d&apos;Accessibilitat per al Contingut Web (WCAG) 2.2 al nivell AA</strong>, seguint
             les recomanacions del W3C i el Reial Decret 1112/2018 sobre accessibilitat digital.
           </p>
         </header>
@@ -44,7 +44,7 @@ export default function AccessibilityPage() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold">Estat de conformitat</h2>
           <p className="text-muted-foreground">
-            Aquesta pàgina web i l&apos;aplicació mòbil compleixen <strong>parcialment</strong> les WCAG 2.1 al nivell AA.
+            Aquesta pàgina web i l&apos;aplicació mòbil compleixen <strong>parcialment</strong> les WCAG 2.2 al nivell AA.
             Les àrees que no compleixen es detallen a la secció de limitacions.
           </p>
           <div className="flex flex-wrap gap-3">
@@ -112,7 +112,7 @@ export default function AccessibilityPage() {
           <p><strong>Data de la darrera revisió:</strong> Maig de 2026</p>
           <p><strong>Tecnologies de suport provades:</strong> VoiceOver (iOS/macOS), TalkBack (Android), NVDA (Windows)</p>
           <p>
-            Referència: <a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WCAG 2.1 Quick Reference (W3C)</a>
+            Referència: <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WCAG 2.2 Quick Reference (W3C)</a>
           </p>
         </section>
 

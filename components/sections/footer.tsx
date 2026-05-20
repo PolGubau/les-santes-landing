@@ -60,12 +60,12 @@ export function Footer() {
               <Link
                 href="/accessibility"
                 className="inline-flex items-center gap-1.5 border border-white/20 text-background/60 hover:text-background px-2.5 py-1 rounded-md transition-colors"
-                aria-label="Declaració d'accessibilitat WCAG 2.1 AA"
+                aria-label="Declaració d'accessibilitat WCAG 2.2 AA"
               >
                 <svg aria-hidden="true" focusable="false" className="size-3" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
                 </svg>
-                WCAG 2.1 AA
+                WCAG 2.2 AA
               </Link>
             </div>
           </div>
