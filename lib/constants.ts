@@ -197,7 +197,7 @@ export const TESTER_PROGRAM = {
   /** Public Play Store listing (visible only to opted-in testers). */
   playStoreUrl: "https://play.google.com/store/apps/details?id=com.polgubau.lessantes",
   /** Structured feedback form (Google Forms / Tally / Notion). */
-  feedbackUrl: "https://forms.gle/REPLACE_WITH_REAL_FORM_ID",
+  feedbackUrl: "https://docs.google.com/forms/d/e/1FAIpQLScKHTl9iVsdK4j0pnmCp_2USyLqtG1N8iVlH7eFqr2ciTngXA/viewform?usp=publish-editor",
   /** Total testing window in days, per Google Play requirements. */
   durationDays: 14,
   /** Minimum number of active testers Google expects to grant production access. */
