@@ -1,59 +1,68 @@
-import type { Metadata, Viewport } from "next"
-import { Plus_Jakarta_Sans } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils"
-import { SITE_URL } from "@/lib/constants"
+import type { Metadata } from "next"
+import {
+  APP_NAME,
+  APP_YEAR,
+  APP_CITY,
+  APP_REGION,
+  APP_COUNTRY,
+  APP_DATES,
+  APP_START_DATE,
+  APP_END_DATE,
+  AUTHOR_NAME,
+  AUTHOR_URL,
+  AUTHOR_SAMEAS,
+  SITE_URL,
+  OFFICIAL_MATARO_URL,
+  FESTIVAL_SUBEVENTS,
+  FAQS,
+  CONTACT_EMAIL,
+} from "@/lib/constants"
+import { SiteHeader } from "@/components/site-header"
+import { Footer } from "@/components/sections/footer"
 
-const geist = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans" })
-const fontMono = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-mono" })
+const defaultTitle = `${APP_NAME} ${APP_YEAR} — Programa, horaris i mapa · Festa Major de ${APP_CITY}`
+const defaultDescription = `${APP_NAME} ${APP_YEAR}: ${APP_DATES.toLowerCase()}. Programa complet, horaris, mapa interactiu i actes en temps real de la Festa Major de ${APP_CITY}. App gratuïta per a iOS i Android.`
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  formatDetection: { email: false, address: false, telephone: false },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-    },
+  title: {
+    default: defaultTitle,
+    template: `%s · ${APP_NAME} ${APP_YEAR}`,
   },
-  icons: {
-    icon: [
-      { url: "/icon/32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icon/64.png", sizes: "64x64", type: "image/png" },
-      { url: "/icon/128.png", sizes: "128x128", type: "image/png" },
-      { url: "/icon/512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: { url: "/icon/480.png", sizes: "480x480", type: "image/png" },
-  },
-  formatDetection: { email: false, address: false, telephone: false },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-    },
-  },
-}
-
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  description: defaultDescription,
+  applicationName: APP_NAME,
+  category: "events",
+  keywords: [
+    "Les Santes 2026", "Les Santes", "programa Les Santes 2026",
+    "Festa Major Mataró 2026", "Festa Major Mataró", "Festa Major de Mataró",
+    "agenda Les Santes", "horaris Les Santes", "actes Les Santes",
+    "correfoc Mataró", "Nit Boja Mataró", "castell de focs Mataró",
+    "gegants Mataró", "castellers Mataró", "havaneres Mataró",
+    "cartells Les Santes", "app Les Santes", "mapa Les Santes",
+    APP_CITY, APP_NAME, "Festa Major", "festes Mataró 2026",
   ],
-  colorScheme: "light",
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
+  authors: [{ name: AUTHOR_NAME, url: AUTHOR_URL }],
+  creator: AUTHOR_NAME,
+  publisher: AUTHOR_NAME,
+  alternates: {
+    canonical: SITE_URL,
+    languages: { "ca-ES": SITE_URL, "x-default": SITE_URL },
+  },
+  openGraph: {
+    title: defaultTitle,
+    description: defaultDescription,
+    url: SITE_URL,
+    siteName: APP_NAME,
+    locale: "ca_ES",
+    type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: defaultTitle }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+    creator: "@polgubau",
+    images: ["/opengraph-image"],
+  },
 }
 
 const jsonLd = {
@@ -226,42 +235,16 @@ const jsonLd = {
   ],
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="ca"
-      suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
-    >
-      <head>
-        {/* Preconnect & DNS-prefetch to image CDNs to reduce LCP */}
-        <link rel="preconnect" href="https://uploads.lessantes.cat" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://uploads.lessantes.cat" />
-        <link rel="preconnect" href="https://cdn.appculturamataro.cat" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://cdn.appculturamataro.cat" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body>
-        {/* Skip-to-content - WCAG 2.4.1 Bypass Blocks */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-9999 focus:bg-background focus:text-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium focus:ring-2 focus:ring-primary"
-        >
-          Salta al contingut principal
-        </a>
-        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
-          <ChromeGate>
-            <SiteHeader />
-          </ChromeGate>
-          {children}
-          <ChromeGate>
-            <Footer />
-          </ChromeGate>
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <SiteHeader />
+      {children}
+      <Footer />
+    </>
   )
 }
