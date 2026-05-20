@@ -45,13 +45,7 @@ export function Hero() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-muted/60 px-3 py-1 text-[11px] font-medium text-muted-foreground">
               {APP_DATES}
             </span>
-            <Link
-              href="/testers"
-              className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider hover:bg-amber-500/20 transition-colors"
-            >
-              <FlaskIcon weight="fill" className="size-3" />
-              Beta · Test tancat
-            </Link>
+
           </div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
@@ -86,9 +80,17 @@ export function Hero() {
               aria-label="Google Play - Aviat disponible"
               className="flex items-center justify-center gap-2 border border-border bg-card px-6 py-3.5 rounded-xl font-medium text-sm opacity-50 cursor-not-allowed"
             >
-              <svg aria-hidden="true" focusable="false" className="size-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3.18 23.76c.3.17.64.22.99.14l12.6-7.27-2.75-2.75zm15.16-10.38L15.37 11 12.1 14.27l3.27 3.27 2.99-1.72c.85-.49.85-1.65-.02-2.14zM1.97 1.48A1.04 1.04 0 0 0 1.5 2.35v19.3c0 .36.18.68.47.87l.11.06 10.82-10.82v-.24zm10.66 11.28-10.8 10.8.11.07c.3.17.64.22.99.14l.11-.07 12.09-6.97z" />
-              </svg>
+       
+              <svg  aria-hidden="true" focusable="false" className="size-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 466 511.98">
+ <g id="Layer_x0020_1">
+  <path fill="#EA4335" fill-rule="nonzero" d="M199.9 237.8l-198.5 232.37c7.22,24.57 30.16,41.81 55.8,41.81 11.16,0 20.93,-2.79 29.3,-8.37l0 0 244.16 -139.46 -130.76 -126.35z"/>
+  <path fill="#FBBC04" fill-rule="nonzero" d="M433.91 205.1l0 0 -104.65 -60 -111.61 110.22 113.01 108.83 104.64 -58.6c18.14,-9.77 30.7,-29.3 30.7,-50.23 -1.4,-20.93 -13.95,-40.46 -32.09,-50.22z"/>
+  <path fill="#34A853" fill-rule="nonzero" d="M199.42 273.45l129.85 -128.35 -241.37 -136.73c-8.37,-5.58 -19.54,-8.37 -30.7,-8.37 -26.5,0 -50.22,18.14 -55.8,41.86 0,0 0,0 0,0l198.02 231.59z"/>
+  <path fill="#4285F4" fill-rule="nonzero" d="M1.39 41.86c-1.39,4.18 -1.39,9.77 -1.39,15.34l0 397.64c0,5.57 0,9.76 1.4,15.34l216.27 -214.86 -216.28 -213.46z"/>
+ </g>
+</svg>
+
               Google Play · Aviat
             </button>
           </div>
