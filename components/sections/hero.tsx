@@ -37,9 +37,14 @@ export function Hero() {
         {/* Text */}
         <div className="space-y-6 animate-fade-up text-center lg:text-left">
 
-          <p className="text-primary text-xs sm:text-sm font-semibold uppercase tracking-widest">
-            {APP_NAME} {APP_YEAR} · Festa Major de {APP_CITY} · {APP_DATES}
-          </p>
+          <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/8 px-3 py-1 text-[11px] font-semibold text-primary uppercase tracking-wider">
+              Festa Major de {APP_CITY} {APP_YEAR}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-muted/60 px-3 py-1 text-[11px] font-medium text-muted-foreground">
+              {APP_DATES}
+            </span>
+          </div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
             Les Santes
