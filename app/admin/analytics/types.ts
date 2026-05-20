@@ -36,6 +36,14 @@ export interface TopEvent {
   views: number
 }
 
+export interface TopFavorite {
+  event_id: string
+  title: string | null
+  added: number
+  removed: number
+  net: number
+}
+
 export interface RecentEvent {
   id: string
   event_name: string
@@ -51,5 +59,6 @@ export interface AnalyticsSummary {
   app_opens_by_day: AppOpensDay[]
   nudges: NudgeRow[]
   top_events: TopEvent[]
+  top_favorites: TopFavorite[]
   recent: RecentEvent[]
 }

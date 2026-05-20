@@ -201,6 +201,6 @@ export const TESTER_PROGRAM = {
   /** Total testing window in days, per Google Play requirements. */
   durationDays: 14,
   /** Minimum number of active testers Google expects to grant production access. */
-  minTesters: 12,
+  minTesters: 20,
 } as const
 

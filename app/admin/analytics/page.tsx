@@ -47,6 +47,7 @@ export default async function AnalyticsPage({ searchParams }: PageProps) {
     app_opens_by_day: [],
     nudges: [],
     top_events: [],
+    top_favorites: [],
     recent: [],
   }) as AnalyticsSummary
 

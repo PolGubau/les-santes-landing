@@ -116,7 +116,10 @@ export default function PrivacyPage() {
                 instal·lació generarà un identificador nou no relacionat.
               </li>
               <li>
-                Si vols que esborrem un comentari de feedback concret, escriu-nos a{" "}
+                Si vols sol·licitar l&apos;esborrat manual de dades o el feedback enviat, consulta la nostra pàgina d&apos;{" "}
+                <a href="/data-deletion" className="text-primary hover:underline">
+                  Esborrat de dades
+                </a> o escriu-nos a{" "}
                 <a href={`mailto:${CONTACT_EMAIL.support}`} className="text-primary hover:underline">
                   {CONTACT_EMAIL.support}
                 </a>{" "}

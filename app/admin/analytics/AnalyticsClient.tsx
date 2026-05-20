@@ -3,7 +3,7 @@ import { AppOpensChart } from './AppOpensChart'
 import { Kpi } from './Kpi'
 import { NudgesTable } from './NudgesTable'
 import { RangeSelector } from './RangeSelector'
-import { RecentEventsList, TopEventsList } from './RecentList'
+import { RecentEventsList, TopEventsList, TopFavoritesList } from './RecentList'
 import { RANGES, type AnalyticsSummary, type RangeKey } from './types'
 
 interface AnalyticsClientProps {
@@ -12,7 +12,7 @@ interface AnalyticsClientProps {
 }
 
 export function AnalyticsClient({ summary, range }: AnalyticsClientProps) {
-  const { totals, app_opens_by_day, nudges, top_events, recent } = summary
+  const { totals, app_opens_by_day, nudges, top_events, top_favorites, recent } = summary
 
   const onboardingRate = totals.onboarding_started
     ? Math.round((totals.onboarding_completed / totals.onboarding_started) * 100)
@@ -47,8 +47,10 @@ export function AnalyticsClient({ summary, range }: AnalyticsClientProps) {
 
       <section className="grid gap-6 lg:grid-cols-2">
         <TopEventsList data={top_events} />
-        <RecentEventsList data={recent} />
+        <TopFavoritesList data={top_favorites} />
       </section>
+
+      <RecentEventsList data={recent} />
 
       <Separator />
       <p className="text-xs text-muted-foreground">
