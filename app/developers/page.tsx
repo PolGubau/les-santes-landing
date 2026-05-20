@@ -72,8 +72,9 @@ export default function DevelopersPage() {
           </h2>
           <div className="divide-y divide-border border border-border rounded-xl overflow-hidden">
             {[
+              { method: "GET", path: "/v1/festivals", desc: "Totes les edicions disponibles (multi-festival)" },
               { method: "GET", path: "/v1/events", desc: "Llista d'actes amb filtres (dia, tipus, cerca)" },
-              { method: "GET", path: "/v1/events/{id}", desc: "Detall d'un acte" },
+              { method: "GET", path: "/v1/events/{id}", desc: "Detall d'un acte (ID únic global)" },
               { method: "GET", path: "/v1/festival", desc: "Metadades de la festa (nom, dates, edició)" },
               { method: "GET", path: "/v1/days", desc: "Dies del festival amb recompte d'actes" },
               { method: "GET", path: "/v1/locations", desc: "Espais i punts d'interès" },
@@ -92,12 +93,23 @@ export default function DevelopersPage() {
           </div>
         </section>
 
+        {/* Multi-festival */}
+        <section className="space-y-3 bg-primary/5 border border-primary/20 rounded-xl p-5">
+          <h2 className="text-base font-bold">Multi-festival</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Tots els endpoints accepten el paràmetre opcional{" "}
+            <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">?festival_id=&lt;id&gt;</code>.
+            Si l&apos;omets, es retorna l&apos;edició actual. Per descobrir totes les edicions, crida{" "}
+            <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">/v1/festivals</code>.
+          </p>
+        </section>
+
         {/* Exemples */}
         <section className="space-y-4">
           <h2 className="text-xl font-bold">Exemples d&apos;ús</h2>
-          <CodeBlock>{`curl ${API_URL}/v1/festival`}</CodeBlock>
-          <CodeBlock>{`curl "${API_URL}/v1/events?day=2026-07-25&type=concert"`}</CodeBlock>
-          <CodeBlock>{`curl "${API_URL}/v1/announcements"`}</CodeBlock>
+          <CodeBlock>{`curl ${API_URL}/v1/festivals`}</CodeBlock>
+          <CodeBlock>{`curl "${API_URL}/v1/events?festival_id=les-santes-2026&day=2026-07-25&type=concert"`}</CodeBlock>
+          <CodeBlock>{`curl "${API_URL}/v1/events?festival_id=les-santes-2025"`}</CodeBlock>
         </section>
 
         {/* Llicència */}
