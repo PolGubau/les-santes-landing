@@ -33,12 +33,38 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="2. Dades que recopilem">
-            <p><strong>No recopilem cap dada personal.</strong></p>
-            <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-              <li>No requerim registre ni compte d&apos;usuari.</li>
-              <li>No emmagatzemem noms, correus ni dades de contacte.</li>
-              <li>No fem servir analítica de tercers ni publicitat.</li>
-              <li>Les preferències (favorits) es guarden únicament al teu dispositiu.</li>
+            <p>
+              <strong>No recopilem cap dada personal identificable.</strong> No requerim registre,
+              no demanem nom, correu ni telèfon, i no fem servir publicitat ni analítica de tercers.
+            </p>
+            <p>
+              Per millorar l&apos;app i poder detectar errors, sí que enviem les dades següents als
+              nostres servidors (Supabase, hostatjat a la UE):
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+              <li>
+                <strong>Estadístiques d&apos;ús anònimes:</strong> esdeveniments tècnics (per
+                exemple, obertura de l&apos;app, pantalla visitada, acció completada) acompanyats
+                d&apos;un identificador aleatori d&apos;instal·lació, la versió de l&apos;app i la
+                plataforma (iOS/Android). No estan vinculats a la teva identitat i pots
+                <strong> desactivar-los des d&apos;Ajustos → Estadístiques d&apos;ús</strong>.
+                <br />
+                Base legal: interès legítim per millorar l&apos;app. Retenció: 12 mesos màxim.
+              </li>
+              <li>
+                <strong>Feedback (opcional):</strong> si ens envies un comentari des de
+                l&apos;app, guardem la valoració, el text que escrius, les etiquetes
+                seleccionades i el context tècnic (versió, plataforma, idioma). Mai et demanem
+                el nom ni el correu — t&apos;encoratgem a no incloure dades personals al missatge.
+                <br />
+                Base legal: consentiment (l&apos;enviament és voluntari). Retenció: fins que es
+                resolgui la incidència, màxim 24 mesos.
+              </li>
+              <li>
+                <strong>Preferències locals:</strong> els favorits, la configuració d&apos;idioma
+                i l&apos;estat d&apos;onboarding es guarden únicament al teu dispositiu i mai
+                surten d&apos;ell.
+              </li>
             </ul>
           </Section>
 
@@ -48,6 +74,11 @@ export default function PrivacyPage() {
               <li>
                 <strong>Localització (opcional):</strong> Per mostrar la teva posició al mapa del festival
                 i calcular distàncies als actes. La ubicació mai s&apos;envia als nostres servidors ni es comparteix.
+              </li>
+              <li>
+                <strong>Notificacions (opcional):</strong> Per recordar-te actes propers. Es
+                programen i es processen localment al dispositiu. No registrem el teu token
+                d&apos;identificador push als nostres servidors.
               </li>
               <li>
                 <strong>Calendari (opcional):</strong> Per afegir actes del festival al calendari del dispositiu.
@@ -67,10 +98,33 @@ export default function PrivacyPage() {
             </ul>
           </Section>
 
-          <Section title="5. Retenció de dades">
+          <Section title="5. Els teus drets i retenció de dades">
             <p>
-              Com que no recopilem dades personals, no hi ha res a retenir ni a eliminar.
-              Les dades locals (favorits) poden esborrar-se desinstal·lant l&apos;aplicació.
+              Com que no et podem identificar (no demanem registre ni emmagatzemem
+              identificadors personals), les sol·licituds d&apos;accés, rectificació o
+              supressió no es poden vincular a un usuari concret. Tot i així:
+            </p>
+            <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+              <li>
+                Pots <strong>desactivar les estadístiques en qualsevol moment</strong> des
+                d&apos;Ajustos. A partir d&apos;aquell moment, l&apos;app deixa d&apos;enviar
+                esdeveniments.
+              </li>
+              <li>
+                Pots eliminar totes les dades locals (favorits, preferències, identificador
+                d&apos;instal·lació) <strong>desinstal·lant l&apos;app</strong>. La pròxima
+                instal·lació generarà un identificador nou no relacionat.
+              </li>
+              <li>
+                Si vols que esborrem un comentari de feedback concret, escriu-nos a{" "}
+                <a href={`mailto:${CONTACT_EMAIL.support}`} className="text-primary hover:underline">
+                  {CONTACT_EMAIL.support}
+                </a>{" "}
+                indicant la data aproximada i el contingut.
+              </li>
+            </ul>
+            <p>
+              Retenció màxima: 12 mesos per a estadístiques d&apos;ús, 24 mesos per a feedback.
             </p>
           </Section>
 

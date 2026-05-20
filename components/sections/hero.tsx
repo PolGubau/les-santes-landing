@@ -1,6 +1,7 @@
 import { APP_CITY, APP_DATES, APP_NAME, APP_YEAR } from "@/lib/constants"
-import { ArrowDownIcon, LightningIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr"
+import { ArrowDownIcon, ArrowRightIcon, FlaskIcon, LightningIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import Image from "next/image"
+import Link from "next/link"
 
 export function Hero() {
   return (
@@ -44,6 +45,13 @@ export function Hero() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-muted/60 px-3 py-1 text-[11px] font-medium text-muted-foreground">
               {APP_DATES}
             </span>
+            <Link
+              href="/testers"
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider hover:bg-amber-500/20 transition-colors"
+            >
+              <FlaskIcon weight="fill" className="size-3" />
+              Beta · Test tancat
+            </Link>
           </div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
@@ -88,6 +96,15 @@ export function Hero() {
           <p className="text-xs text-muted-foreground">
             Disponible properament · Gratis · Sense publicitat
           </p>
+
+          <Link
+            href="/testers"
+            className="group inline-flex items-center gap-1.5 text-sm font-medium text-amber-600 dark:text-amber-400 hover:underline underline-offset-4"
+          >
+            <FlaskIcon weight="fill" className="size-3.5 shrink-0" />
+            Vols provar-la ja? Uneix-te al test tancat
+            <ArrowRightIcon className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </div>
 
         {/* Phone mockup - decorative illustration */}
