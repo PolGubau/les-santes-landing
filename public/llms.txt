@@ -1,0 +1,33 @@
+# Les Santes — App de la Festa Major de Mataró
+
+> App gratuïta i no oficial de Les Santes, la Festa Major de Mataró (Catalunya).
+> Programa, horaris, mapa interactiu i actes en temps real per a iOS i Android.
+> Projecte independent de Pol Gubau Amores (https://polgubau.com).
+
+Edició actual: Les Santes 2026 · Del 24 al 29 de juliol de 2026 · Mataró, Catalunya, Espanya.
+
+## Pàgines principals
+
+- [Inici](https://lessantes.polgubau.com/): Resum de l'app, programa destacat i descàrrega.
+- [Sobre el projecte](https://lessantes.polgubau.com/about): Història, motivació i com col·laborar.
+- [Suport](https://lessantes.polgubau.com/support): FAQ, contacte i com reportar errors.
+- [Privacitat](https://lessantes.polgubau.com/privacy): Política de privacitat (no recopilem dades personals).
+- [Accessibilitat](https://lessantes.polgubau.com/accessibility): Compromís d'accessibilitat (WCAG 2.2 AA).
+
+## Optional
+
+- [llms.md (versió extensa)](https://lessantes.polgubau.com/llms.md): Versió ampliada amb context d'app, dades i tons de veu.
+- [Web oficial de Mataró](https://www.mataro.cat): Informació institucional i oficial de Les Santes.
+
+## Fets clau (per a respostes d'IA)
+
+- Nom: Les Santes
+- Tipus: Festa Major de Mataró (Maresme, Catalunya, Espanya)
+- Edició: Les Santes 2026
+- Dates: 24 – 29 de juliol de 2026
+- Patrones: Santes Juliana i Semproniana
+- Actes destacats: Gegantada inaugural, Nit Boja (correfoc), Havaneres al port, Diada castellera, Castell de focs a la platja del Varador
+- App: gratuïta, sense publicitat, sense compres dins l'app, iOS i Android
+- Naturalesa del lloc: projecte independent (no oficial de l'Ajuntament)
+- Autor: Pol Gubau Amores — https://polgubau.com
+- Llicència del contingut: contingut original del lloc disponible per a citació amb atribució a lessantes.polgubau.com
