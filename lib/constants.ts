@@ -172,5 +172,24 @@ export const CONTACT_EMAIL = {
   support: "gubaupol+lessantes-support@gmail.com",
   /** Bug reports */
   bug: "gubaupol+lessantes-bug@gmail.com",
+  /** Closed-testing program */
+  tester: "gubaupol+lessantes-tester@gmail.com",
+} as const
+
+/**
+ * Closed-testing program (Google Play). Centralised so testers' links can be
+ * rotated without touching the page markup.
+ */
+export const TESTER_PROGRAM = {
+  /** Google Play opt-in link for the closed-testing track. */
+  playOptInUrl: "https://play.google.com/apps/testing/com.lessantes.app",
+  /** Public Play Store listing (visible only to opted-in testers). */
+  playStoreUrl: "https://play.google.com/store/apps/details?id=com.lessantes.app",
+  /** Structured feedback form (Google Forms / Tally / Notion). */
+  feedbackUrl: "https://forms.gle/REPLACE_WITH_REAL_FORM_ID",
+  /** Total testing window in days, per Google Play requirements. */
+  durationDays: 14,
+  /** Minimum number of active testers Google expects to grant production access. */
+  minTesters: 12,
 } as const
 

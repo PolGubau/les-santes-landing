@@ -57,6 +57,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: { "ca-ES": `${SITE_URL}/support` } },
     },
     {
+      url: `${SITE_URL}/testers`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.5,
+      alternates: { languages: { "ca-ES": `${SITE_URL}/testers` } },
+    },
+    {
       url: `${SITE_URL}/privacy`,
       lastModified,
       changeFrequency: "yearly",
