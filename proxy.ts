@@ -1,17 +1,17 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
-  // Fail-soft: without env vars the middleware must not throw (would surface as
-  // MIDDLEWARE_INVOCATION_FAILED on Vercel). Let the route render and the
+  // Fail-soft: without env vars the proxy must not throw (would surface as
+  // PROXY_INVOCATION_FAILED on Vercel). Let the route render and the
   // server-side layout enforce auth.
   if (!supabaseUrl || !supabaseKey) {
-    console.error('[middleware] Missing Supabase env vars; skipping auth check')
+    console.error('[proxy] Missing Supabase env vars; skipping auth check')
     return supabaseResponse
   }
 
@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
 
     return supabaseResponse
   } catch (error) {
-    console.error('[middleware] Auth check failed:', error)
+    console.error('[proxy] Auth check failed:', error)
     return supabaseResponse
   }
 }

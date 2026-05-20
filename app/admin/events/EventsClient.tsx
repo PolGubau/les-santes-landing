@@ -70,7 +70,7 @@ export const PRESET_LOCATIONS: { key: string; name: string; lat: number; lng: nu
   { key: 'preso', name: 'M|A|C Presó', lat: 41.541775, lng: 2.443381 },
   { key: 'monumental', name: 'Teatre Monumental', lat: 41.543811, lng: 2.442289 },
   { key: 'biblioteca', name: 'Biblioteca Pompeu Fabra', lat: 41.53826088038736, lng: 2.4336906150875595 },
-  { key: 'residencia', name: 'Pati de la Residència Sant Josep', lat: 41.535542, lng: 2.441028 },
+  { key: 'residencia', name: 'Pati de la Residència Sant Josep', lat: 41.538914798953364, lng: 2.4439703839441855 },
   { key: 'esmandies', name: 'Pati de les Esmandies', lat: 41.538021, lng: 2.439495 },
   { key: 'cafeNou', name: 'Pati del Cafè Nou', lat: 41.539245, lng: 2.443169 },
   { key: 'escorxador', name: "Jardins de l'Antic Escorxador", lat: 41.536011, lng: 2.440008 },
