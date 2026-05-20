@@ -31,18 +31,6 @@ export const metadata: Metadata = {
     ],
     apple: { url: "/icon/480.png", sizes: "480x480", type: "image/png" },
   },
-  formatDetection: { email: false, address: false, telephone: false },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-    },
-  },
 }
 
 export const viewport: Viewport = {
@@ -54,176 +42,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-}
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": `${SITE_URL}/#website`,
-      name: APP_NAME,
-      url: SITE_URL,
-      description: defaultDescription,
-      inLanguage: "ca-ES",
-      publisher: { "@id": `${SITE_URL}/#person` },
-      author: { "@id": `${SITE_URL}/#person` },
-    },
-    {
-      "@type": "Person",
-      "@id": `${SITE_URL}/#person`,
-      name: AUTHOR_NAME,
-      url: AUTHOR_URL,
-      sameAs: AUTHOR_SAMEAS,
-      jobTitle: "Software engineer",
-    },
-    {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: APP_NAME,
-      url: SITE_URL,
-      logo: `${SITE_URL}/icon/512.png`,
-      founder: { "@id": `${SITE_URL}/#person` },
-      sameAs: AUTHOR_SAMEAS,
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          contactType: "customer support",
-          email: CONTACT_EMAIL.support,
-          areaServed: APP_COUNTRY,
-          availableLanguage: ["ca", "es", "en"],
-        },
-        {
-          "@type": "ContactPoint",
-          contactType: "general inquiries",
-          email: CONTACT_EMAIL.general,
-          areaServed: APP_COUNTRY,
-          availableLanguage: ["ca", "es", "en"],
-        },
-      ],
-    },
-    {
-      "@type": "MobileApplication",
-      "@id": `${SITE_URL}/#app`,
-      name: APP_NAME,
-      description: defaultDescription,
-      operatingSystem: "iOS, Android",
-      applicationCategory: "LifestyleApplication",
-      applicationSubCategory: "Event guide",
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "EUR",
-        availability: "https://schema.org/InStock",
-      },
-      isAccessibleForFree: true,
-      inLanguage: ["ca-ES"],
-      url: SITE_URL,
-      image: `${SITE_URL}/opengraph-image`,
-      screenshot: [
-        `${SITE_URL}/screenshots/ara.avif`,
-        `${SITE_URL}/screenshots/agenda.avif`,
-        `${SITE_URL}/screenshots/agenda-favs.avif`,
-        `${SITE_URL}/screenshots/mapa.avif`,
-        `${SITE_URL}/screenshots/recursos.avif`,
-        `${SITE_URL}/screenshots/cartells.avif`,
-        `${SITE_URL}/screenshots/postals.avif`,
-      ],
-      featureList: [
-        "Agenda completa de Les Santes amb cerca i filtres",
-        "Mapa interactiu dels actes i punts d'inter\u00e8s",
-        "Destacats en temps real (ara, properament, avui)",
-        "Favorits per dia i recordatoris",
-        "Arxiu hist\u00f2ric de cartells des de 1892",
-        "Postals i recursos culturals",
-        "Funciona sense compte d'usuari",
-        "Sense publicitat ni seguiment",
-      ],
-      about: { "@id": `${SITE_URL}/#festival` },
-      author: { "@id": `${SITE_URL}/#person` },
-      publisher: { "@id": `${SITE_URL}/#organization` },
-    },
-    {
-      "@type": "Festival",
-      "@id": `${SITE_URL}/#festival`,
-      name: `${APP_NAME} ${APP_YEAR}`,
-      alternateName: [
-        `Festa Major de ${APP_CITY} ${APP_YEAR}`,
-        `${APP_NAME}`,
-      ],
-      description: `${APP_NAME} ${APP_YEAR}: la Festa Major de ${APP_CITY} (${APP_REGION}), ${APP_DATES.toLowerCase()}. Cercaviles, correfocs, castellers, havaneres i castell de focs.`,
-      startDate: APP_START_DATE,
-      endDate: APP_END_DATE,
-      eventStatus: "https://schema.org/EventScheduled",
-      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-      location: {
-        "@type": "Place",
-        name: APP_CITY,
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: APP_CITY,
-          addressRegion: APP_REGION,
-          addressCountry: APP_COUNTRY,
-        },
-      },
-      image: [`${SITE_URL}/opengraph-image`, `${SITE_URL}/banner.webp`],
-      organizer: {
-        "@type": "Organization",
-        name: `Ajuntament de ${APP_CITY}`,
-        url: OFFICIAL_MATARO_URL,
-      },
-      isAccessibleForFree: true,
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "EUR",
-        availability: "https://schema.org/InStock",
-        validFrom: APP_START_DATE,
-        url: SITE_URL,
-      },
-      url: SITE_URL,
-      subEvent: FESTIVAL_SUBEVENTS.map((event) => ({
-        "@type": "Event",
-        name: event.name,
-        description: event.description,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        eventStatus: "https://schema.org/EventScheduled",
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-        isAccessibleForFree: true,
-        location: {
-          "@type": "Place",
-          name: event.locationName,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: APP_CITY,
-            addressRegion: APP_REGION,
-            addressCountry: APP_COUNTRY,
-          },
-        },
-        superEvent: { "@id": `${SITE_URL}/#festival` },
-        organizer: { "@id": `${SITE_URL}/#organization` },
-      })),
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${SITE_URL}/#faq`,
-      inLanguage: "ca-ES",
-      mainEntity: FAQS.map((item) => ({
-        "@type": "Question",
-        name: item.q,
-        acceptedAnswer: { "@type": "Answer", text: item.a },
-      })),
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": `${SITE_URL}/#breadcrumbs`,
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inici", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: `${APP_NAME} ${APP_YEAR}`, item: `${SITE_URL}/#festival` },
-      ],
-    },
-  ],
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -239,10 +57,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="dns-prefetch" href="https://uploads.lessantes.cat" />
         <link rel="preconnect" href="https://cdn.appculturamataro.cat" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdn.appculturamataro.cat" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
       </head>
       <body>
         {/* Skip-to-content - WCAG 2.4.1 Bypass Blocks */}
@@ -253,13 +67,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Salta al contingut principal
         </a>
         <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
-          <ChromeGate>
-            <SiteHeader />
-          </ChromeGate>
           {children}
-          <ChromeGate>
-            <Footer />
-          </ChromeGate>
         </ThemeProvider>
       </body>
     </html>
