@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  memo,
   useDeferredValue,
   useEffect,
   useMemo,
@@ -24,7 +25,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { cancelEvent, restoreEvent, createEvent, updateEvent } from '../actions'
 import { EventPreviewMap } from './EventPreviewMap'
@@ -47,6 +47,8 @@ export interface EventRow {
   route: RoutePoint[] | null
   is_cancelled: boolean
   cancelled_reason: string | null
+  // Pre-calculated for performance
+  dayKey?: string
 }
 
 // ── Preset locations (same as mock.ts LOC+NAME) ─────────────────────────────
@@ -67,7 +69,7 @@ export const PRESET_LOCATIONS: { key: string; name: string; lat: number; lng: nu
   { key: 'varador', name: 'Platja del Varador', lat: 41.535934, lng: 2.453779 },
   { key: 'preso', name: 'M|A|C Presó', lat: 41.541775, lng: 2.443381 },
   { key: 'monumental', name: 'Teatre Monumental', lat: 41.543811, lng: 2.442289 },
-  { key: 'biblioteca', name: 'Biblioteca Pompeu Fabra', lat: 41.53826088038736, lng: 2.4336906150875595 },  
+  { key: 'biblioteca', name: 'Biblioteca Pompeu Fabra', lat: 41.53826088038736, lng: 2.4336906150875595 },
   { key: 'residencia', name: 'Pati de la Residència Sant Josep', lat: 41.535542, lng: 2.441028 },
   { key: 'esmandies', name: 'Pati de les Esmandies', lat: 41.538021, lng: 2.439495 },
   { key: 'cafeNou', name: 'Pati del Cafè Nou', lat: 41.539245, lng: 2.443169 },
@@ -238,10 +240,14 @@ function rowToForm(row: EventRow): EventFormData {
   }
 }
 
-export function EventsClient({ events }: { events: EventRow[] }) {
+export function EventsClient({ events: rawEvents }: { events: EventRow[] }) {
+  // Pre-calculate day keys for performance (avoid toLocaleDateString in filter loops)
+  const events = useMemo(() => rawEvents.map(e => ({
+    ...e,
+    dayKey: getDayKey(e.start_time)
+  })), [rawEvents])
+
   const [search, setSearch] = useState('')
-  // Defer the search-driven filtering so typing stays responsive while large
-  // lists re-render at lower priority.
   const deferredSearch = useDeferredValue(search)
   const normalizedSearch = useMemo(() => deferredSearch.trim().toLowerCase(), [deferredSearch])
   const [selectedDay, setSelectedDay] = useState<string>('all')
@@ -259,16 +265,15 @@ export function EventsClient({ events }: { events: EventRow[] }) {
     const seen = new Set<string>()
     const result: { key: string; label: string }[] = []
     for (const e of active) {
-      const key = getDayKey(e.start_time)
-      if (!seen.has(key)) {
-        seen.add(key)
-        result.push({ key, label: formatDay(e.start_time) })
+      if (!seen.has(e.dayKey!)) {
+        seen.add(e.dayKey!)
+        result.push({ key: e.dayKey!, label: formatDay(e.start_time) })
       }
     }
     return result
   }, [active])
 
-  // YYYY-MM-DD strings for every festival day (used to constrain the form date picker)
+  // YYYY-MM-DD strings for every festival day
   const availableDays = useMemo(() => {
     const seen = new Set<string>()
     const result: string[] = []
@@ -279,14 +284,40 @@ export function EventsClient({ events }: { events: EventRow[] }) {
     return result.sort()
   }, [events])
 
-  function filterEvents(list: EventRow[], day?: string) {
-    return list.filter((e) => {
+  const filteredEvents = useMemo(() => {
+    const base = selectedDay === 'cancelled' ? cancelled : active
+    const dayFilter = (selectedDay !== 'all' && selectedDay !== 'cancelled') ? selectedDay : undefined
+
+    return base.filter((e) => {
       const matchSearch = !normalizedSearch || e.title.toLowerCase().includes(normalizedSearch)
-      const matchDay = !day || getDayKey(e.start_time) === day
+      const matchDay = !dayFilter || e.dayKey === dayFilter
       const matchKind = selectedKind === 'all' || e.kind === selectedKind
       return matchSearch && matchDay && matchKind
     })
-  }
+  }, [active, cancelled, normalizedSearch, selectedDay, selectedKind])
+
+  // Counts for the chips (independent of the current filters)
+  const counts = useMemo(() => {
+    const dayFilter = (selectedDay !== 'all' && selectedDay !== 'cancelled') ? selectedDay : undefined
+    const baseForKind = active.filter(e => {
+      const matchSearch = !normalizedSearch || e.title.toLowerCase().includes(normalizedSearch)
+      const matchDay = !dayFilter || e.dayKey === dayFilter
+      return matchSearch && matchDay
+    })
+
+    return {
+      all: active.filter(e => !normalizedSearch || e.title.toLowerCase().includes(normalizedSearch)).length,
+      days: days.map(d => ({
+        key: d.key,
+        count: active.filter(e => e.dayKey === d.key && (!normalizedSearch || e.title.toLowerCase().includes(normalizedSearch))).length
+      })),
+      kinds: {
+        all: baseForKind.length,
+        static: baseForKind.filter(e => e.kind === 'static').length,
+        mobile: baseForKind.filter(e => e.kind === 'mobile').length
+      }
+    }
+  }, [active, days, normalizedSearch, selectedDay])
 
   function handleCancel(id: string) {
     if (!reason.trim()) return
@@ -382,15 +413,15 @@ export function EventsClient({ events }: { events: EventRow[] }) {
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:px-0">
         <DayChip
           label="Tots"
-          count={filterEvents(active).length}
+          count={counts.all}
           active={selectedDay === 'all'}
           onClick={() => setSelectedDay('all')}
         />
-        {days.map((d) => (
+        {days.map((d, i) => (
           <DayChip
             key={d.key}
             label={d.label}
-            count={filterEvents(active, d.key).length}
+            count={counts.days[i]?.count ?? 0}
             active={selectedDay === d.key}
             onClick={() => setSelectedDay(d.key)}
           />
@@ -406,46 +437,36 @@ export function EventsClient({ events }: { events: EventRow[] }) {
         )}
       </div>
 
-      {/* Kind filter chips — counts ignore the kind filter to always show real totals */}
-      {(() => {
-        const dayFilter = selectedDay !== 'all' && selectedDay !== 'cancelled' ? selectedDay : undefined
-        const base = active.filter((e) => {
-          const matchSearch = !normalizedSearch || e.title.toLowerCase().includes(normalizedSearch)
-          const matchDay = !dayFilter || getDayKey(e.start_time) === dayFilter
-          return matchSearch && matchDay
-        })
-        return (
-          <div className="flex flex-wrap gap-2">
-            <DayChip label="Tots els tipus" count={base.length} active={selectedKind === 'all'} onClick={() => setSelectedKind('all')} />
-            <DayChip label="Estàtics" icon={MapPinIcon} count={base.filter(e => e.kind === 'static').length} active={selectedKind === 'static'} onClick={() => setSelectedKind('static')} />
-            <DayChip label="Mòbils" icon={PersonSimpleWalkIcon} count={base.filter(e => e.kind === 'mobile').length} active={selectedKind === 'mobile'} onClick={() => setSelectedKind('mobile')} />
-          </div>
-        )
-      })()}
+      {/* Kind filter chips */}
+      <div className="flex flex-wrap gap-2">
+        <DayChip
+          label="Tots els tipus"
+          count={counts.kinds.all}
+          active={selectedKind === 'all'}
+          onClick={() => setSelectedKind('all')}
+        />
+        <DayChip
+          label="Estàtics"
+          icon={MapPinIcon}
+          count={counts.kinds.static}
+          active={selectedKind === 'static'}
+          onClick={() => setSelectedKind('static')}
+        />
+        <DayChip
+          label="Mòbils"
+          icon={PersonSimpleWalkIcon}
+          count={counts.kinds.mobile}
+          active={selectedKind === 'mobile'}
+          onClick={() => setSelectedKind('mobile')}
+        />
+      </div>
 
       {/* Content panel */}
-      <Tabs value={selectedDay} onValueChange={setSelectedDay}>
-        <TabsContent value="all">
-          <EventList events={filterEvents(active)} {...sharedListProps} />
-        </TabsContent>
-
-        {days.map((d) => (
-          <TabsContent key={d.key} value={d.key}>
-            <EventList events={filterEvents(active, d.key)} {...sharedListProps} />
-          </TabsContent>
-        ))}
-
-        <TabsContent value="cancelled">
-          <EventList
-            events={filterEvents(cancelled)}
-            cancelingId={null} reason="" isPending={isPending}
-            onStartCancel={() => { }} onReasonChange={() => { }} onQuickReason={() => { }}
-            onConfirmCancel={() => { }} onCancelAbort={() => { }}
-            onRestore={handleRestore} onEdit={setPanelEvent}
-            showRestore
-          />
-        </TabsContent>
-      </Tabs>
+      <EventList
+        events={filteredEvents}
+        {...sharedListProps}
+        showRestore={selectedDay === 'cancelled'}
+      />
 
       {/* Create / edit slide-over */}
       {panelEvent !== null && (
@@ -862,7 +883,7 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
 }
 
 // ── DayChip ─────────────────────────────────────────────────────────────────
-function DayChip({ label, count, active, onClick, destructive, icon: Icon }: {
+const DayChip = memo(function DayChip({ label, count, active, onClick, destructive, icon: Icon }: {
   label: string
   count: number
   active: boolean
@@ -895,17 +916,17 @@ function DayChip({ label, count, active, onClick, destructive, icon: Icon }: {
       </span>
     </button>
   )
-}
+})
 
 // ── StatCard ────────────────────────────────────────────────────────────────
-function StatCard({ label, value, color }: { label: string; value: number; color?: string }) {
+const StatCard = memo(function StatCard({ label, value, color }: { label: string; value: number; color?: string }) {
   return (
     <div className="rounded-xl border bg-card px-3 py-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-foreground/15 sm:rounded-2xl sm:px-5 sm:py-4">
       <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground sm:text-xs">{label}</p>
       <p className={`mt-0.5 text-2xl font-bold tabular-nums sm:mt-1 sm:text-3xl ${color ?? 'text-foreground'}`}>{value}</p>
     </div>
   )
-}
+})
 
 // ── EventList ───────────────────────────────────────────────────────────────
 interface EventListProps {
@@ -923,113 +944,118 @@ interface EventListProps {
   onEdit: (event: EventRow) => void
 }
 
-function EventList({ events, cancelingId, reason, isPending, showRestore,
+const EventItem = memo(function EventItem({
+  event, cancelingId, reason, isPending, showRestore,
   onStartCancel, onReasonChange, onQuickReason, onConfirmCancel, onCancelAbort, onRestore, onEdit,
-}: EventListProps) {
+}: { event: EventRow } & Omit<EventListProps, 'events'>) {
+  const type = TYPE_CONFIG[event.type] ?? { label: event.type, color: 'bg-gray-100 text-gray-600 border-gray-200' }
+  const isCanceling = cancelingId === event.id
+
+  return (
+    <li className={`transition-colors duration-150 ${isCanceling ? 'bg-destructive/5' : 'hover:bg-muted/40'}`}>
+      <div className="grid gap-3 p-3 sm:grid-cols-[110px_1fr_auto] sm:items-center sm:gap-4 sm:p-4">
+        {/* Time */}
+        <div className="flex items-center gap-2 sm:block">
+          <div className="font-semibold tabular-nums">{formatTime(event.start_time)}</div>
+          <div className="text-xs text-muted-foreground">{formatDay(event.start_time)}</div>
+        </div>
+
+        {/* Title + meta */}
+        <div className="min-w-0 space-y-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${type.color}`}>
+              {type.label}
+            </span>
+            <span className={`font-medium wrap-break-word ${event.is_cancelled ? 'line-through text-muted-foreground' : ''}`}>
+              {event.title}
+            </span>
+          </div>
+          {event.location_name && (
+            <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+              <MapPinIcon className="size-3" aria-hidden />
+              {event.location_name}
+            </p>
+          )}
+          {event.cancelled_reason && (
+            <p className="inline-flex items-center gap-1 text-xs text-destructive">
+              <WarningIcon className="size-3" weight="fill" aria-hidden />
+              {event.cancelled_reason}
+            </p>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-end gap-2">
+          <Button size="xs" variant="outline" disabled={isPending}
+            onClick={() => onEdit(event)} className="gap-1.5"
+            aria-label="Editar event">
+            <PencilSimpleIcon className="size-3.5" aria-hidden />
+            <span className="hidden sm:inline">Editar</span>
+          </Button>
+          {showRestore ? (
+            <Button size="xs" variant="outline" disabled={isPending}
+              onClick={() => onRestore(event.id)} className="gap-1.5"
+              aria-label="Restaurar event">
+              <ArrowCounterClockwiseIcon className="size-3.5" aria-hidden />
+              <span className="hidden sm:inline">Restaurar</span>
+            </Button>
+          ) : (
+            <Button size="xs" variant="destructive" disabled={isPending}
+              onClick={() => onStartCancel(event.id)} className="gap-1.5"
+              aria-label="Cancel·lar event">
+              <ProhibitIcon className="size-3.5" aria-hidden />
+              <span className="hidden sm:inline">Cancel·lar</span>
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {isCanceling && (
+        <div className="border-t bg-destructive/5 p-3 sm:p-4 animate-in fade-in slide-in-from-top-1 duration-200">
+          <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold text-destructive">
+            <WarningIcon className="size-3.5" weight="fill" aria-hidden />
+            Motiu de la cancel·lació — <span className="font-normal">{event.title}</span>
+          </p>
+          <div className="mb-2 flex flex-wrap gap-1">
+            {QUICK_REASONS.map((r) => (
+              <button key={r} type="button"
+                onClick={() => onQuickReason(r)}
+                className={`rounded-full border px-3 py-1 text-xs transition-all duration-150 hover:bg-muted active:scale-95 ${reason === r ? 'border-destructive bg-destructive/10 text-destructive' : 'border-border text-muted-foreground'}`}>
+                {r}
+              </button>
+            ))}
+          </div>
+          <Textarea
+            value={reason}
+            onChange={(e) => onReasonChange(e.target.value)}
+            placeholder="O escriu un motiu personalitzat..."
+            className="mb-3 min-h-15 text-sm"
+          />
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button size="sm" variant="destructive" disabled={!reason.trim() || isPending}
+              onClick={() => onConfirmCancel(event.id)} className="gap-1.5">
+              <ProhibitIcon className="size-4" aria-hidden />
+              Confirmar cancel·lació
+            </Button>
+            <Button size="sm" variant="outline" onClick={onCancelAbort}>
+              Enrere
+            </Button>
+          </div>
+        </div>
+      )}
+    </li>
+  )
+})
+
+const EventList = memo(function EventList({ events, ...props }: EventListProps) {
   if (events.length === 0)
     return <p className="py-12 text-center text-sm text-muted-foreground">Cap event trobat.</p>
 
   return (
     <ul role="list" className="divide-y rounded-2xl border bg-card shadow-sm overflow-hidden">
-      {events.map((event) => {
-        const type = TYPE_CONFIG[event.type] ?? { label: event.type, color: 'bg-gray-100 text-gray-600 border-gray-200' }
-        const isCanceling = cancelingId === event.id
-
-        return (
-          <li key={event.id} className={`transition-colors duration-150 ${isCanceling ? 'bg-destructive/5' : 'hover:bg-muted/40'}`}>
-            <div className="grid gap-3 p-3 sm:grid-cols-[110px_1fr_auto] sm:items-center sm:gap-4 sm:p-4">
-              {/* Time */}
-              <div className="flex items-center gap-2 sm:block">
-                <div className="font-semibold tabular-nums">{formatTime(event.start_time)}</div>
-                <div className="text-xs text-muted-foreground">{formatDay(event.start_time)}</div>
-              </div>
-
-              {/* Title + meta */}
-              <div className="min-w-0 space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${type.color}`}>
-                    {type.label}
-                  </span>
-                  <span className={`font-medium wrap-break-word ${event.is_cancelled ? 'line-through text-muted-foreground' : ''}`}>
-                    {event.title}
-                  </span>
-                </div>
-                {event.location_name && (
-                  <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                    <MapPinIcon className="size-3" aria-hidden />
-                    {event.location_name}
-                  </p>
-                )}
-                {event.cancelled_reason && (
-                  <p className="inline-flex items-center gap-1 text-xs text-destructive">
-                    <WarningIcon className="size-3" weight="fill" aria-hidden />
-                    {event.cancelled_reason}
-                  </p>
-                )}
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center justify-end gap-2">
-                <Button size="xs" variant="outline" disabled={isPending}
-                  onClick={() => onEdit(event)} className="gap-1.5"
-                  aria-label="Editar event">
-                  <PencilSimpleIcon className="size-3.5" aria-hidden />
-                  <span className="hidden sm:inline">Editar</span>
-                </Button>
-                {showRestore ? (
-                  <Button size="xs" variant="outline" disabled={isPending}
-                    onClick={() => onRestore(event.id)} className="gap-1.5"
-                    aria-label="Restaurar event">
-                    <ArrowCounterClockwiseIcon className="size-3.5" aria-hidden />
-                    <span className="hidden sm:inline">Restaurar</span>
-                  </Button>
-                ) : (
-                  <Button size="xs" variant="destructive" disabled={isPending}
-                    onClick={() => onStartCancel(event.id)} className="gap-1.5"
-                    aria-label="Cancel·lar event">
-                    <ProhibitIcon className="size-3.5" aria-hidden />
-                    <span className="hidden sm:inline">Cancel·lar</span>
-                  </Button>
-                )}
-              </div>
-            </div>
-
-            {isCanceling && (
-              <div className="border-t bg-destructive/5 p-3 sm:p-4 animate-in fade-in slide-in-from-top-1 duration-200">
-                <p className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold text-destructive">
-                  <WarningIcon className="size-3.5" weight="fill" aria-hidden />
-                  Motiu de la cancel·lació — <span className="font-normal">{event.title}</span>
-                </p>
-                <div className="mb-2 flex flex-wrap gap-1">
-                  {QUICK_REASONS.map((r) => (
-                    <button key={r} type="button"
-                      onClick={() => onQuickReason(r)}
-                      className={`rounded-full border px-3 py-1 text-xs transition-all duration-150 hover:bg-muted active:scale-95 ${reason === r ? 'border-destructive bg-destructive/10 text-destructive' : 'border-border text-muted-foreground'}`}>
-                      {r}
-                    </button>
-                  ))}
-                </div>
-                <Textarea
-                  value={reason}
-                  onChange={(e) => onReasonChange(e.target.value)}
-                  placeholder="O escriu un motiu personalitzat..."
-                  className="mb-3 min-h-15 text-sm"
-                />
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <Button size="sm" variant="destructive" disabled={!reason.trim() || isPending}
-                    onClick={() => onConfirmCancel(event.id)} className="gap-1.5">
-                    <ProhibitIcon className="size-4" aria-hidden />
-                    Confirmar cancel·lació
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={onCancelAbort}>
-                    Enrere
-                  </Button>
-                </div>
-              </div>
-            )}
-          </li>
-        )
-      })}
+      {events.map((event) => (
+        <EventItem key={event.id} event={event} {...props} />
+      ))}
     </ul>
   )
-}
+})
