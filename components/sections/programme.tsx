@@ -9,6 +9,8 @@ type Highlight = {
   icon: Icon
   day: string
   time: string
+  /** ISO 8601 with timezone, used by <time dateTime> for SEO/LLM extraction */
+  startDate: string
   place: string
   description: string
   image: string
@@ -23,6 +25,7 @@ const highlights: Highlight[] = [
     icon: FireIcon,
     day: "Dis 25",
     time: "23:30",
+    startDate: "2026-07-25T23:30:00+02:00",
     place: "La Riera i carrers del centre",
     description: "Dimonis, dracs i bestiari surten a cremar la nit de Mataró. L'espectacle de foc més esperat de l'any: música, espurnes i adrenalina.",
     image: "https://uploads.lessantes.cat/uploads/medium/bbef407c8987d205751b00506f5b8d24.jpeg",
@@ -35,6 +38,7 @@ const highlights: Highlight[] = [
     icon: WavesIcon,
     day: "Div 25",
     time: "22:00",
+    startDate: "2026-07-25T22:00:00+02:00",
     place: "Port de Mataró",
     description: "Cremat, brisa marina i les veus d'Havaneres Sirena entonen les cançons de marineria que han acompanyat Mataró des del segle XIX.",
     image: "https://cdn.appculturamataro.cat/medias/agenda/2025/c_crop,x_0,y_0,w_2146,h_1191%7Cc_fit,w_768,h_426%7Cp_1920/c22c63569648f5d08561ef4ecfc55e8f.jpeg",
@@ -45,6 +49,7 @@ const highlights: Highlight[] = [
     icon: CrownIcon,
     day: "Dij 24",
     time: "18:00",
+    startDate: "2026-07-24T18:00:00+02:00",
     place: "Des de la ronda O'Donnell",
     description: "Els gegants de Mataró encapçalen la cercavila inaugural amb música de gralles i tabals que anuncia que la festa ja ha començat.",
     image: "https://uploads.lessantes.cat/uploads/big/4046d84b2488e6f22f2215aabda59ec6.jpeg?p=992",
@@ -55,6 +60,7 @@ const highlights: Highlight[] = [
     icon: SparkleIcon,
     day: "Diu 27",
     time: "23:00",
+    startDate: "2026-07-27T23:00:00+02:00",
     place: "Platja del Varador",
     description: "El cel de Mataró s'il·lumina sobre el mar en un dels castells de focs artificials més bonics de la costa catalana.",
     image: "https://cdn.appculturamataro.cat/medias/agenda/2023/c_crop,x_29,y_69,w_768,h_426%7Cc_fit,w_768,h_426%7Cp_1920/b839be03d4c49c226a3dfac1073c4672.jpeg",
@@ -65,6 +71,7 @@ const highlights: Highlight[] = [
     icon: BuildingsIcon,
     day: "Dis 26",
     time: "12:00",
+    startDate: "2026-07-26T12:00:00+02:00",
     place: "Plaça de Santa Maria",
     description: "Les colles castalleres alcen torres humanes davant la basílica en un dels moments més emocionants i representatius de la cultura catalana.",
     image: "https://uploads.lessantes.cat/uploads/medium/56a2f26b3193a14374e05c0654733ffb.jpeg",
@@ -110,10 +117,13 @@ function HighlightCard({ h, className = "" }: { h: Highlight; className?: string
         )}
 
         <div className="flex items-center gap-3 text-xs text-white/60 pt-1">
-          <span className="flex items-center gap-1">
+          <time
+            dateTime={h.startDate}
+            className="flex items-center gap-1"
+          >
             <ClockIcon className="size-3" weight="bold" />
             {h.day} · {h.time}
-          </span>
+          </time>
           <span className="flex items-center gap-1 min-w-0">
             <MapPinIcon className="size-3 shrink-0" weight="bold" />
             <span className="truncate">{h.place}</span>
