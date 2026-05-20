@@ -181,10 +181,21 @@ export const CONTACT_EMAIL = {
  * rotated without touching the page markup.
  */
 export const TESTER_PROGRAM = {
+  /**
+   * Google Group used as the tester allowlist. Joining the group is what
+   * grants access to the closed-testing track on Google Play.
+  https://play.google.com/apps/testing/com.polgubau.lessantes
+  https://play.google.com/store/apps/details?id=com.polgubau.lessantes
+  */
+
+
+  googleGroupEmail: "testers-les-santes@googlegroups.com",
+  /** Public URL where users can request to join the group. */
+  googleGroupUrl: "https://groups.google.com/g/testers-les-santes",
   /** Google Play opt-in link for the closed-testing track. */
-  playOptInUrl: "https://play.google.com/apps/testing/com.lessantes.app",
+  playOptInUrl: "https://play.google.com/apps/testing/com.polgubau.lessantes",
   /** Public Play Store listing (visible only to opted-in testers). */
-  playStoreUrl: "https://play.google.com/store/apps/details?id=com.lessantes.app",
+  playStoreUrl: "https://play.google.com/store/apps/details?id=com.polgubau.lessantes",
   /** Structured feedback form (Google Forms / Tally / Notion). */
   feedbackUrl: "https://forms.gle/REPLACE_WITH_REAL_FORM_ID",
   /** Total testing window in days, per Google Play requirements. */

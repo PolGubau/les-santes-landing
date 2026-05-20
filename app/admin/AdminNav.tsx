@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   CalendarIcon,
+  ChartBarIcon,
   type Icon as PhosphorIcon,
   MegaphoneIcon,
   SignOutIcon,
@@ -15,6 +16,7 @@ type NavLink = { href: string; label: string; Icon: PhosphorIcon }
 const NAV_LINKS: NavLink[] = [
   { href: '/admin/events', label: 'Esdeveniments', Icon: CalendarIcon },
   { href: '/admin/announcements', label: 'Avisos', Icon: MegaphoneIcon },
+  { href: '/admin/analytics', label: 'Analítiques', Icon: ChartBarIcon },
 ]
 
 export function AdminNav() {

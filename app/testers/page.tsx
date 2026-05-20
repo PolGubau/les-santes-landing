@@ -13,7 +13,7 @@ import { APP_NAME, CONTACT_EMAIL, SITE_URL, TESTER_PROGRAM } from "@/lib/constan
 
 export const metadata: Metadata = {
   title: "Testers · Programa de proves",
-  description: `Uneix-te al test tancat de l'app ${APP_NAME}. Instal·la, prova-la 14 dies i ajuda'ns a millorar-la abans del llançament.`,
+  description: `Uneix-te al test tancat de l'app ${APP_NAME}. Apunta't al grup, instal·la-la i prova-la ${TESTER_PROGRAM.durationDays} dies.`,
   alternates: { canonical: `${SITE_URL}/testers` },
   robots: { index: true, follow: true },
 }
@@ -21,23 +21,23 @@ export const metadata: Metadata = {
 const STEPS = [
   {
     n: 1,
-    title: "Instal·la l'app",
-    desc: "Clica el botó d'instal·lació, accepta el test i baixa-la des de Google Play com qualsevol app.",
+    title: "Uneix-te al grup de testers",
+    desc: "Clica el botó i demana entrar al grup de Google amb el teu compte de Gmail. És el que ens permet donar-te accés a Google Play.",
   },
   {
     n: 2,
-    title: "Obre-la i explora 2–3 minuts",
-    desc: "Mira l'agenda, prova el mapa i navega lliurement. No cal registre.",
+    title: "Instal·la l'app des de Google Play",
+    desc: "Un cop dins del grup, obre l'enllaç de Play Store. Veuràs un avís de 'prova tancada' i podràs instal·lar-la com qualsevol altra app.",
   },
   {
     n: 3,
-    title: "Torna-la a obrir durant els 14 dies",
-    desc: "Amb obrir-la 3 o 4 cops repartits ja n'hi ha prou. Vols anar a un concert? Mira-ho a l'app.",
+    title: "Fes-la servir uns dies",
+    desc: `Amb obrir-la 3 o 4 cops repartits durant ${TESTER_PROGRAM.durationDays} dies ja n'hi ha prou. Mira l'agenda, prova el mapa, juga-hi.`,
   },
 ] as const
 
 const NOT_REQUIRED = [
-  "Registrar-te ni crear cap compte",
+  "Registrar-te ni crear cap compte dins l'app",
   "Usar-la cada dia ni gaire estona",
   "Saber res tècnic",
   "Reportar bugs formalment (només si vols)",
@@ -60,39 +60,62 @@ export default function TestersPage() {
             Ajuda'ns a provar l'app
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Estàs a punt de provar una versió primerenca de l'app de <strong>{APP_NAME} 2026</strong>.
-            Només cal instal·lar-la i fer-la servir alguns dies. En 30 segons ja estàs dins.
+            Estàs a punt de provar una versió beta de l'app de <strong>{APP_NAME} 2026</strong>.
+            Apunta't amb el teu Gmail, instal·la-la i fes-la servir uns dies. En menys de 2 minuts.
           </p>
         </header>
 
         {/* Primary CTA */}
-        <section className="bg-foreground text-background rounded-2xl p-6 sm:p-8 space-y-4">
+        <section className="bg-foreground text-background rounded-2xl p-6 sm:p-8 space-y-5">
           <div className="flex items-center gap-2 text-xs font-medium opacity-80">
             <DeviceMobileIcon weight="fill" className="size-4" /> Només Android (de moment)
           </div>
-          <h2 className="text-2xl font-semibold">Instal·la l'app en 2 passos</h2>
-          <ol className="text-sm space-y-1.5 opacity-90 list-decimal list-inside">
-            <li>Clica el botó i accepta unir-te al test tancat.</li>
-            <li>Espera 1–2 minuts i instal·la-la des de Google Play.</li>
-          </ol>
-          <div className="flex flex-wrap gap-3 pt-2">
+          <h2 className="text-2xl font-semibold">Comença aquí</h2>
+          <p className="text-sm opacity-80 leading-relaxed">
+            Google Play necessita saber qui prova l'app. Unir-te al grup amb el teu
+            Gmail és el que ens permet donar-te accés. No rebràs cap correu del grup.
+          </p>
+
+          <div className="space-y-3 pt-1">
             <a
-              href={TESTER_PROGRAM.playOptInUrl}
+              href={TESTER_PROGRAM.googleGroupUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 bg-background text-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
+              className="group flex items-center gap-4 bg-background text-foreground p-4 rounded-xl hover:opacity-95 transition-opacity"
             >
-              Unir-me al test <ArrowRightIcon className="size-3.5" />
+              <span className="shrink-0 size-9 rounded-full bg-foreground/10 text-foreground font-bold flex items-center justify-center text-sm">
+                1
+              </span>
+              <span className="flex-1 min-w-0">
+                <span className="block font-semibold text-sm">Uneix-te al grup de Google</span>
+                <span className="block text-xs text-muted-foreground truncate">
+                  {TESTER_PROGRAM.googleGroupEmail}
+                </span>
+              </span>
+              <ArrowRightIcon className="size-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
             </a>
+
             <a
               href={TESTER_PROGRAM.playStoreUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 border border-background/30 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-background/10 transition-colors"
+              className="group flex items-center gap-4 bg-background/5 border border-background/15 p-4 rounded-xl hover:bg-background/10 transition-colors"
             >
-              Obrir Play Store
+              <span className="shrink-0 size-9 rounded-full bg-background/10 text-background font-bold flex items-center justify-center text-sm">
+                2
+              </span>
+              <span className="flex-1 min-w-0">
+                <span className="block font-semibold text-sm">Instal·la des de Google Play</span>
+                <span className="block text-xs opacity-70">Després d'unir-te al grup</span>
+              </span>
+              <ArrowRightIcon className="size-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
             </a>
           </div>
+
+          <p className="text-xs opacity-60 pt-2 leading-relaxed">
+            Si l'enllaç de Play Store et diu que l'app no està disponible, espera 5–10
+            minuts: Google triga una mica a propagar el teu accés.
+          </p>
         </section>
 
         {/* Steps */}
@@ -120,7 +143,7 @@ export default function TestersPage() {
         <section className="bg-muted/40 rounded-2xl p-6 space-y-4">
           <h2 className="text-lg font-bold flex items-center gap-2">
             <ProhibitIcon weight="fill" className="size-5 text-muted-foreground" />
-            Què NO has de fer
+            Què NO cal que facis
           </h2>
           <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-muted-foreground">
             {NOT_REQUIRED.map((item) => (
