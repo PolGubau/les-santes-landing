@@ -225,6 +225,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <head>
+        {/* Preconnect & DNS-prefetch to image CDNs to reduce LCP */}
+        <link rel="preconnect" href="https://uploads.lessantes.cat" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://uploads.lessantes.cat" />
+        <link rel="preconnect" href="https://cdn.appculturamataro.cat" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.appculturamataro.cat" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
