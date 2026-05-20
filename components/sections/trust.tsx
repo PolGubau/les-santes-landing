@@ -15,7 +15,7 @@ const stats = [
   { value: "Gratu\u00efta", label: "Sense cap cost" },
   { value: "0 anuncis", label: "Sense publicitat" },
   { value: "iOS & Android", label: "Tots els dispositius" },
-  { value: "ca \u00b7 en", label: "En el teu idioma" },
+  { value: "Català", label: "Web i app" },
 ]
 
 type Credential = {
@@ -56,9 +56,9 @@ const credentials: Credential[] = [
   {
     icon: GlobeIcon,
     iconColor: "text-violet-600",
-    title: "Multiling\u00fce",
+    title: "En catal\u00e0",
     description:
-      "Catal\u00e0 i angl\u00e8s amb detecci\u00f3 autom\u00e0tica de l'idioma del dispositiu. Per als mataroners i els visitants.",
+      "App i web \u00edntegrament en catal\u00e0, l'idioma de Matar\u00f3 i Les Santes. Detecci\u00f3 autom\u00e0tica de l'idioma del dispositiu.",
   },
   {
     icon: DatabaseIcon,
