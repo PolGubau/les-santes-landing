@@ -506,7 +506,11 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
     if (event) return rowToForm(event)
     const base = emptyForm()
     const defaultDay = availableDays[0] ?? ''
-    return { ...base, start_time: defaultDay ? `${defaultDay}T00:00` : '', end_time: defaultDay ? `${defaultDay}T00:00` : '' }
+    const now = new Date()
+    const hh = now.getHours().toString().padStart(2, '0')
+    const mm = now.getMinutes().toString().padStart(2, '0')
+    const currentTime = `${hh}:${mm}`
+    return { ...base, start_time: defaultDay ? `${defaultDay}T${currentTime}` : '', end_time: defaultDay ? `${defaultDay}T${currentTime}` : '' }
   })
   const [open, setOpen] = useState(false)
 
@@ -690,8 +694,10 @@ function EventFormPanel({ event, availableDays, isPending, error, onClose, onSub
                 <Select
                   value={form.start_time.slice(0, 10)}
                   onValueChange={(day) => setForm((prev) => {
-                    const startTime = prev.start_time.slice(11, 16) || '00:00'
-                    const endTime = prev.end_time.slice(11, 16) || '00:00'
+                    const now = new Date()
+                    const nowTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
+                    const startTime = prev.start_time.slice(11, 16) || nowTime
+                    const endTime = prev.end_time.slice(11, 16) || nowTime
                     const newStart = `${day}T${startTime}`
                     return {
                       ...prev,
