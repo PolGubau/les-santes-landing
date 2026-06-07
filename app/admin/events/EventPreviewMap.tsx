@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import maplibregl, { type LngLatBoundsLike, type Map as MaplibreMap } from 'maplibre-gl'
+import { useEffect, useRef } from 'react'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 export interface PreviewPoint { lat: number; lng: number }
@@ -62,7 +62,7 @@ export function EventPreviewMap({ kind, point, route, landmarks = [], height = 2
     if (!map) return
 
     const applyContent = () => {
-      markersRef.current.forEach((m) => m.remove())
+      for (const m of markersRef.current) m.remove()
       markersRef.current = []
 
       for (const id of ['route-line', 'route-casing']) {
@@ -70,15 +70,16 @@ export function EventPreviewMap({ kind, point, route, landmarks = [], height = 2
       }
       if (map.getSource('route')) map.removeSource('route')
 
-      landmarks.forEach((l) => {
+      for (const l of landmarks) {
         const el = document.createElement('div')
         el.style.cssText =
           'width:6px;height:6px;border-radius:50%;background:rgba(100,116,139,0.55);border:1px solid #fff;'
         el.title = l.name
+        // cspell:ignore maplibregl
         markersRef.current.push(
           new maplibregl.Marker({ element: el }).setLngLat([l.lng, l.lat]).addTo(map),
         )
-      })
+      }
 
       if (kind === 'static' && point && Number.isFinite(point.lat) && Number.isFinite(point.lng)) {
         markersRef.current.push(
