@@ -1,31 +1,31 @@
-import Link from "next/link"
-import { CONTACT_EMAIL } from "@/lib/constants"
+import { CONTACT_EMAIL } from "@/lib/constants";
+import type { Icon } from "@/src/shared/types/common";
 import {
-  ShieldCheckIcon,
-  GlobeIcon,
-  DeviceMobileIcon,
-  WheelchairIcon,
-  GiftIcon,
-  DatabaseIcon,
   ArrowRightIcon,
-} from "@phosphor-icons/react/dist/ssr"
-import { Icon } from "@/src/shared/types/common"
+  DatabaseIcon,
+  DeviceMobileIcon,
+  GiftIcon,
+  GlobeIcon,
+  ShieldCheckIcon,
+  WheelchairIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
 
 const stats = [
   { value: "Gratu\u00efta", label: "Sense cap cost" },
   { value: "0 anuncis", label: "Sense publicitat" },
   { value: "iOS & Android", label: "Tots els dispositius" },
   { value: "Català", label: "Web i app" },
-]
+];
 
 type Credential = {
-  icon: Icon
-  iconColor: string
-  title: string
-  description: string
-  link?: string
-  linkLabel?: string
-}
+  icon: Icon;
+  iconColor: string;
+  title: string;
+  description: string;
+  link?: string;
+  linkLabel?: string;
+};
 
 const credentials: Credential[] = [
   {
@@ -33,7 +33,7 @@ const credentials: Credential[] = [
     iconColor: "text-green-600",
     title: "Privacitat total",
     description:
-      "Cap seguiment, cap publicitat, cap venda de dades. Funciona sense compte d'usuari ni informaci\u00f3 personal.",
+      "Sense rastrejadors publicitaris, sense anuncis i sense venda de dades. Funciona sense compte d'usuari ni informaci\u00f3 personal; les estad\u00edstiques d'\u00fas an\u00f2nimes es poden desactivar.",
     link: "/privacy",
     linkLabel: "Pol\u00edtica de privacitat",
   },
@@ -74,21 +74,27 @@ const credentials: Credential[] = [
     description:
       "Una sola app. Disseny nadiu que respecta les guies d'Apple i Google per a la millor experi\u00e8ncia.",
   },
-]
+];
 
 export function Trust() {
   return (
     <section className="py-16 sm:py-24 px-6" aria-labelledby="trust-heading">
       <div className="max-w-5xl mx-auto">
-
         {/* Header + stats */}
         <div className="scroll-reveal flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16 mb-12 sm:mb-20">
           <div className="lg:flex-1">
-            <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">Per tothom</p>
-            <h2 id="trust-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
+            <p className="text-primary text-sm font-medium uppercase tracking-widest mb-3">
+              Per tothom
+            </p>
+            <h2
+              id="trust-heading"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight"
+            >
               Feta per la comunitat,
               <br />
-              <span className="text-primary">a l&apos;al&ccedil;ada institucional</span>
+              <span className="text-primary">
+                a l&apos;al&ccedil;ada institucional
+              </span>
             </h2>
           </div>
 
@@ -96,8 +102,12 @@ export function Trust() {
           <div className="gap-6 grid grid-cols-2 lg:gap-x-8 lg:gap-y-5 lg:shrink-0 rounded-xl bg-muted p-4 lg:border-border scrollbar-none">
             {stats.map((s, i) => (
               <div key={i} className="shrink-0">
-                <div className="font-bold text-foreground text-base whitespace-nowrap">{s.value}</div>
-                <div className="text-xs text-muted-foreground mt-0.5 whitespace-nowrap">{s.label}</div>
+                <div className="font-bold text-foreground text-base whitespace-nowrap">
+                  {s.value}
+                </div>
+                <div className="text-xs text-muted-foreground mt-0.5 whitespace-nowrap">
+                  {s.label}
+                </div>
               </div>
             ))}
           </div>
@@ -106,12 +116,22 @@ export function Trust() {
         {/* Credentials — 2-col grid on sm+, stacked on mobile */}
         <div className="scroll-reveal grid sm:grid-cols-2 gap-0 sm:gap-x-12 divide-y divide-border sm:divide-y-0">
           {credentials.map((c) => (
-            <div key={c.title} className="flex flex-col gap-2 py-5 sm:py-6 sm:border-b sm:border-border">
+            <div
+              key={c.title}
+              className="flex flex-col gap-2 py-5 sm:py-6 sm:border-b sm:border-border"
+            >
               <div className="flex items-center gap-2.5">
-                <c.icon weight="duotone" className={`size-4 shrink-0 ${c.iconColor}`} />
-                <h3 className="font-semibold text-foreground text-sm">{c.title}</h3>
+                <c.icon
+                  weight="duotone"
+                  className={`size-4 shrink-0 ${c.iconColor}`}
+                />
+                <h3 className="font-semibold text-foreground text-sm">
+                  {c.title}
+                </h3>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">{c.description}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {c.description}
+              </p>
               {c.link && (
                 <Link
                   href={c.link}
@@ -128,9 +148,12 @@ export function Trust() {
         {/* Institutional CTA */}
         <div className="mt-12 sm:mt-14 pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-foreground text-sm mb-1">Ets de l&apos;Ajuntament de Matar&oacute;?</p>
+            <p className="font-semibold text-foreground text-sm mb-1">
+              Ets de l&apos;Ajuntament de Matar&oacute;?
+            </p>
             <p className="text-sm text-muted-foreground">
-              Estem oberts a col&middot;laborar per fer d&apos;aquesta app el canal oficial de Les Santes.
+              Estem oberts a col&middot;laborar per fer d&apos;aquesta app el
+              canal oficial de Les Santes.
             </p>
           </div>
           <a
@@ -142,5 +165,5 @@ export function Trust() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -147,7 +147,7 @@ export const SUPPORT_FAQS: ReadonlyArray<{ q: string; a: string }> = [
 	},
 	{
 		q: "Recopileu les meves dades personals?",
-		a: "No. L'app no requereix registre i no emmagatzemem cap dada personal. Els favorits es guarden localment al teu dispositiu.",
+		a: "No recollim cap dada personal identificable: l'app no requereix registre ni demana nom, correu o telèfon. Els favorits i les preferències es guarden localment al teu dispositiu. Només enviem estadístiques d'ús anònimes per millorar l'app, que pots desactivar des d'Ajustos → Estadístiques d'ús.",
 	},
 	{
 		q: "L'app és oficial de l'Ajuntament de Mataró?",
