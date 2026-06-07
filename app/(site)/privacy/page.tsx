@@ -1,7 +1,7 @@
-import type { Metadata } from "next"
 import { PageNav } from "@/components/page-nav"
 import { APP_CITY, APP_NAME, AUTHOR_NAME, CONTACT_EMAIL } from "@/lib/constants"
 import { SITE_URL } from "@/lib/constants"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Política de Privacitat",
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
       <main id="main-content" className="max-w-3xl mx-auto px-6 py-6 space-y-14">
         <header>
           <h1 className="text-4xl font-bold tracking-tight mb-3">Política de Privacitat</h1>
-          <p className="text-muted-foreground">Darrera actualització: maig de 2026</p>
+          <p className="text-muted-foreground">Darrera actualització: juny de 2026</p>
         </header>
 
         <div className="prose prose-neutral max-w-none space-y-8 text-foreground">
@@ -43,10 +43,13 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
               <li>
-                <strong>Estadístiques d&apos;ús anònimes:</strong> esdeveniments tècnics (per
-                exemple, obertura de l&apos;app, pantalla visitada, acció completada) acompanyats
-                d&apos;un identificador aleatori d&apos;instal·lació, la versió de l&apos;app i la
-                plataforma (iOS/Android). No estan vinculats a la teva identitat i pots
+                <strong>Estadístiques d&apos;ús anònimes:</strong> esdeveniments tècnics
+                acompanyats d&apos;un identificador aleatori d&apos;instal·lació, un identificador
+                de sessió, la versió de l&apos;app i la plataforma (iOS/Android). Concretament
+                registrem: obertura de l&apos;app, pantalles visitades, actes consultats,
+                afegir o eliminar favorits, progrés de l&apos;onboarding i sol·licituds de
+                valoració. <strong>Mai recopilem text lliure introduït per l&apos;usuari.</strong>
+                No estan vinculats a la teva identitat i pots
                 <strong> desactivar-los des d&apos;Ajustos → Estadístiques d&apos;ús</strong>.
                 <br />
                 Base legal: interès legítim per millorar l&apos;app. Retenció: 12 mesos màxim.
@@ -93,7 +96,8 @@ export default function PrivacyPage() {
           <Section title="4. Serveis de tercers">
             <p>L&apos;app utilitza els serveis següents, cadascun amb la seva pròpia política de privacitat:</p>
             <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-              <li><strong>Supabase:</strong> Base de dades del programa d&apos;actes. Dades anonimitzades. <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Llegir política</a></li>
+              <li><strong>Supabase:</strong> Base de dades del programa d&apos;actes i estadístiques d&apos;ús anònimes (hostatjat a la UE). <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Llegir política</a></li>
+              <li><strong>MapTiler:</strong> Proveïdor dels tiles vectorials del mapa. En carregar el mapa, l&apos;adreça IP pot ser tractada pels seus servidors. <a href="https://www.maptiler.com/privacy-policy/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Llegir política</a></li>
               <li><strong>MapLibre / OpenStreetMap:</strong> Mapa base. <a href="https://www.openstreetmap.org/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Llegir política</a></li>
             </ul>
           </Section>
