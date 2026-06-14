@@ -1,5 +1,5 @@
 import { APP_CITY, APP_DATES, APP_NAME, APP_YEAR, PLAY_STORE_URL } from "@/lib/constants"
-import { ArrowDownIcon, ArrowRightIcon, FlaskIcon, LightningIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr"
+import { ArrowDownIcon, LightningIcon, MapPinIcon } from "@phosphor-icons/react/dist/ssr"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -98,15 +98,6 @@ export function Hero() {
           <p className="text-xs text-muted-foreground">
             App Store properament · Gratis · Sense publicitat
           </p>
-
-          <Link
-            href="/testers"
-            className="group inline-flex items-center gap-1.5 text-sm font-medium text-amber-600 dark:text-amber-400 hover:underline underline-offset-4"
-          >
-            <FlaskIcon weight="fill" className="size-3.5 shrink-0" />
-            Vols provar-la ja? Uneix-te al grup de testers
-            <ArrowRightIcon className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
         </div>
 
         {/* Phone mockup - decorative illustration */}
