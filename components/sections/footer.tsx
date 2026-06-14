@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { Logo } from "@/components/logo"
-import { APP_NAME, APP_SUBTITLE, APP_YEAR, AUTHOR_NAME, AUTHOR_URL, CONTACT_EMAIL } from "@/lib/constants"
+import { APP_NAME, APP_SUBTITLE, AUTHOR_NAME, AUTHOR_URL, PLAY_STORE_URL } from "@/lib/constants"
 import Image from "next/image"
+import Link from "next/link"
 
 export function Footer() {
   return (
@@ -22,15 +22,17 @@ export function Footer() {
           {/* CTA band */}
           <div className="border border-white/10 rounded-3xl p-5 sm:p-8 mb-12 flex flex-col sm:flex-row items-center max-sm:text-center justify-between gap-5 bg-white/5">
             <div>
-              <h3 className="text-xl font-bold mb-1">Prepara&apos;t per la festa</h3>
-              <p className="text-background/60 text-sm text-pretty">L&apos;app estarà disponible abans de {APP_NAME} {APP_YEAR}.</p>
+              <h3 className="text-xl font-bold mb-1">Ja disponible a Google Play</h3>
+              <p className="text-background/60 text-sm text-pretty">Descarrega l&apos;app per a Android. La versió per a iOS arribarà molt aviat.</p>
             </div>
-            <a
-              href={`mailto:${CONTACT_EMAIL.notify}?subject=Avisa'm quan surti l'app de ${APP_NAME}`}
+            <Link
+              href={PLAY_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="shrink-0 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
             >
-              Avisa&apos;m quan surti
-            </a>
+              Baixa l&apos;app
+            </Link>
           </div>
 
           {/* Links */}

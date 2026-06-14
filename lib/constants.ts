@@ -12,6 +12,10 @@ export const SITE_URL = "https://lessantes.polgubau.com";
 export const API_URL = "https://api.lessantes.polgubau.com";
 export const OFFICIAL_MATARO_URL = "https://www.mataro.cat";
 
+export const PLAY_STORE_URL =
+	"https://play.google.com/store/apps/details?id=com.polgubau.lessantes";
+export const APP_STORE_URL = ""; // TODO: Add when available
+
 export const AUTHOR_NAME = "Pol Gubau Amores";
 export const AUTHOR_URL = "https://polgubau.com";
 export const AUTHOR_SAMEAS: string[] = [
@@ -134,8 +138,8 @@ export const SUPPORT_FAQS: ReadonlyArray<{ q: string; a: string }> = [
 		a: "Sí, completament gratuïta. Sense publicitat, sense compres dins l'app i sense registre obligatori.",
 	},
 	{
-		q: "En quines plataformes estarà disponible?",
-		a: `iOS (iPhone i iPad) i Android. Estarà disponible a l'App Store i Google Play abans de Les Santes ${APP_YEAR}.`,
+		q: "En quines plataformes està disponible?",
+		a: `L'app ja està disponible a Google Play per a Android. La versió per a iOS (iPhone i iPad) estarà disponible a l'App Store molt aviat.`,
 	},
 	{
 		q: "El programa s'actualitza en temps real?",
